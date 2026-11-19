@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#F4F5F7" />
+<title>ERP 코드 채번 — 사내 품번은 왜, 어떻게 부여하는가 · 요약</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+/* =========================================================
+   DrimAES Light Web UI Kit v1.0 — 정적 HTML 이식
+   ========================================================= */
+:root{
+  color-scheme: light;
+  --co-black:#000000; --co-dark:#555555; --co-mid:#A0A0A0; --co-light:#DEDEDE;
+  --co-mint:#7DEAD5; --co-cyan:#1BBBCC; --co-blue:#4383AF; --co-navy:#06438C;
+  --brand-50:#E5F0F5; --brand-100:#C7DCE7; --brand-300:#7CC9D5;
+  --brand-400:#1BBBCC; --brand-500:#4383AF; --brand-600:#06438C;
+  --brand-700:#052E62; --brand-800:#031F44;
+  --em-100:#E5F8F2; --em-300:#7DEAD5; --em-500:#3DC4A7; --em-600:#2BAA8D; --em-700:#1F8F76;
+  --s0:#FFFFFF; --s50:#FAFAFA; --s100:#F4F5F7; --s200:#EEF0F3;
+  --shadow-card:0 4px 6px rgba(0,0,0,0.08);
+  --shadow-glow:0 0 15px rgba(6,67,140,0.16);
+  --ease:cubic-bezier(0.22,1,0.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background-color:var(--s100); color:#111111; min-height:100vh;
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,
+    "Segoe UI","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-feature-settings:"tnum" 1,"ss01" 1; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+.shell{display:flex;min-height:100vh}
+.main{flex:1 1 auto;min-width:0;position:relative}
+.wrap{max-width:82rem;margin:0 auto}
+.pad{padding-left:1.5rem;padding-right:1.5rem}
+@media(min-width:640px){.pad{padding-left:2.5rem;padding-right:2.5rem}}
+@media(min-width:1024px){.pad{padding-left:3.5rem;padding-right:3.5rem}}
+
+/* sidebar */
+.sb{position:fixed;top:0;left:0;z-index:40;height:100vh;width:280px;flex:0 0 280px;
+  border-right:1px solid var(--co-light);background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(18px);transform:translateX(-100%);transition:transform .2s var(--ease)}
+.sb.open{transform:translateX(0)}
+.sb-inner{height:100%;overflow-y:auto;padding:1.5rem 1rem}
+@media(min-width:1024px){.sb{position:sticky;transform:none}}
+.sb-brand{display:flex;align-items:center;gap:.625rem;margin:0 0 1.75rem;padding:0 .5rem;width:100%}
+.sb-mark{position:relative;display:inline-block;height:36px;width:36px;border-radius:12px;
+  background:linear-gradient(135deg,var(--brand-400),var(--brand-700));box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.sb-name{display:block;font-weight:700;font-size:15px;letter-spacing:-.01em;color:var(--co-black);text-align:left}
+.sb-sub{display:block;font-size:12px;font-weight:500;color:var(--brand-600);letter-spacing:.02em;text-align:left}
+.sb-group{margin-bottom:1.25rem}
+.sb-label{padding:0 .5rem;margin-bottom:.375rem;font-size:11px;text-transform:uppercase;
+  letter-spacing:.18em;font-weight:600;color:var(--co-mid)}
+.sb-item{position:relative;display:flex;align-items:center;gap:.75rem;width:100%;
+  border-radius:.5rem;padding:.625rem;color:var(--co-dark);transition:background .15s var(--ease),color .15s var(--ease)}
+.sb-item:hover{background:var(--s200);color:var(--co-black)}
+.sb-num{font-size:12px;font-weight:600;color:var(--co-mid);
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.sb-item:hover .sb-num{color:var(--co-dark)}
+.sb-text{flex:1 1 auto;text-align:left;font-size:15px;line-height:1.25;font-weight:500}
+.sb-item.active{background:linear-gradient(to right,var(--brand-50),rgba(229,240,245,.5),transparent);
+  color:var(--brand-800);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25)}
+.sb-item.active .sb-text{font-weight:600}
+.sb-item.active .sb-num{color:var(--brand-600)}
+.sb-item.active .bar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:24px;width:3px;
+  border-radius:0 999px 999px 0;background:var(--brand-600);box-shadow:0 0 10px 2px rgba(27,187,204,.55)}
+.sb-item.active .dot{height:6px;width:6px;border-radius:999px;background:var(--brand-400);
+  box-shadow:0 0 8px 2px rgba(27,187,204,.55)}
+.sb-backdrop{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);display:none}
+.sb-backdrop.show{display:block}
+@media(min-width:1024px){.sb-backdrop{display:none!important}}
+.sb-toggle{position:fixed;bottom:1.25rem;right:1.25rem;z-index:50;border-radius:999px;
+  background:var(--brand-600);color:#fff;box-shadow:var(--shadow-glow);padding:.75rem 1.25rem;
+  font-size:14px;font-weight:600;transition:transform .1s ease,background .15s ease}
+.sb-toggle:hover{background:var(--brand-700)}
+.sb-toggle:active{transform:scale(.95)}
+@media(min-width:1024px){.sb-toggle{display:none}}
+
+/* slide */
+.slide{display:none}
+.slide.active{display:block}
+.slide-enter{animation:slideEnter .4s var(--ease)}
+@keyframes slideEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.slide-head{padding-top:2.5rem;padding-bottom:1rem}
+@media(min-width:640px){.slide-head{padding-top:3.5rem}}
+.badge-row{display:flex;align-items:center;gap:.625rem;margin-bottom:.75rem;flex-wrap:wrap}
+.num-badge{display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;
+  padding:0 .5rem;border-radius:.375rem;font-size:11px;font-weight:600;background:var(--brand-50);
+  color:var(--brand-700);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25);
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+.eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--brand-600)}
+.slide-h2{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.25;color:var(--co-black);word-break:keep-all}
+@media(min-width:640px){.slide-h2{font-size:2.25rem}}
+.slide-desc{margin-top:.75rem;font-size:14px;line-height:1.7;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.slide-desc{font-size:15px}}
+.slide-body{padding-bottom:4rem}
+.slide-body > * + *{margin-top:1.25rem}
+.stack > * + *{margin-top:.75rem}
+
+.p{font-size:14px;line-height:1.85;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.p{font-size:15px}}
+.sec-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--brand-600);margin-bottom:.5rem}
+.h3{font-size:15px;font-weight:600;color:var(--co-black);word-break:keep-all}
+.meta{font-size:11px;color:var(--co-mid)}
+.gradient-text{background:linear-gradient(135deg,#06438C 0%,#4383AF 50%,#1BBBCC 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+.paper{background:var(--s0);border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+.card{position:relative;border-radius:1rem;padding:1.15rem;overflow:hidden;
+  transition:transform .15s var(--ease),border-color .15s var(--ease),box-shadow .15s var(--ease)}
+@media(min-width:640px){.card{padding:1.25rem}}
+.card:hover{transform:translateY(-2px);border-color:rgba(67,131,175,.5);box-shadow:var(--shadow-glow)}
+.card-tint{pointer-events:none;position:absolute;inset:0;border-radius:1rem;opacity:.6;
+  background:linear-gradient(135deg,var(--brand-50),transparent 55%)}
+.card-tint.mint{background:linear-gradient(135deg,var(--em-100),transparent 55%)}
+.card-tint.navy{background:linear-gradient(135deg,rgba(199,220,231,.7),transparent 55%)}
+.card-tint.slate{background:linear-gradient(135deg,var(--s200),transparent 55%)}
+.card-inner{position:relative}
+.card-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.card-badge{font-size:10px;font-weight:500;padding:.1rem .375rem;border-radius:.375rem;
+  background:var(--brand-50);color:var(--brand-700);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25)}
+.card-body{font-size:13.5px;line-height:1.8;color:var(--co-dark);word-break:keep-all}
+.grid{display:grid;gap:.875rem;grid-template-columns:1fr}
+@media(min-width:640px){.g2,.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1024px){.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+.callout{border-radius:.75rem;border:1px solid;padding:.875rem 1rem;box-shadow:var(--shadow-card)}
+@media(min-width:640px){.callout{padding:1rem 1.15rem}}
+.callout-title{display:flex;align-items:center;gap:.5rem;font-size:14px;font-weight:600;margin-bottom:.375rem}
+.callout-body{font-size:13.5px;line-height:1.8;word-break:keep-all}
+.c-info{background:var(--brand-50);border-color:rgba(67,131,175,.3);color:#333}
+.c-info .callout-title{color:var(--brand-800)}
+.c-success{background:var(--em-100);border-color:rgba(61,196,167,.4);color:#333}
+.c-success .callout-title{color:var(--em-700)}
+.c-muted{background:var(--s50);border-color:var(--co-light);color:var(--co-dark)}
+.c-muted .callout-title{color:var(--co-black)}
+.c-emphasis{background:var(--brand-600);border-color:transparent;color:#fff}
+.c-emphasis .callout-title{color:#fff}
+
+.bullets{font-size:13.5px;line-height:1.75;color:var(--co-dark)}
+.bullets li{position:relative;padding-left:.9rem;word-break:keep-all}
+.bullets li + li{margin-top:.35rem}
+.bullets li::before{content:"";position:absolute;left:0;top:.62em;width:4px;height:4px;border-radius:999px;background:var(--brand-500)}
+.bullets.on-navy{color:rgba(255,255,255,.92)}
+.bullets.on-navy li::before{background:var(--co-cyan)}
+
+.table-wrap{overflow-x:auto;border-radius:.75rem;background:var(--s0);
+  border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead tr{background:var(--co-light)}
+th{text-align:left;padding:.625rem .875rem;font-size:12px;text-transform:uppercase;
+  letter-spacing:.05em;font-weight:700;color:var(--co-black);white-space:nowrap}
+th.em{color:var(--brand-600)}
+tbody tr{border-bottom:1px solid rgba(222,222,222,.7);background:var(--s0);transition:background .15s ease}
+tbody tr:nth-child(even){background:var(--s50)}
+tbody tr:last-child{border-bottom:0}
+tbody tr:hover{background:rgba(229,240,245,.6)}
+td{padding:.7rem .875rem;vertical-align:top;color:var(--co-dark);font-size:13.5px;line-height:1.7;word-break:keep-all}
+td:first-child{color:var(--co-black);font-weight:500}
+td.em{color:var(--brand-700);font-weight:600}
+td.num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sowhat{border-radius:.6rem;background:var(--brand-600);color:#fff;font-weight:700;
+  font-size:13px;line-height:1.6;padding:.65rem 1rem;word-break:keep-all}
+.cellist{font-size:13px;line-height:1.7}
+.cellist li{position:relative;padding-left:.8rem}
+.cellist li + li{margin-top:.3rem}
+.cellist li::before{content:"";position:absolute;left:0;top:.6em;width:3.5px;height:3.5px;border-radius:999px;background:var(--brand-500)}
+
+.tag{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .6rem;border-radius:999px;
+  font-size:.78rem;font-weight:500;background:rgba(27,187,204,.1);color:var(--brand-700);
+  border:1px solid rgba(27,187,204,.35);white-space:nowrap}
+.tag-muted{background:var(--s50);color:var(--co-dark);border-color:var(--co-light)}
+.tag-navy{background:rgba(6,67,140,.08);color:var(--co-navy);border-color:rgba(6,67,140,.25)}
+.tag-mint{background:var(--em-100);color:var(--em-700);border-color:rgba(61,196,167,.4)}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem}
+
+.kpi{position:relative;overflow:hidden;border-radius:1rem;padding:1.15rem;text-align:center;
+  background:var(--s0);border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+.kpi::after{content:"";position:absolute;top:-2.5rem;right:-2.5rem;height:7rem;width:7rem;
+  border-radius:999px;background:rgba(6,67,140,.1);filter:blur(28px)}
+.kpi-val{position:relative;font-size:1.9rem;font-weight:800;color:var(--brand-600);line-height:1}
+@media(min-width:640px){.kpi-val{font-size:2.25rem}}
+.kpi-suf{font-size:1.05rem;color:var(--co-mid);font-weight:700;margin-left:.15rem}
+.kpi-label{position:relative;margin-top:.5rem;font-size:12px;font-weight:500;color:var(--co-dark)}
+.kpi-sub{position:relative;margin-top:.15rem;font-size:11px;color:var(--co-mid)}
+
+.bf{display:flex;flex-direction:column;gap:.375rem;width:100%}
+@media(min-width:640px){.bf{flex-direction:row;align-items:stretch;gap:0}}
+.bf-card{position:relative;padding:.75rem .95rem;border-radius:.85rem;background:var(--s0);
+  border:1px solid rgba(6,67,140,.25);box-shadow:0 2px 5px rgba(0,0,0,.05);
+  display:flex;flex-direction:column;gap:.1rem;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media(min-width:640px){.bf-card{flex:4 1 0;min-width:0}}
+.bf-card:hover{transform:translateY(-2px);border-color:rgba(27,187,204,.6);box-shadow:0 10px 24px rgba(27,187,204,.16)}
+.bf-card .num{font-size:.66rem;font-family:ui-monospace,monospace;color:var(--brand-500);letter-spacing:.04em;line-height:1.1}
+.bf-card .title{font-weight:600;font-size:.92rem;color:var(--co-black);line-height:1.25;word-break:keep-all}
+.bf-card .sub{font-size:.76rem;color:var(--co-mid);margin-top:.1rem;line-height:1.3;word-break:keep-all}
+.bf-conn-v{display:grid;place-items:center;color:var(--co-mid)}
+.bf-conn-h{display:none}
+@media(min-width:640px){
+  .bf-conn-v{display:none}
+  .bf-conn-h{display:flex;flex:1 1 0;min-width:24px;align-items:center;align-self:center;color:var(--co-mid)}
+}
+.flow-line-anim{stroke-dasharray:4 4;animation:dashFlow .9s linear infinite}
+@keyframes dashFlow{to{stroke-dashoffset:-8}}
+
+.flow-card{display:flex;gap:1rem;padding:1rem 1.15rem;border-radius:1rem;background:var(--s0);
+  border:1px solid var(--co-light);box-shadow:0 4px 6px rgba(0,0,0,.06);
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.flow-card:hover{transform:translateY(-1px);border-color:rgba(67,131,175,.55);box-shadow:0 6px 22px rgba(6,67,140,.12)}
+.flow-number{flex:0 0 auto;width:2.4rem;height:2.4rem;border-radius:9999px;
+  background:linear-gradient(135deg,#06438C,#1BBBCC);color:#fff;display:grid;place-items:center;
+  font-weight:700;font-size:.92rem;box-shadow:0 4px 14px rgba(6,67,140,.3)}
+.flow-content{flex:1 1 auto;min-width:0}
+.flow-title{font-weight:600;color:var(--co-black);font-size:1.04rem;word-break:keep-all}
+.flow-body{margin-top:.45rem;font-size:.94rem;line-height:1.75;color:var(--co-dark);word-break:keep-all}
+.flow-arrow{display:grid;place-items:center;color:var(--co-mid);padding:.125rem 0}
+
+.hero{padding-top:3rem;padding-bottom:3rem}
+@media(min-width:640px){.hero{padding-top:5rem}}
+.hero-pill{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;
+  border:1px solid rgba(67,131,175,.25);background:var(--brand-50);padding:.25rem .75rem;
+  font-size:11px;font-weight:600;color:var(--brand-700)}
+.hero-pill .pulse{display:inline-block;height:6px;width:6px;border-radius:999px;background:var(--brand-400);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero-h1{margin-top:1.25rem;font-size:2.25rem;font-weight:800;letter-spacing:-.03em;line-height:1.12;color:var(--co-black);word-break:keep-all}
+@media(min-width:640px){.hero-h1{font-size:3.4rem;line-height:1.05}}
+.hero-lead{margin-top:1.25rem;max-width:46rem;font-size:1rem;line-height:1.8;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.hero-lead{font-size:1.075rem}}
+
+.appendix-divider{position:relative;margin:0 0 1rem;text-align:center;font-size:.65rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--co-mid)}
+.appendix-divider::before,.appendix-divider::after{content:"";position:absolute;top:50%;width:38%;height:1px;
+  background:linear-gradient(to right,transparent,var(--co-light),transparent)}
+.appendix-divider::before{left:0}.appendix-divider::after{right:0}
+
+.pager{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);z-index:30;
+  display:flex;align-items:center;gap:.5rem;border-radius:999px;background:rgba(255,255,255,.9);
+  backdrop-filter:blur(8px);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--co-light);
+  padding:.375rem .75rem;font-size:11px;color:var(--co-dark)}
+@media(min-width:1024px){.pager{left:auto;right:1.5rem;transform:none}}
+.pager button{padding:.125rem .375rem;border-radius:.25rem;transition:background .15s ease}
+.pager button:hover:not(:disabled){background:var(--s200)}
+.pager button:disabled{opacity:.3;cursor:not-allowed}
+
+.code-block{background:var(--s50);border:1px solid var(--co-light);color:#333;border-radius:.75rem;
+  padding:1rem 1.1rem;font-size:.82rem;line-height:1.7;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(85,85,85,.22);border-radius:999px}
+::-webkit-scrollbar-thumb:hover{background:rgba(85,85,85,.34)}
+
+@media print{
+  .no-print{display:none!important}
+  .flow-line-anim{animation:none}
+  .slide{display:block!important}
+}
+
+/* =========================================================
+   ERP 코드 자리 시각화 — 원본 슬라이드의 색 상자를 회사 8색으로 재매핑
+   대분류 navy · 사이즈 blue · 공차 cyan · 전압 emerald-700 · 값 mint · 접미 dark gray
+   ========================================================= */
+.k-cls{--bg:#06438C;--fg:#FFFFFF}
+.k-size{--bg:#4383AF;--fg:#FFFFFF}
+.k-tol{--bg:#1BBBCC;--fg:#031F44}
+.k-volt{--bg:#1F8F76;--fg:#FFFFFF}
+.k-val{--bg:#7DEAD5;--fg:#0E5847}
+.k-suf{--bg:#555555;--fg:#FFFFFF}
+.k-kind{--bg:#000000;--fg:#FFFFFF}
+.k-body{--bg:#EEF0F3;--fg:#555555}
+.k-unk{--bg:#FFFFFF;--fg:#A0A0A0}
+
+.pnv{display:flex;flex-wrap:wrap;align-items:flex-start;gap:.6rem .45rem}
+.seg{display:flex;flex-direction:column;align-items:center;gap:.3rem;min-width:0}
+.cells{display:flex;gap:3px}
+.cells span{display:grid;place-items:center;min-width:2.35rem;height:3rem;padding:0 .15rem;border-radius:.45rem;
+  background:var(--bg);color:var(--fg);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-weight:700;font-size:1.45rem;line-height:1}
+.seg.k-unk .cells span{border:1.5px dashed var(--co-mid)}
+.seg.hy .cells span{background:transparent;color:var(--co-mid);min-width:.8rem;padding:0}
+.seg .cap{font-size:11.5px;font-weight:700;color:var(--co-black);white-space:nowrap}
+.seg .val{font-size:11.5px;color:var(--co-dark);white-space:nowrap;text-align:center;line-height:1.35}
+.seg.bad .cells span{box-shadow:0 0 0 2px #FFFFFF,0 0 0 4px #000000}
+.seg.bad .cap::after{content:" ✕";color:var(--co-black)}
+.pnv.sm{gap:.45rem .35rem}
+.pnv.sm .cells span{min-width:1.75rem;height:2.25rem;font-size:1.05rem;border-radius:.35rem}
+.pnv.sm .seg .cap,.pnv.sm .seg .val{font-size:10.5px}
+.pn-panel{border-radius:1rem;padding:1.25rem 1.25rem 1.1rem}
+.pn-src{margin-top:.85rem;font-size:12.5px;line-height:1.6;color:var(--co-dark);word-break:keep-all}
+
+.pc{display:inline-flex;align-items:center;gap:1px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12.5px;font-weight:700;white-space:nowrap;vertical-align:middle;line-height:1.2}
+.pc b{background:var(--bg);color:var(--fg);padding:.14rem .24rem;border-radius:3px;font-weight:700}
+.pc b.k-unk{border:1px dashed var(--co-mid);padding:.06rem .2rem}
+.pc b.bad{box-shadow:0 0 0 1.5px #FFFFFF,0 0 0 3px #000000}
+.pc i{font-style:normal;color:var(--co-mid);padding:0 1px}
+.pc.lg{font-size:15px}
+
+.legend{display:flex;flex-wrap:wrap;gap:.45rem 1rem;align-items:center;font-size:12.5px;color:var(--co-dark)}
+.legend span{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap}
+.legend .sw{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--bg)}
+.legend .sw.k-unk{border:1px dashed var(--co-mid)}
+
+/* 대분류 칩 */
+.chips{display:grid;gap:.6rem;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:640px){.chips{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1024px){.chips{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.chip{position:relative;border-radius:.75rem;padding:.7rem .8rem;background:var(--s0);border:1px solid var(--co-light);
+  box-shadow:0 2px 5px rgba(0,0,0,.05);transition:transform .15s var(--ease),border-color .15s var(--ease)}
+.chip:hover{transform:translateY(-2px);border-color:rgba(67,131,175,.5)}
+.chip .c{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:1.3rem;color:var(--brand-600);line-height:1}
+.chip .n{margin-top:.35rem;font-size:12.5px;font-weight:600;color:var(--co-black);line-height:1.35;word-break:keep-all}
+.chip .t{margin-top:.25rem;font-size:11px;color:var(--co-mid);line-height:1.3}
+.chip.mech{background:var(--s50)}
+.chip.mech .c{color:var(--co-dark)}
+.chip.undef{background:var(--s0);border-style:dashed}
+.chip.undef .c{color:var(--co-mid)}
+
+/* 막대 차트 */
+.hbars > * + *{margin-top:.55rem}
+.hbar{display:flex;align-items:center;gap:.7rem;font-size:13px;color:var(--co-dark)}
+.hbar .lbl{flex:0 0 10.5rem;color:var(--co-black);font-weight:500;word-break:keep-all}
+.hbar .track{flex:1 1 auto;height:12px;border-radius:999px;background:var(--co-light);overflow:hidden}
+.hbar .fill{height:100%;border-radius:999px;background:var(--brand-600)}
+.hbar .fill.b{background:var(--brand-500)}
+.hbar .fill.c{background:var(--brand-400)}
+.hbar .fill.g{background:var(--co-dark)}
+.hbar .n{flex:0 0 2.6rem;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;color:var(--brand-600)}
+.stackbar{display:flex;height:2.4rem;border-radius:.6rem;overflow:hidden;box-shadow:var(--shadow-card)}
+.stackbar > div{display:flex;align-items:center;justify-content:center;gap:.3rem;font-size:12px;font-weight:700;white-space:nowrap;padding:0 .4rem;overflow:hidden}
+.stackbar .s1{background:var(--brand-600);color:#fff}
+.stackbar .s2{background:var(--brand-500);color:#fff}
+.stackbar .s3{background:var(--brand-400);color:var(--brand-800)}
+.stackbar .s4{background:var(--co-light);color:var(--co-dark)}
+
+/* 품번–MPN–SPN 관계도 */
+.tree{display:grid;gap:.6rem;grid-template-columns:1fr;align-items:center}
+@media(min-width:768px){.tree{grid-template-columns:minmax(0,1.05fr) 34px minmax(0,1fr) 34px minmax(0,1fr)}}
+.tree .root{grid-row:span 2;border-radius:1rem;padding:1.1rem;background:var(--brand-600);color:#fff;box-shadow:var(--shadow-glow)}
+.tree .root .t1{font-size:1.05rem;font-weight:700}
+.tree .root .t2{margin-top:.35rem;font-size:12.5px;line-height:1.6;color:rgba(255,255,255,.88)}
+.tree .node{border-radius:.85rem;padding:.75rem .9rem;background:var(--s0);border:1px solid rgba(6,67,140,.25);box-shadow:0 2px 5px rgba(0,0,0,.05)}
+.tree .node .t1{font-size:.92rem;font-weight:600;color:var(--co-black)}
+.tree .node .t2{font-size:.76rem;color:var(--co-mid);margin-top:.15rem}
+.tree .leafs > * + *{margin-top:.4rem}
+.tree .tarr{display:none;color:var(--co-mid)}
+@media(min-width:768px){.tree .tarr{display:flex;align-items:center}}
+
+/* 등급 태그 */
+.tag-solid{background:var(--brand-600);color:#fff;border-color:var(--brand-600)}
+
+/* 부록 톤 */
+.sb-item.appendix.active{background:#EFF0F2;color:var(--co-black);box-shadow:inset 0 0 0 1px #D5D7DA}
+.sb-item.appendix.active .bar,.sb-item.appendix.active .dot{display:none}
+.sb-item.appendix.active .sb-num{color:var(--co-dark)}
+.slide.appendix{background:linear-gradient(180deg,rgba(85,85,85,.05),transparent 30%)}
+.num-badge.gray{background:#EFF0F2;color:var(--co-dark);box-shadow:inset 0 0 0 1px #D5D7DA}
+.eyebrow.gray{color:var(--co-mid)}
+
+/* 보조 레이아웃 */
+.split{display:grid;gap:.875rem;grid-template-columns:1fr}
+@media(min-width:1024px){.split{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.split.r37{grid-template-columns:1fr}
+@media(min-width:1024px){.split.r37{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}}
+table.tight td{padding:.5rem .75rem;font-size:13px;line-height:1.6}
+table.tight th{padding:.55rem .75rem}
+td.c,th.c{text-align:center}
+.mini{font-size:12px;color:var(--co-mid);line-height:1.6;word-break:keep-all}
+.kpi-val.sm{font-size:1.6rem}
+@media(min-width:640px){.kpi-val.sm{font-size:1.9rem}}
+.ex-row{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .75rem}
+.eq{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--brand-700);font-weight:600}
+a{color:var(--brand-600);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(6,67,140,.35)}
+a:visited{color:var(--brand-700)}
+a:hover{color:var(--brand-800);text-decoration-color:var(--brand-500)}
+.card-body + .card-body{margin-top:.35rem}
+/* 네이비 패널 위의 품번 칩 — 대분류(navy) 칩이 배경에 묻히지 않게 흰 테두리 */
+.c-emphasis .pc b{box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+.c-emphasis .pc b.bad{box-shadow:0 0 0 2px #FFFFFF,0 0 0 3.5px #1BBBCC}
+.c-emphasis .pc i{color:rgba(255,255,255,.7)}
+/* 가로형 카드 — 제목 · 자리 시각화 · 설명을 한 줄에 */
+.rowcard .card-inner{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.75rem}
+.rowcard .card-head{flex:0 0 11rem;margin:0;flex-direction:column;align-items:flex-start;gap:.2rem}
+.rowcard .mini{flex:1 1 15rem;margin:0}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="sb no-print" id="sidebar">
+  <div class="sb-inner">
+    <button type="button" class="sb-brand" data-goto="overview">
+      <span class="sb-mark"></span>
+      <span>
+        <span class="sb-name">ERP 코드 채번</span>
+        <span class="sb-sub">CPT 학습자료 · v1.1</span>
+      </span>
+    </button>
+    <nav>
+      <div class="sb-group"><p class="sb-label">Overview</p><ul id="nav-0"></ul></div>
+      <div class="sb-group"><p class="sb-label">채번 규칙</p><ul id="nav-1"></ul></div>
+      <div class="sb-group"><p class="sb-label">적용과 검증</p><ul id="nav-2"></ul></div>
+      <div class="sb-group"><p class="sb-label">에이전트 접근</p><ul id="nav-3"></ul></div>
+      <div class="sb-group"><p class="sb-label">부록</p><ul id="nav-4"></ul></div>
+    </nav>
+  </div>
+</aside>
+<div class="sb-backdrop no-print" id="backdrop"></div>
+<button type="button" class="sb-toggle no-print" id="sbToggle" aria-label="목차 열기">목차 ☰</button>
+
+<main class="main" id="main">
+<div class="wrap">
+
+<!-- ================= 00 OVERVIEW ================= -->
+<article class="slide active" id="overview">
+  <div class="pad hero">
+    <div class="hero-pill"><span class="pulse"></span>CPT 학습자료 · 사내 품번(ERP 코드)</div>
+    <h1 class="hero-h1">
+      ERP 코드는<br />
+      <span class="gradient-text">회사가 붙이는 하나뿐인 이름</span>
+    </h1>
+    <p class="hero-lead">
+      제조사 품번(MPN)은 표기가 흔들리고, 대체품이 생기면 여러 개가 되며, PCB·기구물·조립품처럼 아예 없는 품목도 많다.
+      발주·입고·재고·원가·BOM 전개는 모두 <strong>사내 품번</strong>을 기준으로 돈다.
+      사례 기업(드림에이스, DRIMAES)의 채번 규칙으로 품번이 어떻게 만들어지는지, 실데이터에서 지켜지는지, 에이전트가 어떻게 다뤄야 하는지를 정리했다.
+    </p>
+
+    <div class="card paper pn-panel" style="margin-top:2rem">
+      <div class="card-tint"></div>
+      <div class="card-inner">
+        <p class="sec-label">코드만 보고 사양을 읽는다</p>
+        <div class="pnv"><div class="seg k-cls"><div class="cells"><span>1</span><span>2</span></div><p class="cap">대분류</p><p class="val">Capacitor</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-size"><div class="cells"><span>1</span><span>5</span></div><p class="cap">사이즈</p><p class="val">1005</p></div><div class="seg k-tol"><div class="cells"><span>5</span></div><p class="cap">공차</p><p class="val">±10%</p></div><div class="seg k-volt"><div class="cells"><span>7</span></div><p class="cap">전압</p><p class="val">50V</p></div><div class="seg k-val"><div class="cells"><span>1</span><span>0</span><span>4</span></div><p class="cap">값</p><p class="val">100nF</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val">제조사</p></div></div>
+        <p class="pn-src"><span class="mono">12-155710400</span> ← Murata <span class="mono">GRT155R71H104KE01</span> · 1005 사이즈, ±10%, 50V, 100nF MLCC. 12자 고정 길이에 자리마다 사양이 들어가는 <strong>의미 부여형</strong> 체계다.</p>
+      </div>
+    </div>
+
+    <div class="grid g4" style="margin-top:1.25rem">
+      <div class="kpi"><p class="kpi-val">349</p><p class="kpi-label">전수 검증한 고유 품번</p><p class="kpi-sub">부품 347 · 제품·반제품 2 · 3개 파일</p></div>
+      <div class="kpi"><p class="kpi-val">100<span class="kpi-suf">%</span></p><p class="kpi-label">형식 준수</p><p class="kpi-sub">부품 347/347 · 금지 문자 1건 별도</p></div>
+      <div class="kpi"><p class="kpi-val">156<span class="kpi-suf">/160</span></p><p class="kpi-label">저항·커패시터 값 자리 일치</p><p class="kpi-sub">커패시터 전압 자리 100%</p></div>
+      <div class="kpi"><p class="kpi-val">17<span class="kpi-suf">건</span></p><p class="kpi-label">코드와 규격의 불일치</p><p class="kpi-sub">부품의 4.9% · 재채번 검토 4건</p></div>
+    </div>
+
+    <div class="stack" style="margin-top:1.25rem">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>항목</th><th>결과</th><th class="em">의미</th></tr></thead>
+          <tbody>
+            <tr><td>형식 · 유일성</td><td>12자 고정 347/347, 파일 안 중복 0건</td><td class="em">기본 규칙은 잘 지켜진다</td></tr>
+            <tr><td>값 자리</td><td>저항 78/82, 커패시터 78/78</td><td class="em">품번만으로 사양을 읽을 수 있는 수준</td></tr>
+            <tr><td>파일 간 일관성</td><td>재고↔ERP 규격 100% 동일, 설계 BOM↔ERP 소요량 100% 일치</td><td class="em">MPN 표기가 달라도 품번이 같아 연결이 유지됐다</td></tr>
+            <tr><td>코드–규격 불일치</td><td>17건 — 값·공차·분류·등급·위치</td><td class="em">틀린 설명 문자열이 그대로 코드로 굳었다</td></tr>
+            <tr><td>규정 밖 확장</td><td>미정의 대분류 2개, 문서 밖 하위 체계 6종 이상</td><td class="em">규정의 빈칸을 사람마다 다르게 메웠다</td></tr>
+            <tr><td>판정</td><td><span class="tag tag-navy">유형 A에 가까움</span></td><td class="em">규격화된 업체. 다만 규정 공백에서 유형 B로 새는 지점 4곳</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 에이전트의 일은 번호를 지어내는 것이 아니다. 규칙대로 만들고, 기존 번호를 감사하고, 규칙의 빈칸은 사람에게 올린다.</p>
+    </div>
+
+    <p class="meta" style="margin-top:1.5rem">상세 근거 · <span class="mono">ERP_Code_채번예시.md</span> · 검증 대상 <span class="mono">2025년_기말_재고_현황_20251231.xlsx</span>, <span class="mono">E51K_IVI_BOM_20260531.xlsx</span>, <span class="mono">E51K_IVI_BOM(Amaranth-물류공통).xlsx</span></p>
+  </div>
+</article>
+
+<!-- ================= 01 WHY ================= -->
+<article class="slide" id="why">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">01</span><span class="eyebrow">Why Internal Part Number</span></div>
+    <h2 class="slide-h2">MPN만으로는 왜 부족한가</h2>
+    <p class="slide-desc">사내 품번 하나에 승인된 MPN이 여러 개 붙고, MPN 하나는 여러 유통사에서 산다. ERP가 기준으로 삼는 키는 맨 앞의 <strong>사내 품번</strong>이다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="tree">
+      <div class="root"><p class="t1">사내 품번 · IPN</p><p class="t2">회사가 정의하는 품목. ERP 품목 마스터의 기본 키.<br />하나뿐이고 바뀌지 않는다.</p></div>
+      <div class="tarr" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="node"><p class="t1">MPN 1 · 제조사 A</p><p class="t2">제조사가 붙인 부품 번호</p></div>
+      <div class="tarr" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="leafs"><div class="node"><p class="t1">SPN · 유통사 X</p><p class="t2">유통사 주문 번호</p></div><div class="node"><p class="t1">SPN · 유통사 Y</p><p class="t2">같은 MPN, 다른 구매처</p></div></div>
+      <div class="tarr" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="node"><p class="t1">MPN 2 · 제조사 B</p><p class="t2">FFF가 같은 승인 대체품 (AVL)</p></div>
+      <div class="tarr" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="leafs"><div class="node"><p class="t1">SPN · 유통사 Z</p><p class="t2">유통사 주문 번호</p></div></div>
+    </div>
+
+    <div>
+      <p class="sec-label">MPN만으로 관리하면 생기는 여섯 가지 문제 — 모두 실데이터에서 확인</p>
+      <div class="grid g3">
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">① 같은 부품도 문자열이 흔들린다</h3></div>
+          <p class="card-body">설계 BOM은 <span class="mono">PJQ5443-AU</span>, ERP는 <span class="mono">PJQ5443-AU_R2_000A1</span>. 둘 다 <span class="pc"><b class="k-cls">18</b><i>-</i><b class="k-size">01</b><b class="k-val">05443</b><b class="k-suf">00</b></span>이라 같은 품목으로 묶였고, 309행 소요량이 전부 일치했다.</p>
+        </div></div>
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">② 한 기능에 제조사가 여럿이다</h3></div>
+          <p class="card-body">16Mb SPI NOR 1.8V는 ISSI와 ESMT 두 제품이 같은 사양으로 등록돼 있다. 어느 MPN을 기준으로 삼을지부터 정해야 한다.</p>
+        </div></div>
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">③ MPN이 없는 품목이 많다</h3></div>
+          <p class="card-body">PCB, 커버·브래킷·나사, 라벨, FFC 케이블, 조립품(<span class="mono">MS01C0P1PP</span> SET-ASSY), 펌웨어. 이 품목들도 ERP에서 재고·원가로 관리된다.</p>
+        </div></div>
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">④ 자유 텍스트는 중복을 만든다</h3></div>
+          <p class="card-body">품번 열이 없는 KK1 E-BOM에서 같은 100nF가 <span class="mono">100nF/25v/C1005</span>, <span class="mono">0.1uF/50v/C1005</span> 등 <strong>10가지 표기</strong>로 흩어져 있다.</p>
+        </div></div>
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">⑤ ERP는 흔들리지 않는 키가 필요하다</h3></div>
+          <p class="card-body">발주서·입고·재고·원가·BOM 전개를 잇는 키가 공백·대소문자·포장 접미사에 따라 달라지면 집계가 깨진다.</p>
+        </div></div>
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">⑥ 변경 이력의 기준점이 필요하다</h3></div>
+          <p class="card-body">품번이 기준이어야 개정·대체·단종 이력이 한 품목에 쌓인다. 기준 번호가 바뀌면 이력이 끊긴다.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>용어</th><th>정의</th><th class="em">예</th></tr></thead>
+        <tbody>
+          <tr><td>사내 품번 (ERP 코드, IPN)</td><td>회사가 품목에 부여하는 고유 식별자. 이 문서에서 ERP 코드·사내 품번·품번은 같은 뜻</td><td class="em"><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">15</b><b class="k-tol">1</b><b class="k-val">1002</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td>MPN</td><td>제조사 부품 번호. 포장·등급 접미사까지 붙으면 주문 번호가 된다</td><td class="em mono">AC0402FR-0710KL</td></tr>
+          <tr><td>SPN</td><td>유통사 주문 번호</td><td class="em">유통사 카탈로그 번호</td></tr>
+          <tr><td>AVL / AML</td><td>한 사내 품번에 대해 사용이 승인된 제조사·MPN 목록</td><td class="em">같은 사양 SPI NOR의 ISSI·ESMT 제품</td></tr>
+          <tr><td>채번 (발번)</td><td>규칙에 따라 새 품번을 만들어 부여하는 일</td><td class="em">신규 부품 등록 시 수행</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 02 BENEFIT ================= -->
+<article class="slide" id="benefit">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">02</span><span class="eyebrow">Management Benefits</span></div>
+    <h2 class="slide-h2">자체 ERP 코드로 관리하면 얻는 것</h2>
+    <p class="slide-desc">사례 기업 데이터에서 실제로 확인된 효과와, 연결이 없어서 생긴 손실을 함께 놓았다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="grid g3">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">부서가 같은 품목을 같은 번호로 본다</h3><span class="tag tag-mint">확인</span></div>
+        <p class="card-body">설계·구매·자재·생산·회계가 한 키로 소통한다. 설계 BOM과 ERP BOM의 <strong>소요량·구조가 309행 전부 일치</strong>했고, 재고 현황과 ERP 규격 문자열은 글자 단위로 같았다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">중복 등록이 드러난다</h3><span class="tag tag-mint">확인</span></div>
+        <p class="card-body">사양이 같으면 같은 번호가 나온다. KK1의 100nF <strong>표기 10종이 품번 후보 7개</strong>로 모인다. 품목 수가 줄면 재고 로케이션·MOQ·검사 기준도 함께 준다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">코드만 보고 사양을 읽는다</h3><span class="tag tag-mint">확인</span></div>
+        <p class="card-body"><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol">5</b><b class="k-volt">7</b><b class="k-val">104</b><b class="k-suf">00</b></span> = 1005 · ±10% · 50V · 100nF. 창고 피킹, 현장 확인, 사이즈·전압 단위 범위 검색이 품번만으로 된다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint navy"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">기계가 감사할 수 있다</h3><span class="tag tag-mint">확인</span></div>
+        <p class="card-body">품번을 해독해 규격과 대조하면 오류가 자동으로 걸린다. 이 방법으로 <strong>불일치 17건</strong>을 찾았고, 그중 다른 사양의 자리를 차지한 4건을 재채번 대상으로 골랐다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint navy"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">MPN 없는 품목도 같은 장부에</h3><span class="tag tag-mint">확인</span></div>
+        <p class="card-body">PCB·기구물·라벨·조립품·펌웨어도 같은 마스터에서 발주·재고·원가로 관리된다. E51K BOM 310행 중 기구·부자재는 18행이지만, 빠지면 완제품을 조립할 수 없다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">대체품 재고가 소요 계산에 잡힌다</h3><span class="tag tag-muted">미흡</span></div>
+        <p class="card-body">사내 품번 아래 승인 MPN을 묶어야(AVL) 대체품 재고가 계산에 들어간다. 사례 기업은 이 구조가 없어 <strong>대체·변형 재고 3품목(1,453 · 2,041 · 4,699개)</strong>이 BOM 소요 계산에서 보이지 않는다.</p>
+      </div></div>
+    </div>
+
+    <div class="stack">
+      <p class="sec-label">좋은 품번의 조건</p>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>원칙</th><th>내용</th><th class="em">사례 기업 규칙</th></tr></thead>
+          <tbody>
+            <tr><td>유일성</td><td>1품번 = 1품목, 1품목 = 1품번</td><td class="em">파일 안 중복 0건</td></tr>
+            <tr><td>불변성</td><td>한 번 준 번호는 바꾸지 않고 다른 품목에 다시 쓰지 않는다</td><td class="em">문서에 명시 없음</td></tr>
+            <tr><td>고정 길이</td><td>길이가 같아야 누락·잘림이 눈에 띄고 정렬이 안정된다</td><td class="em">12자 고정</td></tr>
+            <tr><td>혼동 문자 배제</td><td>숫자와 헷갈리는 영문자를 쓰지 않는다</td><td class="em">I·O·Z 제외</td></tr>
+            <tr><td>FFF 호환 기준</td><td>형상·결합·기능이 같으면 같은 품번, 다르면 새 품번</td><td class="em">PCB·기구의 버전 자리</td></tr>
+            <tr><td>설명과의 일치</td><td>의미 부여형이면 코드와 규격 설명이 어긋나지 않아야 한다</td><td class="em">17건 불일치 (슬라이드 10)</td></tr>
+            <tr><td>발번 권한 단일화</td><td>누가 어떤 절차로 번호를 내는지 정해져 있어야 한다</td><td class="em">문서에 명시 없음</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">의미 부여형 (Intelligent)</h3><span class="tag tag-navy">사례 기업</span></div>
+        <ul class="bullets">
+          <li>자리마다 사양·분류의 의미가 있다 — 코드만 보고 사양을 안다</li>
+          <li>같은 사양의 중복 등록이 눈에 띈다</li>
+          <li>분류가 늘 때마다 규칙을 고쳐야 하고, 설명이 틀리면 코드도 틀린다</li>
+          <li>전제: 규칙 문서와 주기적 감사</li>
+        </ul>
+      </div></div>
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">무의미 일련번호형 (Non-significant)</h3><span class="tag tag-muted">대안</span></div>
+        <ul class="bullets">
+          <li>순번만 있고 의미는 품목 속성 필드에 둔다</li>
+          <li>규칙 유지 비용이 없고, 분류가 바뀌어도 깨지지 않는다</li>
+          <li>사람이 읽을 수 없어 품목 마스터와 검색 품질에 전적으로 의존한다</li>
+          <li>전제: 정돈된 속성 마스터와 검색 기능</li>
+        </ul>
+      </div></div>
+    </div>
+    <p class="sowhat">So-What · 이점은 규칙이 지켜질 때만 생긴다. 코드가 규격과 어긋나면 이점이 위험으로 바뀐다 — 틀린 번호가 다른 사양의 자리를 차지한다.</p>
+  </div>
+</article>
+
+<!-- ================= 03 STRUCTURE ================= -->
+<article class="slide" id="structure">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">03</span><span class="eyebrow">Numbering Structure</span></div>
+    <h2 class="slide-h2">12자 고정 · 대분류 2자리 + 본체 9자리</h2>
+    <p class="slide-desc">모든 회로 자재 품번은 같은 틀을 쓴다. 앞 2자리가 대분류이고, 하이픈 뒤 9자리를 어떻게 나눌지는 대분류마다 다르다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="card paper pn-panel"><div class="card-tint"></div><div class="card-inner">
+      <div class="pnv"><div class="seg k-cls"><div class="cells"><span>C</span><span>C</span></div><p class="cap">CLASS</p><p class="val">D1~D2 대분류</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-body"><div class="cells"><span>B</span><span>B</span><span>B</span><span>B</span><span>B</span><span>B</span><span>B</span></div><p class="cap">BODY</p><p class="val">D3~D9 · 분류별 속성 또는 일련번호</p></div><div class="seg k-suf"><div class="cells"><span>N</span><span>N</span></div><p class="cap">SUFFIX</p><p class="val">D10~D11 · 제조사 또는 버전</p></div></div>
+      <p class="pn-src">총 12자 = 숫자·영문 11자리 + 하이픈 1개. 자리 번호는 하이픈을 빼고 D1~D11로 센다.</p>
+    </div></div>
+
+    <div class="stack">
+      <p class="sec-label">자리 색 범례 — 이 문서의 모든 품번 시각화에 같은 색을 쓴다</p>
+      <div class="card paper" style="padding:1rem 1.15rem">
+        <div class="legend">
+          <span><i class="sw k-cls"></i>대분류</span>
+          <span><i class="sw k-size"></i>사이즈 · 층수 · 세부 항목 · 중분류</span>
+          <span><i class="sw k-tol"></i>공차 · 구조 · 소분류</span>
+          <span><i class="sw k-volt"></i>전압 (커패시터)</span>
+          <span><i class="sw k-val"></i>값 · 일련번호 · 고유번호</span>
+          <span><i class="sw k-suf"></i>접미 (제조사 · 버전)</span>
+          <span><i class="sw k-kind"></i>인덕터 종류 (관측)</span>
+          <span><i class="sw k-unk"></i>정보 부족으로 비어 있는 자리</span>
+        </div>
+        <p class="mini" style="margin-top:.6rem">원본 슬라이드는 빨강(대분류)·초록(사이즈)·파랑(공차)·노랑(값)·보라(제조사) 상자로 구분했다. 같은 구분을 회사 8색 규칙에 맞춰 옮겼다.</p>
+      </div>
+    </div>
+
+    <div>
+      <p class="sec-label">공통 표기 규칙 [규정]</p>
+      <div class="grid g4">
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner"><div class="card-head"><h3 class="h3">① 숫자 우선</h3></div><p class="card-body">숫자로 쓰고, 자리 수를 넘으면 영문자를 섞는다.</p></div></div>
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner"><div class="card-head"><h3 class="h3">② 2자리 필드</h3></div><p class="card-body"><span class="mono">01~99</span> → <span class="mono">A1~A9</span> → <span class="mono">B1</span> … <span class="mono">Y9</span></p></div></div>
+        <div class="card paper"><div class="card-tint"></div><div class="card-inner"><div class="card-head"><h3 class="h3">③ 3자리 필드</h3></div><p class="card-body"><span class="mono">001~999</span> → <span class="mono">A01~A99</span> … <span class="mono">Y99</span></p></div></div>
+        <div class="card paper"><div class="card-tint navy"></div><div class="card-inner"><div class="card-head"><h3 class="h3">④ I · O · Z 금지</h3></div><p class="card-body">숫자 1 · 0 · 2와 헷갈린다. 실데이터에 <span class="mono">18-0500132I0</span> 1건 위반.</p></div></div>
+      </div>
+      <p class="mini" style="margin-top:.6rem">[관측] 실무는 이 밖에도 영문자를 쓴다 — 저항 소수점 <span class="mono">R</span>(<span class="mono">01R0</span> = 1Ω), 인덕턴스 소수점 <span class="mono">N</span>(<span class="mono">04N7</span> = 4.7nH), FAKRA 결합 키(<span class="mono">A0</span>), MPN에서 따온 문자(<span class="mono">6155P</span>).</p>
+    </div>
+
+    <div>
+      <p class="sec-label">대분류 코드표 — 앞 2자리만 보고 품목군과 담당 부서를 안다</p>
+      <div class="chips">
+        <div class="chip"><p class="c">10</p><p class="n">Resistor</p><p class="t">구성 I · 사이즈·공차·값</p></div>
+        <div class="chip"><p class="c">12</p><p class="n">Capacitor</p><p class="t">구성 I · + 전압</p></div>
+        <div class="chip"><p class="c">14</p><p class="n">Inductor</p><p class="t">구성 I · 칩·비드·파워·초크</p></div>
+        <div class="chip"><p class="c">16</p><p class="n">Connector</p><p class="t">구성 III · 종류·형태·방향</p></div>
+        <div class="chip"><p class="c">17</p><p class="n">Clock</p><p class="t">구성 III · 종류·크기·주파수</p></div>
+        <div class="chip"><p class="c">18</p><p class="n">TR · Diode · LED</p><p class="t">구성 III · 세부·일련번호</p></div>
+        <div class="chip"><p class="c">20</p><p class="n">Memory</p><p class="t">구성 III · 종류·전압·등급·용량</p></div>
+        <div class="chip"><p class="c">22</p><p class="n">IC</p><p class="t">구성 III · 세부·일련번호</p></div>
+        <div class="chip"><p class="c">24</p><p class="n">CPU (SoC·AP·MCU)</p><p class="t">구성 III</p></div>
+        <div class="chip"><p class="c">26</p><p class="n">RF (WLAN·GNSS·LTE)</p><p class="t">구성 III</p></div>
+        <div class="chip"><p class="c">28</p><p class="n">Switch · Relay</p><p class="t">구성 III</p></div>
+        <div class="chip"><p class="c">30</p><p class="n">PCB</p><p class="t">구성 II · 층수·구조·버전</p></div>
+        <div class="chip"><p class="c">32</p><p class="n">USIM · eSIM</p><p class="t">구성 III</p></div>
+        <div class="chip"><p class="c">34</p><p class="n">Antenna</p><p class="t">구성 III</p></div>
+        <div class="chip"><p class="c">36</p><p class="n">Mic · Speaker 등</p><p class="t">구성 III</p></div>
+        <div class="chip"><p class="c">38</p><p class="n">Harness (FFC)</p><p class="t">구성 III · 핀 수·길이</p></div>
+        <div class="chip"><p class="c">40</p><p class="n">LCD</p><p class="t">구성 III</p></div>
+        <div class="chip mech"><p class="c">62~82</p><p class="n">기구물 11종</p><p class="t">커버·나사·브래킷·테이프 등</p></div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="callout c-info">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>짝수 간격으로 비워 두었다</span></p>
+        <div class="callout-body"><span class="mono">16</span> Connector와 <span class="mono">18</span> TR 사이에 홀수 <span class="mono">17</span> Clock이 끼어 있다. 나중에 분류를 추가할 자리를 남긴 설계다.</div>
+      </div>
+      <div class="callout c-info">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>범위로 큰 갈래를 나눴다</span></p>
+        <div class="callout-body"><span class="mono">10~40</span>은 회로 자재, <span class="mono">62~82</span>는 기구 자재다. 두 자리만 보고 담당 부서와 검사 기준을 정할 수 있다.</div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 04 RESISTOR ================= -->
+<article class="slide" id="res">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">04</span><span class="eyebrow">Type I · Resistor 10</span></div>
+    <h2 class="slide-h2">저항 <span class="mono">10</span> — 사이즈 · 공차 · 값</h2>
+    <p class="slide-desc">저항·커패시터·인덕터는 사양이 몇 개의 숫자로 정해지는 부품이라 자리마다 사양을 넣는다. 규정이 정한 배치는 <strong>대분류 2 · 사이즈 2 · 공차 1 · 값 4 · 접미 2</strong>다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="card paper pn-panel"><div class="card-tint"></div><div class="card-inner">
+      <div class="pnv"><div class="seg k-cls"><div class="cells"><span>1</span><span>0</span></div><p class="cap">대분류</p><p class="val">Resistor</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-size"><div class="cells"><span>1</span><span>5</span></div><p class="cap">사이즈</p><p class="val">1005</p></div><div class="seg k-tol"><div class="cells"><span>1</span></div><p class="cap">공차</p><p class="val">±1%</p></div><div class="seg k-val"><div class="cells"><span>1</span><span>0</span><span>0</span><span>2</span></div><p class="cap">값</p><p class="val">10kΩ</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val">제조사</p></div></div>
+      <p class="pn-src"><span class="mono">10-151100200</span> ← YAGEO <span class="mono">AC0402FR-0710KL</span> · 값 <span class="eq">1002 = 100 × 10² = 10kΩ</span></p>
+    </div></div>
+
+    <div class="split">
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>사이즈 D3~D4</th><th class="c">코드</th><th>인치 표기</th></tr></thead>
+          <tbody>
+            <tr><td>0603 (메트릭)</td><td class="c"><span class="pc"><b class="k-size">03</b></span></td><td>0201</td></tr>
+            <tr><td>1005</td><td class="c"><span class="pc"><b class="k-size">15</b></span></td><td>0402</td></tr>
+            <tr><td>1608</td><td class="c"><span class="pc"><b class="k-size">18</b></span></td><td>0603</td></tr>
+            <tr><td>2012</td><td class="c"><span class="pc"><b class="k-size">22</b></span></td><td>0805</td></tr>
+            <tr><td>3216</td><td class="c"><span class="pc"><b class="k-size">31</b></span></td><td>1206</td></tr>
+            <tr><td>5025</td><td class="c"><span class="pc"><b class="k-size">52</b></span></td><td>2010</td></tr>
+            <tr><td>6430 / 6432</td><td class="c"><span class="pc"><b class="k-size">60</b></span> / <span class="pc"><b class="k-size">62</b></span></td><td>— / 2512</td></tr>
+            <tr><td>서미스터 · Others</td><td class="c"><span class="pc"><b class="k-size">88</b></span> / <span class="pc"><b class="k-size">99</b></span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stack">
+        <div class="table-wrap">
+          <table class="tight">
+            <thead><tr><th>공차 D5</th><th class="c">코드</th><th>MPN 공차 문자</th></tr></thead>
+            <tbody>
+              <tr><td>±0.5%</td><td class="c"><span class="pc"><b class="k-tol">0</b></span></td><td>D</td></tr>
+              <tr><td>±1%</td><td class="c"><span class="pc"><b class="k-tol">1</b></span></td><td>F</td></tr>
+              <tr><td>±5%</td><td class="c"><span class="pc"><b class="k-tol">2</b></span></td><td>J</td></tr>
+              <tr><td>Others</td><td class="c"><span class="pc"><b class="k-tol">9</b></span></td><td>±0.1% · ±0.25% · ±2%는 칸이 없다</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout c-muted">
+          <p class="callout-title"><span aria-hidden="true">·</span><span>사이즈는 메트릭(mm) 기준</span></p>
+          <div class="callout-body">같은 부품을 <span class="mono">1608</span>(메트릭)과 <span class="mono">0603</span>(인치)으로 부른다. 메트릭 0603과 인치 0603은 <strong>다른 크기</strong>다. 단위를 확인하지 않고 채번하면 사이즈 자리가 틀린다.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <p class="sec-label">값 D6~D9 — 규정은 "4자리"만 정했고, 실데이터가 아래 규칙을 일관되게 따른다 [관측]</p>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>값의 범위</th><th>표기법</th><th class="em">예</th></tr></thead>
+          <tbody>
+            <tr><td>100Ω 이상</td><td>유효숫자 3자리 + 10의 승수 1자리</td><td class="em"><span class="pc"><b class="k-val">1000</b></span> 100Ω · <span class="pc"><b class="k-val">1001</b></span> 1kΩ · <span class="pc"><b class="k-val">6041</b></span> 6.04kΩ · <span class="pc"><b class="k-val">1002</b></span> 10kΩ · <span class="pc"><b class="k-val">1004</b></span> 1MΩ</td></tr>
+            <tr><td>10~99Ω 정수</td><td>0 + 3자리 + 0</td><td class="em"><span class="pc"><b class="k-val">0180</b></span> 18Ω · <span class="pc"><b class="k-val">0330</b></span> 33Ω</td></tr>
+            <tr><td>10Ω 미만 · 소수</td><td><span class="mono">R</span> = 소수점, 4자리 오른쪽 맞춤</td><td class="em"><span class="pc"><b class="k-val">01R0</b></span> 1Ω · <span class="pc"><b class="k-val">00R1</b></span> 0.1Ω · <span class="pc"><b class="k-val">0R05</b></span> 0.05Ω · <span class="pc"><b class="k-val">R027</b></span> 0.027Ω</td></tr>
+            <tr><td>0Ω (점퍼)</td><td><span class="mono">0000</span></td><td class="em"><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">15</b><b class="k-tol">2</b><b class="k-val">0000</b><b class="k-suf">00</b></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="callout c-emphasis">
+        <p class="callout-title"><span aria-hidden="true">!</span><span>값 자리 한 칸이 틀리면 다른 부품이 된다</span></p>
+        <div class="callout-body">
+          33Ω 부품이 <span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">03</b><b class="k-tol">2</b><b class="k-val bad">3300</b><b class="k-suf">00</b></span>로 등록됐다. <span class="mono">3300</span>은 330 × 10⁰ = <strong>330Ω</strong>이다. 맞는 번호는 <span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">03</b><b class="k-tol">2</b><b class="k-val">0330</b><b class="k-suf">00</b></span>.
+          나중에 진짜 330Ω을 등록하면 규칙대로 만든 번호가 이미 쓰이고 있다.
+        </div>
+      </div>
+      <div class="callout c-muted">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>한 값에는 한 표기만</span></p>
+        <div class="callout-body">
+          0Ω가 0603에서는 <span class="mono">0R00</span>, 1005에서는 <span class="mono">0000</span>으로 갈렸다. 같은 값이 두 표기로 나뉘면 검색에서 빠진다.
+          또 TCR·저항 구조·정격 전력은 코드에 없어서, 0.1Ω 3216 ±1% 범용품 <span class="mono">…R100</span>과 전류 감지용 <span class="mono">…R101</span>이 접미로만 구분된다.
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 05 CAPACITOR ================= -->
+<article class="slide" id="cap">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">05</span><span class="eyebrow">Type I · Capacitor 12</span></div>
+    <h2 class="slide-h2">커패시터 <span class="mono">12</span> — 값 앞에 전압 자리가 하나 더</h2>
+    <p class="slide-desc">커패시터는 정격 전압이 사양의 핵심이라 값 4자리 중 첫 자리를 전압에 쓴다. 배치는 <strong>대분류 2 · 사이즈 2 · 공차 1 · 전압 1 · 값 3 · 접미 2</strong>다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="card paper pn-panel"><div class="card-tint"></div><div class="card-inner">
+      <div class="pnv"><div class="seg k-cls"><div class="cells"><span>1</span><span>2</span></div><p class="cap">대분류</p><p class="val">Capacitor</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-size"><div class="cells"><span>1</span><span>8</span></div><p class="cap">사이즈</p><p class="val">1608</p></div><div class="seg k-tol"><div class="cells"><span>5</span></div><p class="cap">공차</p><p class="val">±10%</p></div><div class="seg k-volt"><div class="cells"><span>6</span></div><p class="cap">전압</p><p class="val">35V</p></div><div class="seg k-val"><div class="cells"><span>4</span><span>7</span><span>5</span></div><p class="cap">값</p><p class="val">4.7µF</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val">제조사</p></div></div>
+      <p class="pn-src"><span class="mono">12-185647500</span> ← Murata <span class="mono">GRT188R6YA475KE13</span> · 값 <span class="eq">475 = 47 × 10⁵ pF = 4.7µF</span></p>
+    </div></div>
+
+    <div class="grid g3">
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>사이즈 D3~D4</th><th class="c">코드</th><th>인치</th></tr></thead>
+          <tbody>
+            <tr><td>0603</td><td class="c"><span class="pc"><b class="k-size">03</b></span></td><td>0201</td></tr>
+            <tr><td>1005</td><td class="c"><span class="pc"><b class="k-size">15</b></span></td><td>0402</td></tr>
+            <tr><td>1608</td><td class="c"><span class="pc"><b class="k-size">18</b></span></td><td>0603</td></tr>
+            <tr><td>2012</td><td class="c"><span class="pc"><b class="k-size">22</b></span></td><td>0805</td></tr>
+            <tr><td>3216</td><td class="c"><span class="pc"><b class="k-size">31</b></span></td><td>1206</td></tr>
+            <tr><td>3225</td><td class="c"><span class="pc"><b class="k-size">32</b></span></td><td>1210</td></tr>
+            <tr><td>전해 (지름) [관측]</td><td class="c"><span class="pc"><b class="k-size">86</b></span> <span class="pc"><b class="k-size">88</b></span> <span class="pc"><b class="k-size">89</b></span></td><td>φ6.3 · φ8 · φ10</td></tr>
+            <tr><td>Others</td><td class="c"><span class="pc"><b class="k-size">99</b></span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>공차 D5</th><th class="c">코드</th><th>문자</th></tr></thead>
+          <tbody>
+            <tr><td>±0.05pF</td><td class="c"><span class="pc"><b class="k-tol">1</b></span></td><td>B</td></tr>
+            <tr><td>±0.25pF</td><td class="c"><span class="pc"><b class="k-tol">2</b></span></td><td>C</td></tr>
+            <tr><td>±0.5pF</td><td class="c"><span class="pc"><b class="k-tol">3</b></span></td><td>D</td></tr>
+            <tr><td>±5%</td><td class="c"><span class="pc"><b class="k-tol">4</b></span></td><td>J</td></tr>
+            <tr><td>±10%</td><td class="c"><span class="pc"><b class="k-tol">5</b></span></td><td>K</td></tr>
+            <tr><td>±20%</td><td class="c"><span class="pc"><b class="k-tol">6</b></span></td><td>M</td></tr>
+            <tr><td>+80/−20%</td><td class="c"><span class="pc"><b class="k-tol">7</b></span></td><td>Z</td></tr>
+            <tr><td>Others</td><td class="c"><span class="pc"><b class="k-tol">9</b></span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>전압 D6</th><th class="c">코드</th></tr></thead>
+          <tbody>
+            <tr><td>4V</td><td class="c"><span class="pc"><b class="k-volt">1</b></span></td></tr>
+            <tr><td>6.3V</td><td class="c"><span class="pc"><b class="k-volt">2</b></span></td></tr>
+            <tr><td>10V</td><td class="c"><span class="pc"><b class="k-volt">3</b></span></td></tr>
+            <tr><td>16V</td><td class="c"><span class="pc"><b class="k-volt">4</b></span></td></tr>
+            <tr><td>25V</td><td class="c"><span class="pc"><b class="k-volt">5</b></span></td></tr>
+            <tr><td>35V</td><td class="c"><span class="pc"><b class="k-volt">6</b></span></td></tr>
+            <tr><td>50V 이상</td><td class="c"><span class="pc"><b class="k-volt">7</b></span></td></tr>
+            <tr><td>100V 이상</td><td class="c"><span class="pc"><b class="k-volt">8</b></span></td></tr>
+            <tr><td>Others</td><td class="c"><span class="pc"><b class="k-volt">9</b></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+      <div class="card-head"><h3 class="h3" style="flex:1">값 D7~D9 — pF 기준 유효숫자 2자리 + 10의 승수 1자리 [관측]</h3></div>
+      <div class="ex-row">
+        <span><span class="pc"><b class="k-val">104</b></span> 100nF</span>
+        <span><span class="pc"><b class="k-val">475</b></span> 4.7µF</span>
+        <span><span class="pc"><b class="k-val">226</b></span> 22µF</span>
+        <span><span class="pc"><b class="k-val">471</b></span> 470pF</span>
+        <span><span class="pc"><b class="k-val">120</b></span> 12pF</span>
+        <span><span class="pc"><b class="k-val">1R0</b></span> 1pF</span>
+        <span><span class="pc"><b class="k-val">8R2</b></span> 8.2pF</span>
+      </div>
+      <p class="mini" style="margin-top:.6rem">10pF 미만은 <span class="mono">R</span>을 소수점으로 쓴다. 실데이터 78개 모두 값·전압 자리가 맞았다.</p>
+    </div></div>
+
+    <div class="grid g2">
+      <div class="callout c-emphasis">
+        <p class="callout-title"><span aria-hidden="true">!</span><span>공차 한 자리 착오가 다른 사양의 자리를 차지한다</span></p>
+        <div class="callout-body">
+          ±20% 4.7µF가 <span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol bad">5</b><b class="k-volt">3</b><b class="k-val">475</b><b class="k-suf">00</b></span>로 등록됐다. <span class="mono">5</span>는 ±10%다. 맞는 번호는 <span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol">6</b><b class="k-volt">3</b><b class="k-val">475</b><b class="k-suf">00</b></span>.
+          진짜 ±10% 4.7µF를 등록하려 하면 번호가 이미 쓰이고 있다. 같은 오류가 1608 22µF에도 있다.
+        </div>
+      </div>
+      <div class="callout c-muted">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>코드에 담기지 않는 속성</span></p>
+        <div class="callout-body">유전체(C0G · X5R · X7R)와 차량용 등급은 코드에 없다. 같은 사양의 X5R과 X7R 제품은 <strong>접미로만</strong> 구분되므로, 채번할 때 데이터시트로 따로 확인해야 한다.</div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 06 INDUCTOR ================= -->
+<article class="slide" id="ind">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">06</span><span class="eyebrow">Type I · Inductor 14</span></div>
+    <h2 class="slide-h2">인덕터 <span class="mono">14</span> — 같은 사이즈, 다른 코드</h2>
+    <p class="slide-desc">칩 인덕터는 저항과 같은 배치를 쓴다. 비드·파워 인덕터는 규정에 <span class="mono">6X · 7X</span>로만 적혀 있어, 실무가 문서 밖에서 자리 배분을 정했다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="card paper pn-panel"><div class="card-tint"></div><div class="card-inner">
+      <div class="pnv"><div class="seg k-cls"><div class="cells"><span>1</span><span>4</span></div><p class="cap">대분류</p><p class="val">Inductor</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-size"><div class="cells"><span>0</span><span>3</span></div><p class="cap">사이즈</p><p class="val">0603</p></div><div class="seg k-tol"><div class="cells"><span>3</span></div><p class="cap">공차</p><p class="val">±3%</p></div><div class="seg k-val"><div class="cells"><span>0</span><span>1</span><span>0</span><span>0</span></div><p class="cap">값</p><p class="val">10nH</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val">제조사</p></div></div>
+      <p class="pn-src"><span class="mono">14-033010000</span> ← Murata <span class="mono">LQP03TN10NHZ2D</span> · 칩 인덕터 값은 nH 4자리, 소수점은 <span class="mono">N</span> (<span class="mono">04N7</span> = 4.7nH)</p>
+    </div></div>
+
+    <div class="stack">
+      <p class="sec-label">실무의 실제 자리 배분 [관측] — 비드 13개 · 파워 24개가 같은 방식을 따른다</p>
+      <div class="grid">
+        <div class="card paper rowcard"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">비드</h3><span class="mono meta">14-6 SS T VVV NN</span></div>
+          <div class="pnv sm"><div class="seg k-cls"><div class="cells"><span>1</span><span>4</span></div><p class="cap">대분류</p><p class="val"></p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-kind"><div class="cells"><span>6</span></div><p class="cap">종류</p><p class="val">비드</p></div><div class="seg k-size"><div class="cells"><span>1</span><span>5</span></div><p class="cap">사이즈</p><p class="val">1005</p></div><div class="seg k-tol"><div class="cells"><span>7</span></div><p class="cap">공차</p><p class="val">±25%</p></div><div class="seg k-val"><div class="cells"><span>1</span><span>2</span><span>1</span></div><p class="cap">값</p><p class="val">120Ω</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val"></p></div></div>
+          <p class="mini">값은 Ω 기준 유효숫자 2 + 승수. <span class="mono">BLM15PX121SZ1</span></p>
+        </div></div>
+        <div class="card paper rowcard"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">파워 인덕터</h3><span class="mono meta">14-7 SS T VVV NN</span></div>
+          <div class="pnv sm"><div class="seg k-cls"><div class="cells"><span>1</span><span>4</span></div><p class="cap">대분류</p><p class="val"></p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-kind"><div class="cells"><span>7</span></div><p class="cap">종류</p><p class="val">파워</p></div><div class="seg k-size"><div class="cells"><span>2</span><span>2</span></div><p class="cap">사이즈</p><p class="val">2016</p></div><div class="seg k-tol"><div class="cells"><span>6</span></div><p class="cap">공차</p><p class="val">±20%</p></div><div class="seg k-val"><div class="cells"><span>1</span><span>0</span><span>2</span></div><p class="cap">값</p><p class="val">1µH</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val"></p></div></div>
+          <p class="mini">값은 nH 기준 유효숫자 2 + 승수 (<span class="mono">102</span> = 1,000nH). <span class="mono">TFM201610ALMA1R0MTAA</span></p>
+        </div></div>
+        <div class="card paper rowcard"><div class="card-tint"></div><div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">대형 파워 인덕터</h3><span class="mono meta">14-7 9X T VVV NN</span></div>
+          <div class="pnv sm"><div class="seg k-cls"><div class="cells"><span>1</span><span>4</span></div><p class="cap">대분류</p><p class="val"></p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-kind"><div class="cells"><span>7</span></div><p class="cap">종류</p><p class="val">파워</p></div><div class="seg k-size"><div class="cells"><span>9</span><span>9</span></div><p class="cap">사이즈</p><p class="val">10mm 이상</p></div><div class="seg k-tol"><div class="cells"><span>6</span></div><p class="cap">공차</p><p class="val">±20%</p></div><div class="seg k-val"><div class="cells"><span>2</span><span>2</span><span>2</span></div><p class="cap">값</p><p class="val">2.2µH</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val"></p></div></div>
+          <p class="mini"><span class="mono">94</span>(4mm급) ~ <span class="mono">99</span>(10mm 이상), 12건. 구간 경계 치수는 정의가 필요하다.</p>
+        </div></div>
+      </div>
+      <p class="mini">비드·파워는 종류 한 자리(<span class="mono">6</span>·<span class="mono">7</span>) 뒤에 일반 사이즈 코드 2자리를 붙이고, 그만큼 값을 3자리로 줄였다. 일관되게 지켜지지만 문서에는 없다.</p>
+    </div>
+
+    <div class="split">
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>사이즈 D3~D4</th><th class="c">코드</th><th>인치</th></tr></thead>
+          <tbody>
+            <tr><td>0603 · 1005 · 1608</td><td class="c"><span class="pc"><b class="k-size">03</b></span> <span class="pc"><b class="k-size">15</b></span> <span class="pc"><b class="k-size">18</b></span></td><td>0201 · 0402 · 0603</td></tr>
+            <tr><td><strong>2012</strong></td><td class="c"><span class="pc"><b class="k-size">21</b></span></td><td>0805</td></tr>
+            <tr><td><strong>2016</strong></td><td class="c"><span class="pc"><b class="k-size">22</b></span></td><td>0806</td></tr>
+            <tr><td>2520 · 3216 · 3225 · 4516</td><td class="c"><span class="pc"><b class="k-size">23</b></span> <span class="pc"><b class="k-size">31</b></span> <span class="pc"><b class="k-size">32</b></span> <span class="pc"><b class="k-size">41</b></span></td><td>1008 · 1206 · 1210 · 1806</td></tr>
+            <tr><td>비드 · 파워 · 초크</td><td class="c"><span class="pc"><b class="k-size">6X</b></span> <span class="pc"><b class="k-size">7X</b></span> <span class="pc"><b class="k-size">8X</b></span></td><td>X의 의미는 규정에 없다</td></tr>
+            <tr><td>Others</td><td class="c"><span class="pc"><b class="k-size">99</b></span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>공차 D5</th><th class="c">코드</th><th>문자</th></tr></thead>
+          <tbody>
+            <tr><td>±0.1nH · ±0.2nH</td><td class="c"><span class="pc"><b class="k-tol">1</b></span> <span class="pc"><b class="k-tol">2</b></span></td><td>B · C</td></tr>
+            <tr><td>±3%</td><td class="c"><span class="pc"><b class="k-tol">3</b></span></td><td>H</td></tr>
+            <tr><td>±5% · ±10%</td><td class="c"><span class="pc"><b class="k-tol">4</b></span> <span class="pc"><b class="k-tol">5</b></span></td><td>J · K</td></tr>
+            <tr><td>±20%</td><td class="c"><span class="pc"><b class="k-tol">6</b></span></td><td>M</td></tr>
+            <tr><td>±25~30%</td><td class="c"><span class="pc"><b class="k-tol">7</b></span></td><td>N</td></tr>
+            <tr><td>±2%</td><td class="c">— 없음</td><td>G · 실무는 <span class="mono">3</span>으로 4건 등록</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="callout c-emphasis">
+        <p class="callout-title"><span aria-hidden="true">!</span><span>사이즈 코드는 분류마다 따로 본다</span></p>
+        <div class="callout-body">2012는 저항·커패시터에서 <span class="pc"><b class="k-size">22</b></span>, 인덕터에서 <span class="pc"><b class="k-size">21</b></span>다. 인덕터의 <span class="pc"><b class="k-size">22</b></span>는 2016이다. 사이즈 코드가 분류 사이에 공유된다고 가정하면 틀린 번호가 나온다.</div>
+      </div>
+      <div class="callout c-muted">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>값 표기도 하나로</span></p>
+        <div class="callout-body">4.7nH는 <span class="mono">04N7</span>, 1.2nH는 <span class="mono">1N20</span>으로 적혔다. 오른쪽 맞춤과 왼쪽 맞춤이 섞였다. 표기를 하나로 정해 두지 않으면 같은 값이 검색에서 갈린다.</div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 07 OTHERS ================= -->
+<article class="slide" id="others">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">07</span><span class="eyebrow">Type II · III · PCB &amp; Others</span></div>
+    <h2 class="slide-h2">PCB와 그 외 품목 — 세부 분류 + 일련번호</h2>
+    <p class="slide-desc">IC·커넥터처럼 숫자 몇 개로 사양이 정해지지 않는 품목은 <strong>세부 분류 + 일련번호</strong>로 번호를 만든다. 일련번호는 MPN의 숫자부를 따와 사람이 부품을 떠올리기 쉽게 했다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="split">
+      <div class="card paper pn-panel"><div class="card-tint"></div><div class="card-inner">
+        <p class="sec-label">구성 II · PCB 30</p>
+        <div class="pnv sm"><div class="seg k-cls"><div class="cells"><span>3</span><span>0</span></div><p class="cap">대분류</p><p class="val">PCB</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-size"><div class="cells"><span>1</span><span>0</span></div><p class="cap">층수</p><p class="val">10층</p></div><div class="seg k-tol"><div class="cells"><span>2</span></div><p class="cap">구조</p><p class="val">BUM(HDI)</p></div><div class="seg k-val"><div class="cells"><span>E</span><span>5</span><span>1</span><span>M</span></div><p class="cap">일련번호</p><p class="val">E51 + Main</p></div><div class="seg k-suf"><div class="cells"><span>1</span><span>1</span></div><p class="cap">버전</p><p class="val">V1.1</p></div></div>
+        <p class="pn-src"><span class="mono">30-102E51M11</span> ← <span class="mono">E51-IVI-MAIN V1.1</span> (PCB/BUM-E/10L/1.6T/ENIG). 버전 <span class="mono">XY</span>는 Minor 개정이면 Y, Major 개정이면 X를 올리고 Y를 0으로 되돌린다.</p>
+      </div></div>
+      <div class="card paper pn-panel"><div class="card-tint"></div><div class="card-inner">
+        <p class="sec-label">구성 III · IC 22</p>
+        <div class="pnv sm"><div class="seg k-cls"><div class="cells"><span>2</span><span>2</span></div><p class="cap">대분류</p><p class="val">IC</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-size"><div class="cells"><span>0</span><span>3</span></div><p class="cap">세부</p><p class="val">LDO</p></div><div class="seg k-val"><div class="cells"><span>0</span><span>5</span><span>6</span><span>6</span><span>1</span></div><p class="cap">일련번호</p><p class="val">NCV5661</p></div><div class="seg k-suf"><div class="cells"><span>0</span><span>0</span></div><p class="cap">접미</p><p class="val">제조사</p></div></div>
+        <p class="pn-src"><span class="mono">22-030566100</span> ← onsemi <span class="mono">NCV5661MNADJT2G</span>. 세부 코드 2자리가 기능을, 일련번호 5자리가 MPN 숫자부를 담는다.</p>
+      </div></div>
+    </div>
+
+    <div class="split">
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>PCB 층수 D3~D4</th><th>코드</th><th>구조 D5</th><th>코드</th></tr></thead>
+          <tbody>
+            <tr><td>단면 · 양면</td><td><span class="pc"><b class="k-size">01</b></span> <span class="pc"><b class="k-size">02</b></span></td><td>MLB (일반 다층)</td><td><span class="pc"><b class="k-tol">1</b></span></td></tr>
+            <tr><td>4 · 6 · 8층</td><td><span class="pc"><b class="k-size">04</b></span> <span class="pc"><b class="k-size">06</b></span> <span class="pc"><b class="k-size">08</b></span></td><td>BUM (HDI 빌드업)</td><td><span class="pc"><b class="k-tol">2</b></span></td></tr>
+            <tr><td>10 · 12 · 14층</td><td><span class="pc"><b class="k-size">10</b></span> <span class="pc"><b class="k-size">12</b></span> <span class="pc"><b class="k-size">14</b></span></td><td>R/F (리지드-플렉스로 추정)</td><td><span class="pc"><b class="k-tol">3</b></span></td></tr>
+            <tr><td>기타 (FPCB)</td><td><span class="pc"><b class="k-size">77</b></span></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout c-muted">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>규정 문서끼리도 다르다</span></p>
+        <div class="callout-body">엑셀 규정표는 PCB를 <span class="mono">층수 2 + 구조 1 + 일련번호 4 + 버전 2</span>로, 슬라이드는 <span class="mono">층수 2 + 모델명 3 + 고유번호 2 + 버전 2</span>로 적었다. 실데이터는 엑셀 쪽을 따른다. 에이전트가 규정을 그대로 믿으면 이런 지점에서 사람과 다른 답을 낸다.</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>대분류</th><th>자리 배분</th><th>주요 코드 [규정]</th><th class="em">실데이터 예</th></tr></thead>
+        <tbody>
+          <tr><td>16 Connector</td><td class="mono">16-T G D SSSS NN</td><td>종류 1 BTW · 2 FAKRA · 3 FFC/FPC · 4 BTB · 5 USB · 6 SIM/SD / 형태 1 HEADER · 2 RECEPTACLE / 방향 1 RA · 2 VERTICAL</td><td class="em"><span class="pc"><b class="k-cls">16</b><i>-</i><b class="k-size">3</b><b class="k-size">2</b><b class="k-size">1</b><b class="k-val">2810</b><b class="k-suf">00</b></span> FH28K-10S</td></tr>
+          <tr><td>17 Clock</td><td class="mono">17-T S U VVVV NN</td><td>종류 1 Crystal · 3 TCXO · 4 OSC / 크기 1 2012 · 2 2016 · 3 3225 · 4 5032 / 단위 1 kHz · 2 MHz</td><td class="em"><span class="pc"><b class="k-cls">17</b><i>-</i><b class="k-size">3</b><b class="k-size">2</b><b class="k-size">2</b><b class="k-val">0260</b><b class="k-suf">00</b></span> TCXO 26MHz</td></tr>
+          <tr><td>18 TR · Diode</td><td class="mono">18-TT SSSSS NN</td><td>01 FET · 02 TR · 03 Diode · 04 Varistor · 05 LED</td><td class="em"><span class="pc"><b class="k-cls">18</b><i>-</i><b class="k-size">03</b><b class="k-val">04148</b><b class="k-suf">00</b></span> 1N4148</td></tr>
+          <tr><td>20 Memory</td><td class="mono">20-T V G CCCC NN</td><td>종류 1 LPDDR4x · 2 UFS · 3 eMMC · 4 Serial / 전압 1 1.8V · 3 3.3V / 등급 1·2·3 / 용량 (단위 미정)</td><td class="em"><span class="pc"><b class="k-cls">20</b><i>-</i><b class="k-size">4</b><b class="k-size">1</b><b class="k-size">1</b><b class="k-val">0016</b><b class="k-suf">00</b></span> SPI NOR 16Mb</td></tr>
+          <tr><td>22 IC</td><td class="mono">22-TT SSSSS NN</td><td>01 PMIC · 02 DC-DC · 03 LDO · 04 Switch · 05 Detector · 06 Level Shifter · 07 Gate · 08 Audio · 09 Sensor · 10 Transceiver · 11 LVDS/DP · 22 USB · 33 Mux · 99 Others</td><td class="em"><span class="pc"><b class="k-cls">22</b><i>-</i><b class="k-size">02</b><b class="k-val">05141</b><b class="k-suf">00</b></span> LM5141</td></tr>
+          <tr><td>26 RF</td><td class="mono">26-TT SSSSS NN</td><td>01 Tx/Rx · 02 PAM · 05 SAW · 07 WLAN · 08 GNSS · 09 LTE · 99 Others</td><td class="em"><span class="pc"><b class="k-cls">26</b><i>-</i><b class="k-size">09</b><b class="k-val">07630</b><b class="k-suf">10</b></span> RC7630 LTE</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split r37">
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>MPN</th><th>품번</th><th class="em">일련번호 ← MPN</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">LM5141QRGERQ1</td><td><span class="pc"><b class="k-cls">22</b><i>-</i><b class="k-size">02</b><b class="k-val">05141</b><b class="k-suf">00</b></span></td><td class="em">LM<strong>5141</strong></td></tr>
+            <tr><td class="mono">1N4148WTQ-7</td><td><span class="pc"><b class="k-cls">18</b><i>-</i><b class="k-size">03</b><b class="k-val">04148</b><b class="k-suf">00</b></span></td><td class="em">1N<strong>4148</strong></td></tr>
+            <tr><td class="mono">FH28K-10S-0.5SH</td><td><span class="pc"><b class="k-cls">16</b><i>-</i><b class="k-size">3</b><b class="k-size">2</b><b class="k-size">1</b><b class="k-val">2810</b><b class="k-suf">00</b></span></td><td class="em">FH<strong>28</strong>-<strong>10</strong></td></tr>
+            <tr><td class="mono">74AHC1G08QSE-7</td><td><span class="pc"><b class="k-cls">22</b><i>-</i><b class="k-size">07</b><b class="k-val">1G080</b><b class="k-suf">00</b></span></td><td class="em"><strong>1G08</strong></td></tr>
+            <tr><td class="mono">TAS6424LQDKQRQ1</td><td><span class="pc"><b class="k-cls">22</b><i>-</i><b class="k-size">08</b><b class="k-val">6424L</b><b class="k-suf">00</b></span></td><td class="em">TAS<strong>6424L</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stack">
+        <div class="callout c-info">
+          <p class="callout-title"><span aria-hidden="true">·</span><span>장점 — 품번에서 부품이 떠오른다</span></p>
+          <div class="callout-body">현장에서 <span class="mono">22-020514100</span>을 보면 LM5141 계열 DC-DC 컨트롤러라는 것을 바로 안다.</div>
+        </div>
+        <div class="callout c-muted">
+          <p class="callout-title"><span aria-hidden="true">·</span><span>약점 — 숫자부가 겹친다</span></p>
+          <div class="callout-body">TAS6424Q와 TAS6424L은 숫자부가 같아 <span class="mono">22-086424000</span>과 <span class="mono">22-086424L00</span>처럼 영문자로 구분해야 했다. 세부 코드 칸이 없는 품목(LED 드라이버·영상 디코더·인증 칩)은 사람마다 다른 칸에 넣었다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 08 MECH ================= -->
+<article class="slide" id="mech">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">08</span><span class="eyebrow">Mechanical &amp; Scope</span></div>
+    <h2 class="slide-h2">기구물 — 회로 밖 부품에도 같은 체계가 필요하다</h2>
+    <p class="slide-desc">BOM에는 기구물·부자재·조립품이 회로 부품과 같은 표에 섞여 있고, ERP는 이들을 같은 품목 마스터로 관리한다. <strong>어느 한 갈래에 규칙이 없으면 그 갈래는 사람이 그때그때 번호를 짓는다.</strong></p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="card paper pn-panel"><div class="card-tint"></div><div class="card-inner">
+      <p class="sec-label">기구물 채번 규칙 v1.0</p>
+      <div class="pnv"><div class="seg k-cls"><div class="cells"><span>6</span><span>2</span></div><p class="cap">대분류</p><p class="val">Cover</p></div><div class="seg hy"><div class="cells"><span>-</span></div><p class="cap">&nbsp;</p></div><div class="seg k-size"><div class="cells"><span>0</span><span>2</span></div><p class="cap">중분류</p><p class="val">PC-ABS</p></div><div class="seg k-tol"><div class="cells"><span>0</span><span>1</span></div><p class="cap">소분류</p><p class="val">Front</p></div><div class="seg k-val"><div class="cells"><span>0</span><span>0</span><span>1</span></div><p class="cap">고유번호</p><p class="val">001~999</p></div><div class="seg k-suf"><div class="cells"><span>1</span><span>0</span></div><p class="cap">버전</p><p class="val">V1.0</p></div></div>
+      <p class="pn-src"><span class="mono">62-020100110</span> ← E51K 앞 커버 (PC-ABS 사출). 중분류는 재질·색상·외형, 소분류는 규격·장착 위치·목적, 끝 2자리는 <strong>제조사가 아니라 버전</strong>이다.</p>
+    </div></div>
+
+    <div class="grid g4">
+      <div class="kpi"><p class="kpi-val">18<span class="kpi-suf">행</span></p><p class="kpi-label">E51K BOM의 기구·부자재</p><p class="kpi-sub">310행 중 · 빠지면 조립 불가</p></div>
+      <div class="kpi"><p class="kpi-val">2<span class="kpi-suf">개</span></p><p class="kpi-label">규정에 없는 대분류</p><p class="kpi-sub"><span class="mono">84</span> 라벨 · <span class="mono">86</span> 소음 방지 패드</p></div>
+      <div class="kpi"><p class="kpi-val">2<span class="kpi-suf">개</span></p><p class="kpi-label">제품·반제품 품번 · 적용 범위 밖</p><p class="kpi-sub">MS01C0P1PP · MS01C0P1SM · 자체 양산품 코드</p></div>
+      <div class="kpi"><p class="kpi-val">5<span class="kpi-suf">종</span></p><p class="kpi-label">규칙이 없는 품목군</p><p class="kpi-sub">SW · 라벨 · 포장 · 공정 부자재 · 완충재</p></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>대분류</th><th>중분류 예 (D3~D4)</th><th>소분류 예 (D5~D6)</th><th class="em">실데이터</th></tr></thead>
+        <tbody>
+          <tr><td>62 Cover · 64 Housing</td><td>ABS 01 · PC-ABS 02 · PMMA 03 · PP 04 · Al 05</td><td>Front 01 · Rear 02 · Left 03 · Right 04 · Inner 05</td><td class="em">앞·뒤 커버, 쉴드 캔(64)</td></tr>
+          <tr><td>66 Screw · 68 Nut</td><td>둥근머리 01 · 접시머리 02 · 평 03 · 무두 04 (관측: SEMS 05)</td><td>M1 01 ~ M5 05</td><td class="em"><span class="pc"><b class="k-cls">66</b><i>-</i><b class="k-size">05</b><b class="k-tol">05</b><b class="k-val">012</b><b class="k-suf">00</b></span> SEMS M5×12</td></tr>
+          <tr><td>70 Frame · 72 Bracket · 74 Plate</td><td>Steel 01 · SUS 02 · Al 03 · ABS 04 · SECC 05</td><td>Front 01 · Rear 02 · Left 03 · Right 04 · Inner 05</td><td class="em">브래킷 좌·우·하, 메인 플레이트</td></tr>
+          <tr><td>76 Adhesive · 78 Tape</td><td>색상 · 재질 (투명 · 불투명 · 폼 · 직물)</td><td>제품 고정 · 방수방진 / 단면 · 양면</td><td class="em">캡톤 테이프</td></tr>
+          <tr><td>80 Gasket · 82 Absorber</td><td>실리콘 · 고무 · 직물 · Steel · Al / 스폰지</td><td>방수방진 · EMI · 진동 방지 · 방열</td><td class="em">써멀 패드</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g3">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">끝 2자리 = 버전</h3></div>
+        <p class="card-body">기구물은 대부분 사내 도면으로 만드는 주문 제작품이라 제조사보다 <strong>도면 개정</strong>이 중요하다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">재질 · 위치 · 목적을 담는다</h3></div>
+        <p class="card-body">저항처럼 값 하나로 정의되지 않아서다. [관측] 고유번호 자리에 치수를 넣기도 한다 — SEMS M5×12의 <span class="mono">012</span>.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">실데이터의 어긋남</h3></div>
+        <p class="card-body">브래킷 RIGHT·LEFT·LOWER가 모두 소분류 <span class="mono">05</span>(Inner), ALDC12 다이캐스트 플레이트가 중분류 <span class="mono">05</span>(SECC)로 등록됐다.</p>
+      </div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="callout c-emphasis">
+        <p class="callout-title"><span aria-hidden="true">!</span><span>규칙이 없는 갈래에는 규정에 없는 번호가 붙는다</span></p>
+        <div class="callout-body">
+          라벨에 <span class="mono">84</span>, 소음 방지 패드에 <span class="mono">86</span>이 규정 없이 쓰였다. 펌웨어·소프트웨어는 대분류 자체가 없어, LTE 모듈의 펌웨어 변형을 끝 2자리(<span class="mono">10</span>·<span class="mono">20</span>)로 구분했다.
+          <div class="tags" style="margin-top:.6rem"><span class="tag tag-muted">펌웨어·SW — 없음</span><span class="tag tag-muted">라벨 — 84 무규정</span><span class="tag tag-muted">포장재 — 없음</span><span class="tag tag-muted">공정 부자재 — 76만</span><span class="tag tag-muted">완충재 — 86 무규정</span></div>
+        </div>
+      </div>
+      <div class="callout c-muted">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>버전을 품번 안에 둘 때의 주의</span></p>
+        <div class="callout-body">버전이 품번에 들어 있으면 <strong>개정할 때마다 새 품번</strong>이 생긴다. 구·신 부품을 섞어 써도 되는 FFF 호환 개정까지 새 품번으로 만들면 재고가 불필요하게 갈린다. 호환 개정을 리비전 속성으로 처리할지 회사 정책으로 정해 둬야 한다.</div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 09 HOWTO ================= -->
+<article class="slide" id="howto">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">09</span><span class="eyebrow">Encoding &amp; Decoding</span></div>
+    <h2 class="slide-h2">채번 절차와 예시 — 사양 확정이 먼저다</h2>
+    <p class="slide-desc">의미 부여형 품번은 사양에서 번호를 만들고(인코딩), 번호에서 사양을 읽는다(디코딩). 에이전트는 디코딩으로 <strong>품번과 품목 설명이 맞는지</strong> 검사한다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="stack">
+      <p class="sec-label">채번 8단계 — 만들기</p>
+      <div class="bf">
+        <div class="bf-card"><span class="num">1</span><span class="title">품목 정체성 확정</span><p class="sub">MPN · 제조사 · 데이터시트</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">2</span><span class="title">대분류 판정</span><p class="sub">저항? 비드? LDO?</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">3</span><span class="title">속성 추출</span><p class="sub">사이즈 · 공차 · 전압 · 값</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">4</span><span class="title">자리 코드 변환</span><p class="sub">코드표로 D3~D9 생성</p></div>
+      </div>
+      <p class="sec-label" style="margin-top:.9rem">검사 · 확정</p>
+      <div class="bf">
+        <div class="bf-card"><span class="num">5</span><span class="title">충돌 검사</span><p class="sub">같은 본체 D1~D9가 있는가</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">6</span><span class="title">접미 결정</span><p class="sub">처음이면 00, 있으면 FFF 비교</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">7</span><span class="title">형식 검사</span><p class="sub">12자 · 허용 문자 · I·O·Z</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">8</span><span class="title">승인 · 등록</span><p class="sub">사람이 승인한 뒤 ERP 등록</p></div>
+      </div>
+      <p class="sowhat">So-What · 1단계를 건너뛰고 설명 문자열만으로 채번하면 틀린 설명이 그대로 코드가 된다. 설계 BOM에 "MOSFET"으로 잘못 적힌 BJT가 FET 코드(<span class="mono">18-01…</span>)를 받았다.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>#</th><th>부품 (MPN)</th><th>확정 사양</th><th class="em">품번</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="mono">AC0402FR-0710KL</td><td>칩저항 1005 · ±1% · 10kΩ</td><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">15</b><b class="k-tol">1</b><b class="k-val">1002</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">2</td><td class="mono">ERJ-8CWFR027V</td><td>칩저항 3216 · ±1% · 0.027Ω · Panasonic</td><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">31</b><b class="k-tol">1</b><b class="k-val">R027</b><b class="k-suf">02</b></span></td></tr>
+          <tr><td class="num">3</td><td class="mono">GRT155R71H104KE01</td><td>MLCC 1005 · ±10% · 50V · 100nF</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol">5</b><b class="k-volt">7</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">4</td><td class="mono">GRT0335C1E1R0CA02</td><td>MLCC 0603 · ±0.25pF · 25V · 1pF</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">03</b><b class="k-tol">2</b><b class="k-volt">5</b><b class="k-val">1R0</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">5</td><td class="mono">BLM15PX121SZ1</td><td>비드 1005 · ±25% · 120Ω</td><td><span class="pc"><b class="k-cls">14</b><i>-</i><b class="k-kind">6</b><b class="k-size">15</b><b class="k-tol">7</b><b class="k-val">121</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">6</td><td class="mono">TFM201610ALMA1R0MTAA</td><td>파워 인덕터 2016 · ±20% · 1µH</td><td><span class="pc"><b class="k-cls">14</b><i>-</i><b class="k-kind">7</b><b class="k-size">22</b><b class="k-tol">6</b><b class="k-val">102</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">7</td><td class="mono">FH28K-10S-0.5SH</td><td>FPC 커넥터 · 리셉터클 · 직각 · 10P</td><td><span class="pc"><b class="k-cls">16</b><i>-</i><b class="k-size">3</b><b class="k-size">2</b><b class="k-size">1</b><b class="k-val">2810</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">8</td><td class="mono">NT2016SE 26MHz</td><td>TCXO · 2016 · MHz · 26.0</td><td><span class="pc"><b class="k-cls">17</b><i>-</i><b class="k-size">3</b><b class="k-size">2</b><b class="k-size">2</b><b class="k-val">0260</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">9</td><td class="mono">NCV5661MNADJT2G</td><td>LDO</td><td><span class="pc"><b class="k-cls">22</b><i>-</i><b class="k-size">03</b><b class="k-val">05661</b><b class="k-suf">00</b></span></td></tr>
+          <tr><td class="num">10</td><td class="mono">E51-IVI-MAIN V1.1</td><td>PCB 10층 · BUM · E51 메인 · V1.1</td><td><span class="pc"><b class="k-cls">30</b><i>-</i><b class="k-size">10</b><b class="k-tol">2</b><b class="k-val">E51M</b><b class="k-suf">11</b></span></td></tr>
+          <tr><td class="num">11</td><td>SCREW SEMS M5×12</td><td>기구 나사 · SEMS · M5 · 12mm</td><td><span class="pc"><b class="k-cls">66</b><i>-</i><b class="k-size">05</b><b class="k-tol">05</b><b class="k-val">012</b><b class="k-suf">00</b></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>품번 (디코딩)</th><th>코드가 말하는 것</th><th>마스터 규격</th><th class="em">판정</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">18</b><b class="k-tol">5</b><b class="k-volt">6</b><b class="k-val">475</b><b class="k-suf">00</b></span></td><td>MLCC · 1608 · ±10% · 35V · 4.7µF</td><td class="mono">GRT188R6YA475KE13</td><td class="em">일치</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">14</b><i>-</i><b class="k-kind">7</b><b class="k-size">97</b><b class="k-tol">6</b><b class="k-val">332</b><b class="k-suf">10</b></span></td><td>파워 · 7mm급 · ±20% · 3.3µH · 접미 10</td><td class="mono">IHLE2525CDER3R3M5A</td><td class="em">일치 — 같은 본체에 다른 제조사품(<span class="mono">…00</span>)이 먼저 있어 접미로 구분</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">16</b><i>-</i><b class="k-size">2</b><b class="k-size">1</b><b class="k-size">2</b><b class="k-val">5640</b><b class="k-suf">A0</b></span></td><td>FAKRA · 헤더 · 수직 · 코딩 A</td><td class="mono">59S16K-40MT5-A</td><td class="em">일치</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">20</b><i>-</i><b class="k-size">4</b><b class="k-size">1</b><b class="k-size bad">1</b><b class="k-val">0016</b><b class="k-suf">01</b></span></td><td>Serial · 1.8V · 등급 1 · 16</td><td class="mono">EN25S16B · GRADE2</td><td class="em">등급 불일치</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">03</b><b class="k-tol">2</b><b class="k-val bad">3300</b><b class="k-suf">00</b></span></td><td>저항 · 0603 · ±5% · 330Ω</td><td class="mono">AC0201JR-0733RL · 33Ω</td><td class="em">값 불일치</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stack">
+      <p class="sec-label">사양이 불완전한 E-BOM 텍스트 — KK1의 100nF 표기 10종을 규칙에 넣으면</p>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>E-BOM 표기</th><th class="c">소요</th><th>비어 있는 자리</th><th class="em">품번 후보</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">100nF/25v/C1005</td><td class="c num">59</td><td>공차</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-unk">?</b><b class="k-volt">5</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+            <tr><td class="mono">100nF/16V/C1005 · 0.1uF/16V/C1005</td><td class="c num">24 · 4</td><td>공차</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-unk">?</b><b class="k-volt">4</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+            <tr><td class="mono">0.1uF/50v/C1005 · 100nF/50V/C1005</td><td class="c num">14 · 12</td><td>공차</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-unk">?</b><b class="k-volt">7</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+            <tr><td class="mono">100nF/X5R/10V/C1005 · 100nF/10V/C1005</td><td class="c num">8 · 1</td><td>공차</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-unk">?</b><b class="k-volt">3</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+            <tr><td class="mono">100nF/50V/C1608</td><td class="c num">3</td><td>공차</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">18</b><b class="k-unk">?</b><b class="k-volt">7</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+            <tr><td class="mono">100nF/16v/C0603</td><td class="c num">1</td><td>공차, <strong>사이즈</strong> (메트릭? 인치?)</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-unk">??</b><b class="k-unk">?</b><b class="k-volt">4</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+            <tr><td class="mono">100nF/C1005</td><td class="c num">5</td><td>공차, <strong>전압</strong></td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-unk">?</b><b class="k-unk">?</b><b class="k-val">104</b><b class="k-suf">00</b></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 표기 10종이 품번 7개로 모인다. 그러나 어느 행도 바로 품번이 되지 않는다 — 공차가 E-BOM에 없다. 의미 부여형 체계에서는 MPN 확정이 채번보다 먼저다.</p>
+    </div>
+
+    <div class="grid g4">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">① 코드에 없는 속성</h3></div>
+        <p class="card-body"><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">31</b><b class="k-tol">1</b><b class="k-val">00R1</b><b class="k-suf">00</b></span> 범용 후막<br /><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">31</b><b class="k-tol">1</b><b class="k-val">00R1</b><b class="k-suf">01</b></span> 전류 감지 금속막<br />TCR이 달라 FFF가 다르다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">② 같은 사양, 다른 제조사</h3></div>
+        <p class="card-body"><span class="pc"><b class="k-cls">20</b><i>-</i><b class="k-size">4</b><b class="k-size">1</b><b class="k-size">1</b><b class="k-val">0016</b><b class="k-suf">00</b></span> ISSI<br /><span class="pc"><b class="k-cls">20</b><i>-</i><b class="k-size">4</b><b class="k-size">1</b><b class="k-size">1</b><b class="k-val">0016</b><b class="k-suf">01</b></span> ESMT<br />규정 의도대로 끝 2자리 = 제조사.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">③ 결합 키가 있는 커넥터</h3></div>
+        <p class="card-body">FAKRA는 키 모양이 다르면 짝과 결합되지 않는다. 키 문자를 접미에 넣었다: <span class="mono">…A0</span> <span class="mono">…B0</span> <span class="mono">…K0</span>.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">④ 같은 HW, 다른 펌웨어</h3></div>
+        <p class="card-body"><span class="pc"><b class="k-cls">26</b><i>-</i><b class="k-size">09</b><b class="k-val">07630</b><b class="k-suf">10</b></span> VoLTE<br /><span class="pc"><b class="k-cls">26</b><i>-</i><b class="k-size">09</b><b class="k-val">07630</b><b class="k-suf">20</b></span> DATA<br />꽂으면 동작이 다르므로 다른 품번이 맞다.</p>
+      </div></div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 10 VERIFY ================= -->
+<article class="slide" id="verify">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">10</span><span class="eyebrow">Validation · 3 Files</span></div>
+    <h2 class="slide-h2">실데이터 검증 — 3개 파일, 349개 품번 전수</h2>
+    <p class="slide-desc">규칙으로 기대 품번을 만들어 실제 품번과 비교했다. 형식과 값 체계는 잘 지켜졌다. 문제는 <strong>규정이 다루지 않는 곳</strong>과 <strong>틀린 설명이 코드로 굳은 곳</strong>에서 생겼다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="grid g3">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">기말 재고 현황</h3><span class="tag tag-muted">317행</span></div>
+        <p class="card-body mono" style="font-size:12px">2025년_기말_재고_현황_20251231.xlsx</p>
+        <p class="card-body">원재료 315 · 제품·반제품 2</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">설계 BOM</h3><span class="tag tag-muted">310행</span></div>
+        <p class="card-body mono" style="font-size:12px">E51K_IVI_BOM_20260531.xlsx</p>
+        <p class="card-body">레벨 0~2 · 품번 열</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">ERP(Amaranth) BOM</h3><span class="tag tag-muted">309행</span></div>
+        <p class="card-body mono" style="font-size:12px">E51K_IVI_BOM(Amaranth-물류공통).xlsx</p>
+        <p class="card-body">모품번–자품번 구조</p>
+      </div></div>
+    </div>
+
+    <div class="bf">
+      <div class="bf-card"><span class="num">CHECK 1</span><span class="title">형식</span><p class="sub">정규식 · 12자 · I·O·Z</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">CHECK 2</span><span class="title">대분류</span><p class="sub">코드표와 대조</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">CHECK 3</span><span class="title">자리 해독 대조</span><p class="sub">규격 → 기대 품번 → 실제와 비교</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">CHECK 4</span><span class="title">파일 간 대조</span><p class="sub">품명·규격·소요량·구조</p></div>
+    </div>
+
+    <div class="grid g4">
+      <div class="kpi"><p class="kpi-val">347<span class="kpi-suf">/347</span></p><p class="kpi-label">형식 준수</p><p class="kpi-sub">금지 문자 I 1건 · 중복 0건</p></div>
+      <div class="kpi"><p class="kpi-val">156<span class="kpi-suf">/160</span></p><p class="kpi-label">저항·커패시터 값 자리</p><p class="kpi-sub">저항 78/82 · 커패시터 78/78</p></div>
+      <div class="kpi"><p class="kpi-val">100<span class="kpi-suf">%</span></p><p class="kpi-label">설계 BOM ↔ ERP 소요량</p><p class="kpi-sub">309행 · 구조도 100% 일치</p></div>
+      <div class="kpi"><p class="kpi-val">17<span class="kpi-suf">건</span></p><p class="kpi-label">코드–규격 불일치</p><p class="kpi-sub">부품의 4.9% · 해독 정합 95.1%</p></div>
+    </div>
+
+    <div class="split">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">불일치 17건 — 어느 자리가 틀렸나</h3></div>
+        <div class="hbars">
+          <div class="hbar"><span class="lbl">값</span><span class="track"><span class="fill" style="display:block;width:100%"></span></span><span class="n">3</span></div>
+          <div class="hbar"><span class="lbl">분류 (세부 코드)</span><span class="track"><span class="fill" style="display:block;width:100%"></span></span><span class="n">3</span></div>
+          <div class="hbar"><span class="lbl">메모리 등급</span><span class="track"><span class="fill b" style="display:block;width:100%"></span></span><span class="n">3</span></div>
+          <div class="hbar"><span class="lbl">기구 위치</span><span class="track"><span class="fill b" style="display:block;width:100%"></span></span><span class="n">3</span></div>
+          <div class="hbar"><span class="lbl">공차</span><span class="track"><span class="fill" style="display:block;width:66.7%"></span></span><span class="n">2</span></div>
+          <div class="hbar"><span class="lbl">사이즈</span><span class="track"><span class="fill c" style="display:block;width:33.3%"></span></span><span class="n">1</span></div>
+          <div class="hbar"><span class="lbl">기구 재질</span><span class="track"><span class="fill c" style="display:block;width:33.3%"></span></span><span class="n">1</span></div>
+          <div class="hbar"><span class="lbl">금지 문자</span><span class="track"><span class="fill g" style="display:block;width:33.3%"></span></span><span class="n">1</span></div>
+        </div>
+        <p class="mini" style="margin-top:.7rem">메모리 등급은 4개 중 3개가 실제 등급과 다르다. 사실상 등급 자리가 쓰이지 않는다.</p>
+      </div></div>
+      <div class="stack">
+        <div class="table-wrap">
+          <table class="tight">
+            <thead><tr><th>위험 높음 — 등록된 품번</th><th>실제 사양</th><th class="em">규칙대로라면</th></tr></thead>
+            <tbody>
+              <tr><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">03</b><b class="k-tol">2</b><b class="k-val bad">3300</b><b class="k-suf">00</b></span></td><td>0603 ±5% <strong>33Ω</strong></td><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">03</b><b class="k-tol">2</b><b class="k-val">0330</b><b class="k-suf">00</b></span></td></tr>
+              <tr><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">03</b><b class="k-tol">1</b><b class="k-val bad">6042</b><b class="k-suf">00</b></span></td><td>0603 ±1% <strong>6.04kΩ</strong></td><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size">03</b><b class="k-tol">1</b><b class="k-val">6041</b><b class="k-suf">00</b></span></td></tr>
+              <tr><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol bad">5</b><b class="k-volt">3</b><b class="k-val">475</b><b class="k-suf">00</b></span></td><td>1005 <strong>±20%</strong> 10V 4.7µF</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol">6</b><b class="k-volt">3</b><b class="k-val">475</b><b class="k-suf">00</b></span></td></tr>
+              <tr><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">18</b><b class="k-tol bad">5</b><b class="k-volt">3</b><b class="k-val">226</b><b class="k-suf">00</b></span></td><td>1608 <strong>±20%</strong> 10V 22µF</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">18</b><b class="k-tol">6</b><b class="k-volt">3</b><b class="k-val">226</b><b class="k-suf">00</b></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="sowhat">So-What · 네 건 모두 330Ω · 60.4kΩ · ±10% 부품이 쓸 번호를 차지하고 있다. 그 부품이 등록되는 날 충돌이 확실히 생긴다.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>품번</th><th>코드가 말하는 것</th><th>실제</th><th class="em">원인 추정</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pc"><b class="k-cls">18</b><i>-</i><b class="k-size bad">01</b><b class="k-val">02907</b><b class="k-suf">00</b></span></td><td>FET</td><td>PNP 듀얼 BJT (MMDT2907A)</td><td class="em">설계 BOM의 "MOSFET" 설명이 코드로 전파</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">10</b><i>-</i><b class="k-size bad">60</b><b class="k-tol">1</b><b class="k-val">R003</b><b class="k-suf">00</b></span></td><td>사이즈 6430</td><td>ERP R6432 / 설계 BOM R6430</td><td class="em">설계 BOM 설명을 보고 채번</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">22</b><i>-</i><b class="k-size bad">03</b><b class="k-val">63152</b><b class="k-suf">00</b></span></td><td>LDO</td><td>전압 감시(리셋) IC</td><td class="em">분류 착오 — <span class="mono">05</span> Detector</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">72</b><i>-</i><b class="k-size">03</b><b class="k-tol bad">05</b><b class="k-val">001</b><b class="k-suf">00</b></span> 외 2</td><td>Inner</td><td>BRACKET RIGHT · LEFT · LOWER</td><td class="em">위치 코드 미적용, Lower 칸 없음</td></tr>
+          <tr><td><span class="pc"><b class="k-cls">74</b><i>-</i><b class="k-size bad">05</b><b class="k-tol">05</b><b class="k-val">001</b><b class="k-suf">00</b></span></td><td>SECC</td><td>ALDC12 다이캐스트</td><td class="em">재질 착오 — <span class="mono">03</span> Al</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">끝 2자리 — 규정은 "Vendor", 실무는 다섯 가지 이상</h3></div>
+        <div class="stackbar" style="margin:.4rem 0 .9rem">
+          <div class="s1" style="width:92.5%"><span class="mono">00</span> · 321개 (92.5%)</div>
+          <div class="s3" style="width:7.5%">26</div>
+        </div>
+        <div class="hbars">
+          <div class="hbar"><span class="lbl">제조사로 보이나 코드표 없음</span><span class="track"><span class="fill" style="display:block;width:100%"></span></span><span class="n">9</span></div>
+          <div class="hbar"><span class="lbl">커넥터 결합 키</span><span class="track"><span class="fill" style="display:block;width:66.7%"></span></span><span class="n">6</span></div>
+          <div class="hbar"><span class="lbl">펌웨어 · 사양 변형</span><span class="track"><span class="fill b" style="display:block;width:44.4%"></span></span><span class="n">4</span></div>
+          <div class="hbar"><span class="lbl">같은 본체 충돌 구분</span><span class="track"><span class="fill b" style="display:block;width:22.2%"></span></span><span class="n">2</span></div>
+          <div class="hbar"><span class="lbl">버전 (PCB · 기구)</span><span class="track"><span class="fill c" style="display:block;width:22.2%"></span></span><span class="n">2</span></div>
+          <div class="hbar"><span class="lbl">제조사 (규정 의도대로)</span><span class="track"><span class="fill c" style="display:block;width:11.1%"></span></span><span class="n">1</span></div>
+          <div class="hbar"><span class="lbl">커넥터 기타 · 금지 문자</span><span class="track"><span class="fill g" style="display:block;width:22.2%"></span></span><span class="n">2</span></div>
+        </div>
+        <p class="mini" style="margin-top:.7rem">TXC가 크리스털에서는 <span class="mono">01</span>, 발진기에서는 <span class="mono">05</span>다. 같은 자리를 사람마다 다른 뜻으로 썼다.</p>
+      </div></div>
+      <div class="stack">
+        <div class="callout c-info">
+          <p class="callout-title"><span aria-hidden="true">·</span><span>권고 — 끝 2자리는 "본체 안 순번"으로, 제조사는 AVL로</span></p>
+          <div class="callout-body">
+            ① 규정대로 제조사 코드표를 만들면 2nd source마다 새 품번이 생기고 BOM은 그중 하나를 골라 적어야 한다.
+            ② 끝 2자리를 <strong>같은 본체 안에서 구분이 필요할 때 쓰는 순번</strong>으로 정의하고, FFF가 같은 제조사 제품은 한 품번 아래 AVL로 묶는다. 지금 실무(92.5%가 <span class="mono">00</span>)와 맞는다. 결정은 회사가 한다.
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="tight">
+            <thead><tr><th>품목 마스터 품질</th><th class="em">영향</th></tr></thead>
+            <tbody>
+              <tr><td>대체·변형 품목이 품명 칸에 묻혀 있다 (MPN 병기 2건)</td><td class="em">재고 1,453 · 2,041개가 BOM 소요와 안 이어진다. 같은 사양 ISSI 재고 4,699개도 BOM에 없다</td></tr>
+              <tr><td>설계 BOM 설명 ↔ ERP 설명 충돌 5건</td><td class="em">어느 설명을 보고 채번했느냐에 따라 코드가 틀린다</td></tr>
+              <tr><td>제조사 결측 <span class="mono">#N/A</span> 3건, 표기 비정규화</td><td class="em">제조사별 집계가 갈린다</td></tr>
+              <tr><td>도면번호 열 309행 빈칸, 재질 열에 MSL 기재</td><td class="em">기구물 도면 개정을 추적할 수 없다</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-emphasis">
+      <p class="callout-title"><span aria-hidden="true">!</span><span>판정 — 유형 A(규격화된 업체)에 가깝다. 유형 B로 새는 지점은 네 곳</span></p>
+      <div class="callout-body">
+        <ul class="bullets on-navy">
+          <li>규정의 빈칸(초크, 대형 인덕터, 라벨, 공차 ±2%)이 문서 대신 구두 관행으로 메워졌다</li>
+          <li>끝 2자리의 의미가 사람마다 다르다</li>
+          <li>틀린 설명이 코드로 굳었다</li>
+          <li>대체 품목 구조(AVL)가 없어 품명 칸에 대체품을 적는다</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th class="c">순위</th><th>에이전트의 우선 과제</th><th class="em">근거</th></tr></thead>
+        <tbody>
+          <tr><td class="c num">1</td><td>다른 사양의 자리를 차지한 4건 재채번 검토</td><td class="em">신규 등록 때 충돌이 확실히 생긴다</td></tr>
+          <tr><td class="c num">2</td><td>규정 v1.1 정리 — 규정 문서 결함 13항과 실무 확장 문서화</td><td class="em">담당자가 바뀌어도 같은 번호가 나오게 한다</td></tr>
+          <tr><td class="c num">3</td><td>끝 2자리 정책 결정과 AVL 분리</td><td class="em">대체 품목 재고가 소요 계산에서 빠지는 문제를 없앤다</td></tr>
+          <tr><td class="c num">4</td><td>신규 등록 자동 검사, 기존 마스터 정기 감사</td><td class="em">4.9%의 불일치가 다시 쌓이지 않게 한다</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 11 TYPES ================= -->
+<article class="slide" id="types">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">11</span><span class="eyebrow">Company Types</span></div>
+    <h2 class="slide-h2">먼저 유형을 판정하고, 유형에 맞는 역할을 맡는다</h2>
+    <p class="slide-desc">규칙이 정돈된 회사에 새 체계를 제안하면 혼란만 생긴다. 규칙이 없는 회사에서 집행부터 하려 하면 집행할 대상이 없다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="grid g3">
+      <div class="card paper"><div class="card-tint navy"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">유형 A · 규격화된 업체</h3><span class="tag tag-navy">집행자 · 감사자</span></div>
+        <ul class="bullets">
+          <li><strong>모습</strong> — 규정 문서가 있고 실데이터가 대체로 따른다</li>
+          <li><strong>첫 산출물</strong> — 기계 판독용 규칙 스키마</li>
+          <li><strong>가장 큰 위험</strong> — 규칙의 빈칸을 에이전트가 임의로 메운다</li>
+          <li><strong>사례</strong> — 사례 기업 회로 자재</li>
+        </ul>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">유형 B · 규정은 있으나 부실</h3><span class="tag">진단자 · 정리자</span></div>
+        <ul class="bullets">
+          <li><strong>모습</strong> — 규정이 낡았거나 실무와 어긋난다. 담당자마다 확장 방식이 다르다</li>
+          <li><strong>첫 산출물</strong> — 규정–실무 격차 리포트</li>
+          <li><strong>가장 큰 위험</strong> — 대량 재채번으로 발주·재고·도면의 연결이 끊긴다</li>
+          <li><strong>사례</strong> — 사례 기업의 규정 공백 영역</li>
+        </ul>
+      </div></div>
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">유형 C · 자체 품번 관리 없음</h3><span class="tag tag-muted">설계 조력자 · 초기 구축자</span></div>
+        <ul class="bullets">
+          <li><strong>모습</strong> — 품번 열이 없거나, MPN·거래처 품번을 품번처럼 쓴다</li>
+          <li><strong>첫 산출물</strong> — 정규화된 품목 속성 목록</li>
+          <li><strong>가장 큰 위험</strong> — 체계를 에이전트가 정해 버린다</li>
+          <li><strong>사례</strong> — KK1~KK6 E-BOM</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="stack">
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>판정 신호</th><th>유형 A</th><th>유형 B</th><th>유형 C</th><th class="em">사례 기업 회로 자재</th></tr></thead>
+          <tbody>
+            <tr><td>규정 문서</td><td>있음, 개정 관리</td><td>있음, 개정 없음 · 범위 부족</td><td>없음</td><td class="em">있음 (2022, v1.0)</td></tr>
+            <tr><td>형식 준수율</td><td>99% 이상</td><td>패턴 여러 개 혼재</td><td>측정 대상 없음</td><td class="em">100%</td></tr>
+            <tr><td>해독 정합률</td><td>95% 이상</td><td>90% 미만</td><td>해당 없음</td><td class="em">95.1% (불일치 17/347)</td></tr>
+            <tr><td>1품목 1품번</td><td>드묾</td><td>반복됨</td><td>같은 부품이 표기마다 갈림</td><td class="em">품명 MPN 병기 2건</td></tr>
+            <tr><td>자유 텍스트 의존</td><td>드묾</td><td>흔함</td><td>식별 자체가 자유 텍스트</td><td class="em">품명 상태 문구 1건</td></tr>
+            <tr><td>발번 창구</td><td>단일 창구</td><td>여러 명 · 불명</td><td>없음</td><td class="em">문서에 명시 없음</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mini">기준값(99% · 95% · 90%)은 이 문서의 제안이며 업계 표준이 아니다. 회사마다 기준선을 먼저 재고 조정한다.</p>
+    </div>
+
+    <div class="callout c-info">
+      <p class="callout-title"><span aria-hidden="true">·</span><span>판정은 회사 단위가 아니라 품목군 단위로</span></p>
+      <div class="callout-body">사례 기업도 회로 자재는 유형 A에 가깝지만, 라벨·소음 방지 패드는 문서화된 규칙이 없어 유형 C에 가깝다. 한 회사 안에 A·B·C가 섞여 있다. 제품·반제품 품번은 자체 양산품 코드라 이 판정의 대상이 아니다.</div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 12 SCENARIO ================= -->
+<article class="slide" id="scenario">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">12</span><span class="eyebrow">Scenario A · B · C</span></div>
+    <h2 class="slide-h2">유형별 접근 시나리오</h2>
+    <p class="slide-desc">A는 규칙대로 만들고 충돌을 올린다. B는 실제로 쓰이는 규칙을 찾아 위험한 오류만 고친다. C는 품목부터 정리하고 체계는 회사가 고르게 한다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="card paper"><div class="card-tint navy"></div><div class="card-inner">
+      <div class="card-head"><h3 class="h3" style="flex:1">A · 신규 등록이 기존 오등록과 부딪히는 경우</h3><span class="tag tag-navy">RB-PN-03 · H</span></div>
+      <div class="bf" style="margin:.75rem 0">
+        <div class="bf-card"><span class="num">REQUEST</span><span class="title mono" style="font-size:.85rem">CL05A475KP5NRNC</span><p class="sub">Samsung · 4.7µF ±10% 10V X5R 1005</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">ENCODE</span><span class="title"><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol">5</b><b class="k-volt">3</b><b class="k-val">475</b><b class="k-suf">00</b></span></span><p class="sub">규칙대로 만든 번호</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">CONFLICT</span><span class="title">이미 존재</span><p class="sub">Murata GRT155R61A475ME13 — 실제 ±20%</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">ESCALATE</span><span class="title">사람에게 올림</span><p class="sub">접미를 올려 피하지 않는다</p></div>
+      </div>
+      <div class="grid g3">
+        <div class="callout c-success"><p class="callout-title"><span aria-hidden="true">①</span><span>흡수 — 먼저 검토</span></p><div class="callout-body">회로가 ±20%를 허용하면 기존 품목을 그대로 쓰고 신규 등록하지 않는다. 차량용 등급 등 코드에 없는 속성은 데이터시트로 확인.</div></div>
+        <div class="callout c-muted"><p class="callout-title"><span aria-hidden="true">②</span><span>기존 품목 정정</span></p><div class="callout-body">Murata 품목에 <span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol">6</b><b class="k-volt">3</b><b class="k-val">475</b><b class="k-suf">00</b></span> 신규 발번, 구 품번은 <span class="mono">Superseded</span> 후 재고·BOM 이관. 신규 부품은 <span class="mono">…01</span>.</div></div>
+        <div class="callout c-muted"><p class="callout-title"><span aria-hidden="true">③</span><span>기존 유지 · 예외표</span></p><div class="callout-body">구 품번을 예외표에 "실제 ±20%"로 등록하고 신규 부품은 <span class="mono">…01</span>. 해독할 때 예외표를 항상 먼저 조회해야 한다.</div></div>
+      </div>
+      <p class="sowhat" style="margin-top:.875rem">So-What · 어느 경우든 <span class="mono">12-155347500</span>을 ±10% 신규 부품에 다시 쓰는 선택지는 없다. 이미 ±20% 부품의 발주·입고 이력이 쌓인 번호다.</p>
+    </div></div>
+
+    <div class="split">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">B · 실무 규칙 역추론 — 지지와 반례를 함께 센다</h3></div>
+        <table class="tight" style="margin-top:.4rem">
+          <thead><tr><th>규칙 후보</th><th class="c">지지</th><th class="c">반례</th><th>판정</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">14-6 SS T VVV NN 비드</td><td class="c num">13</td><td class="c num">0</td><td>문서화 후보</td></tr>
+            <tr><td class="mono">14-7 SS T VVV NN 파워</td><td class="c num">24</td><td class="c num">0</td><td>문서화 후보</td></tr>
+            <tr><td>전해 사이즈 = 지름</td><td class="c num">7</td><td class="c num">0</td><td>문서화 후보</td></tr>
+            <tr><td>초크 D6 = 용도</td><td class="c num">3</td><td class="c">—</td><td><strong>지지 부족</strong> · 확인 전 사용 금지</td></tr>
+            <tr><td>끝 2자리 = 제조사</td><td class="c num">10</td><td class="c num">14</td><td><strong>성립 안 함</strong> · 정책 결정 먼저</td></tr>
+          </tbody>
+        </table>
+        <p class="mini" style="margin-top:.6rem">규정과 다르다는 이유만으로 실무 관행을 오류로 판정하지 않는다. 지지 건수가 많으면 규정이 낡은 것일 수 있다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">B · 불일치 17건의 처리 경로</h3></div>
+        <div class="stackbar" style="margin:.5rem 0 .9rem">
+          <div class="s1" style="width:23.5%">재채번 4</div>
+          <div class="s2" style="width:17.6%">정책 3</div>
+          <div class="s4" style="width:58.9%">레거시 유지 · 예외표 10</div>
+        </div>
+        <ul class="cellist">
+          <li><strong>재채번 검토</strong> — 다른 사양의 자리를 차지한다. 신규 발번 → 구 품번 <span class="mono">Superseded</span> → 재고·BOM·미결 발주 이관</li>
+          <li><strong>정책 결정 후 처리</strong> — 메모리 등급 자리처럼 규정의 자리 자체가 쓰이지 않는다</li>
+          <li><strong>레거시 유지 · 예외표</strong> — 틀렸지만 다른 품목과 부딪힐 가능성이 낮다. 예외표에 "해독 ≠ 실제" 기록</li>
+          <li><strong>설명 정정</strong> — 코드가 맞고 설명이 틀린 경우. 설계 BOM 설명 충돌 5건</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="callout c-emphasis">
+        <p class="callout-title"><span aria-hidden="true">!</span><span>B · 대량 재채번은 하지 않는다</span></p>
+        <div class="callout-body">품번은 발주서·재고 이력·원가·BOM·도면·라벨·고객 문서·협력사 시스템에 퍼져 있다. 일괄 변경은 이 연결을 한꺼번에 끊는다. 새 규칙은 신규 품목부터 적용한다. 사례 기업의 재채번 검토 대상은 347개 중 4건이다.</div>
+      </div>
+      <div class="callout c-info">
+        <p class="callout-title"><span aria-hidden="true">·</span><span>B · 병합하지 말고 연결한다</span></p>
+        <div class="callout-body">같은 사양 품번을 지우면 그 번호에 쌓인 이력이 갈 곳을 잃는다. ISSI·ESMT SPI NOR는 AVL로 묶고, FAKRA 대체품은 대체 관계로 잇는다. 단, LTE 모듈 펌웨어 변형은 FFF가 달라 <strong>대체가 아니다</strong>.</div>
+      </div>
+    </div>
+
+    <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+      <div class="card-head"><h3 class="h3" style="flex:1">C · 품번을 붙이기 전에 품목부터</h3></div>
+      <div class="bf" style="margin:.75rem 0">
+        <div class="bf-card"><span class="num">1</span><span class="title">품목 정체성 정리</span><p class="sub">MPN 정규화 · 동일 부품 판정</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">2</span><span class="title">품목군 트리</span><p class="sub">회로 · PCB · 기구 · SW · 라벨 · 포장</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">3</span><span class="title">체계 선택지 제시</span><p class="sub">결정은 회사가</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">4</span><span class="title">초기 마스터 일괄 구축</span><p class="sub">거래처 품번 상호 참조표</p></div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div><div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card"><span class="num">5</span><span class="title">운영 규칙</span><p class="sub">발번 창구 · FFF · 불변성</p></div>
+      </div>
+      <div class="table-wrap" style="box-shadow:none">
+        <table class="tight">
+          <thead><tr><th>기준</th><th>의미 부여형</th><th>분류 접두 + 무의미 순번</th><th>완전 무의미 순번</th></tr></thead>
+          <tbody>
+            <tr><td>형태 예</td><td><span class="pc"><b class="k-cls">12</b><i>-</i><b class="k-size">15</b><b class="k-tol">5</b><b class="k-volt">7</b><b class="k-val">104</b><b class="k-suf">00</b></span></td><td class="mono">12-000431 (가상)</td><td class="mono">100431 (가상)</td></tr>
+            <tr><td>사람이 읽는 것</td><td>분류와 사양</td><td>분류</td><td>없음</td></tr>
+            <tr><td>규칙 유지 비용</td><td>높다 · 분류마다 코드표</td><td>낮다 · 분류 코드표만</td><td>거의 없다</td></tr>
+            <tr><td>대표 오류</td><td>자리 착오가 사양 충돌로 번진다</td><td>분류 착오</td><td>품번 대신 속성 오류</td></tr>
+            <tr><td>어울리는 회사</td><td>현장이 품번을 눈으로 읽고, 규칙 관리 담당이 있다</td><td><strong>담당 인력이 적은 중소 제조사</strong></td><td>PLM·ERP 속성 검색이 갖춰진 회사</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mini" style="margin-top:.6rem">[판단] 유형 C 업체에는 분류 접두 + 무의미 순번이 현실적이다. "같은 사양의 중복이 눈에 띈다"는 의미 부여형의 장점은 에이전트의 속성 기반 중복 검사가 대신한다. 유형 C에서는 보존할 레거시가 없으므로 일괄 발번이 허용된다.</p>
+    </div></div>
+
+    <div class="stack">
+      <p class="sec-label">C · 반면교사 — 체계 없이 붙인 임시 번호 (앞선 M-BOM 생성 작업)</p>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>임시 식별자</th><th>품목</th><th>문제</th><th class="em">사례 기업 규칙이라면</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">PCB-KK1-FACT-V01A<br />PCB-KK4-IFBD-V2.0</td><td>PCB 8층</td><td>길이 가변. 같은 품목군인데 버전 표기가 <span class="mono">V01A</span>와 <span class="mono">V2.0</span>으로 다르다</td><td class="em"><span class="pc"><b class="k-cls">30</b><i>-</i><b class="k-size">08</b><b class="k-unk">?</b><b class="k-unk">????</b><b class="k-unk">??</b></span> 층수 · 구조 · 일련번호 · 버전</td></tr>
+            <tr><td class="mono">CBL-KK1-LCD-080 / -200</td><td>LCD 케이블 40P</td><td>길이는 있고 핀 수는 없다</td><td class="em"><span class="mono">38</span> Harness · 핀 수 <span class="mono">040</span> · 길이 자리는 단위 미정</td></tr>
+            <tr><td class="mono">MEC-SHD8550-F01 / C01</td><td>쉴드 프레임·커버</td><td>쉴드 캔 분류가 규칙에도 없다</td><td class="em"><span class="mono">64</span> Housing 관행 · 대분류 신설 검토</td></tr>
+            <tr><td class="mono">SW-KK1-OSIMG-R1.0 외 4</td><td>OS 이미지 · 설정 파일</td><td>무형 품목</td><td class="em"><strong>대분류가 없어 만들 수 없다</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 문서 안에서 품목을 구별하는 데는 충분했지만 ERP 품번으로는 쓸 수 없다. 형식이 품목군마다 다르고, 다음 사람이 같은 규칙으로 번호를 지을 수 없다.</p>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 13 AGENT ================= -->
+<article class="slide" id="agent">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">13</span><span class="eyebrow">Agent Principles &amp; Rulebook</span></div>
+    <h2 class="slide-h2">세 유형 공통 원칙과 품번 룰북</h2>
+    <p class="slide-desc">에이전트는 품번을 지어내지 않고 도출한다. 확정은 사람이 한다. 지향점 문서의 룰북 체계(S 차단 · H 승인 요청 · L 자동 처리 후 기록)에 <span class="mono">RB-PN</span> 분류를 제안한다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="grid g2">
+      <div class="flow-card"><div class="flow-number">1</div><div class="flow-content"><p class="flow-title">품번은 지어내지 않고 도출한다</p><p class="flow-body">규칙과 확정 사양이 같으면 결과도 같다. 규칙이 답을 주지 않으면 사람에게 올린다.</p></div></div>
+      <div class="flow-card"><div class="flow-number">2</div><div class="flow-content"><p class="flow-title">사양 확정이 채번보다 먼저다</p><p class="flow-body">MPN과 데이터시트로 확정한 사양으로 채번한다. 설명 문자열만으로 채번하지 않는다.</p></div></div>
+      <div class="flow-card"><div class="flow-number">3</div><div class="flow-content"><p class="flow-title">기존 품번은 바꾸지 않고, 다시 쓰지 않는다</p><p class="flow-body">정정은 신규 발번과 <span class="mono">Superseded_By</span>로 한다.</p></div></div>
+      <div class="flow-card"><div class="flow-number">4</div><div class="flow-content"><p class="flow-title">유일성 검사는 전체 마스터 대상</p><p class="flow-body">비활성·단종·Superseded 품번도 포함한다. 단종 번호와 같은 번호를 새로 내면 이력이 섞인다.</p></div></div>
+      <div class="flow-card"><div class="flow-number">5</div><div class="flow-content"><p class="flow-title">새 분류 · 새 코드 값은 제안만</p><p class="flow-body">분류 체계는 조달·품질·회계 정책이 반영된 결과다.</p></div></div>
+      <div class="flow-card"><div class="flow-number">6</div><div class="flow-content"><p class="flow-title">모든 제안에 근거를 붙인다</p><p class="flow-body">해독 결과, 대조한 원본, <span class="mono">Confidence_Score</span>, <span class="mono">Source_Provenance</span>.</p></div></div>
+      <div class="flow-card"><div class="flow-number">7</div><div class="flow-content"><p class="flow-title">확정은 사람이 한다</p><p class="flow-body">발번 확정, 재채번, 규정 개정은 승인 후에만 반영한다.</p></div></div>
+      <div class="flow-card"><div class="flow-number">8</div><div class="flow-content"><p class="flow-title">판정은 품목군 단위로</p><p class="flow-body">한 회사 안에도 A·B·C가 섞여 있다.</p></div></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>ID</th><th>조건 (When)</th><th>판정 · 조치 (Then)</th><th class="c">등급</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">RB-PN-01</td><td>신규 품번이 형식(길이 · 정규식 · I·O·Z)을 어긴다</td><td>등록 차단</td><td class="c"><span class="tag tag-solid">S</span></td></tr>
+          <tr><td class="mono">RB-PN-02</td><td>대분류 · 세부 코드가 코드표에 없다</td><td>등록 차단. 가장 가까운 칸에 끼워 넣지 않고 규정 개정 요청으로 올린다</td><td class="c"><span class="tag tag-solid">S</span></td></tr>
+          <tr><td class="mono">RB-PN-03</td><td>규칙대로 만든 품번이 이미 쓰이고 있다</td><td>기존 품목 해독 대조 → 오등록이면 정정 경로 선택, 정상이면 흡수 검토. 접미 자동 우회 금지</td><td class="c"><span class="tag tag-navy">H</span></td></tr>
+          <tr><td class="mono">RB-PN-04</td><td>기존 품번 해독 결과가 마스터 규격과 다르다</td><td><span class="mono">Mismatch</span> 표시, 처리 경로 분류 제안</td><td class="c"><span class="tag tag-navy">H</span></td></tr>
+          <tr><td class="mono">RB-PN-05</td><td>정규화한 같은 MPN이 품번 둘 이상에 등록</td><td>중복 후보로 올린다. 병합·삭제하지 않는다</td><td class="c"><span class="tag tag-navy">H</span></td></tr>
+          <tr><td class="mono">RB-PN-06</td><td>같은 본체(D1~D9)에 접미만 다른 품번</td><td>차이(제조사 · FFF · 키 · 펌웨어) 기록, AVL 연결 확인</td><td class="c"><span class="tag tag-muted">L</span></td></tr>
+          <tr><td class="mono">RB-PN-07</td><td>품명 칸에 MPN이 둘 이상이거나 상태 문구</td><td>대체 관계 · 상태 필드로 분리 제안, 소요 계산 경고</td><td class="c"><span class="tag tag-navy">H</span></td></tr>
+          <tr><td class="mono">RB-PN-08</td><td>설계 BOM 설명과 ERP 설명이 충돌</td><td>데이터시트로 먼저 판정. 판정 전 채번·정정 금지</td><td class="c"><span class="tag tag-navy">H</span></td></tr>
+          <tr><td class="mono">RB-PN-09</td><td>에이전트가 기존 품번을 바꾸거나 재사용하려 함</td><td>차단. 신규 발번 + <span class="mono">Superseded_By</span>만 허용</td><td class="c"><span class="tag tag-solid">S</span></td></tr>
+          <tr><td class="mono">RB-PN-10</td><td>제조사 결측 · 비정규 표기</td><td>MPN으로 복원 · 정규화(<span class="mono">RB-SY-02</span>), 근거 기록</td><td class="c"><span class="tag tag-muted">L</span></td></tr>
+          <tr><td class="mono">RB-PN-11</td><td>개정 요청</td><td>FFF가 바뀌면 신규 품번. 호환이면 리비전 여부를 정책대로 판정</td><td class="c"><span class="tag tag-navy">H</span></td></tr>
+          <tr><td class="mono">RB-PN-12</td><td>에이전트가 체계를 정하거나 초기 마스터를 일괄 발번하려 함</td><td>차단. 선택지와 근거까지만</td><td class="c"><span class="tag tag-solid">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">신규 필드 제안</h3><span class="tag tag-muted">지향점 1.1.2 반영 제안</span></div>
+        <ul class="cellist">
+          <li><span class="mono">IPN_Scheme_ID</span> — 품번을 만든 규칙과 버전 (<span class="mono">DRIMAES-CIRCUIT-v1.0</span>, <span class="mono">LEGACY</span>)</li>
+          <li><span class="mono">IPN_Decoded</span> — 구조화된 해독 결과</li>
+          <li><span class="mono">IPN_Spec_Consistency</span> — Match · Mismatch · Exception_Listed · Not_Decodable</li>
+          <li><span class="mono">IPN_Exception_Note</span> — 예외표 내용</li>
+          <li><span class="mono">IPN_Status</span> — Active · Frozen · Superseded · Inactive</li>
+          <li><span class="mono">Superseded_By</span> / <span class="mono">Supersedes</span> — 재채번 상호 참조</li>
+          <li><span class="mono">Legacy_Code</span> — 거래처 품번 · 옛 관리번호 · 임시 식별자</li>
+          <li><span class="mono">IPN_Assigned_By</span> / <span class="mono">_At</span> — 발번 권한 감사</li>
+        </ul>
+      </div></div>
+      <div class="table-wrap">
+        <table class="tight">
+          <thead><tr><th>KPI</th><th>사례 기업 기준선</th><th class="em">목표 [판단]</th></tr></thead>
+          <tbody>
+            <tr><td>신규 품번 규격 정합률</td><td>—</td><td class="em">100%</td></tr>
+            <tr><td>레거시 해독 정합률</td><td>95.1% (330/347)</td><td class="em">정정 후 상승 추세</td></tr>
+            <tr><td>중복 품번률 (같은 MPN에 품번 둘 이상)</td><td>이번 범위 0</td><td class="em">0 유지</td></tr>
+            <tr><td>BOM 밖 대체 · 변형 재고</td><td>3품목</td><td class="em">0</td></tr>
+            <tr><td>규정 공백 감지 → 규정 반영</td><td>확장 10종 (대분류 2개 포함)</td><td class="em">정해진 기간 안에 반영</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="sowhat">So-What · 의미 부여형 회사에서 에이전트는 규칙의 집행자이자 감사자, 무의미형 회사에서는 속성 마스터의 관리자다. 어느 쪽이든 기존 번호는 보존하고 새 규칙은 신규 품목부터 적용한다.</p>
+  </div>
+</article>
+
+<!-- ================= A REFS ================= -->
+<article class="slide appendix" id="refs">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge gray">A</span><span class="eyebrow gray">Appendix · References</span></div>
+    <h2 class="slide-h2">출처 · 근거 자료</h2>
+    <p class="slide-desc">웹 출처의 내용은 라이선스 준수를 위해 요약 · 재서술했다. 상세 내용과 장별 인용 위치는 원문 md 부록 A에 있다.</p>
+  </div>
+  <div class="pad slide-body">
+    <p class="appendix-divider">Web Sources</p>
+    <div class="table-wrap">
+      <table class="tight">
+        <thead><tr><th>주제</th><th>출처</th></tr></thead>
+        <tbody>
+          <tr><td>의미 부여형 품번의 장단점</td><td><a href="https://www.openbom.com/blog/part-numbers-intelligent-or-just-numbers">OpenBOM — Part Numbers: Intelligent or Just Numbers?</a></td></tr>
+          <tr><td>AI 시대의 품번 설계</td><td><a href="https://www.openbom.com/blog/design-part-numbering-ai-era">OpenBOM — Design Part Numbering in the AI Era</a></td></tr>
+          <tr><td>품번 모범 사례 · 체계 전환 비용</td><td><a href="https://www.openbom.com/blog/part-numbers-best-practices-and-future-improvements">OpenBOM — Part Numbers Best Practices</a></td></tr>
+          <tr><td>호환 부품: 신규 품번인가 리비전인가</td><td><a href="https://www.openbom.com/blog/interchangeable-parts-new-part-number-or-revision">OpenBOM — Interchangeable Parts</a></td></tr>
+          <tr><td>무의미 순번형 권고 · 고정 길이</td><td><a href="https://www.buyplm.com/plm-good-practice/part-numbering-system-software.aspx">PDXpert — Part numbering system</a></td></tr>
+          <tr><td>전자 부품 품번 체계 예</td><td><a href="https://blog.mbedded.ninja/electronics/general/a-sensible-part-numbering-scheme-for-electronic-components/">mbedded.ninja — A Sensible Part Numbering Scheme</a></td></tr>
+          <tr><td>혼동 문자 배제</td><td><a href="https://clearlyinventory.com/resources/inventory-basics/how-to-design-good-item-numbers-for-products-in-inventory/">Clearly Inventory — How to Design Good Item Numbers</a></td></tr>
+          <tr><td>FFF 호환 판정</td><td><a href="https://docs.aligni.com/guides/form-fit-function/">Aligni — Form-Fit-Function</a></td></tr>
+          <tr><td>의미 부여형의 오류 · 중복 감소 효과</td><td><a href="https://durolabs.co/blog/part-numbering-schemes/">Duro — Part Numbering Schemes</a></td></tr>
+          <tr><td>사내 품번과 MPN의 관계</td><td><a href="https://www.z2data.com/products/part-risk-manager/features/ipn-internal-part-number-search/">Z2Data — IPN Search</a> · <a href="https://github.com/inventree/InvenTree/issues/1389">InvenTree #1389</a></td></tr>
+          <tr><td>승인 제조사 목록 (AML)</td><td><a href="https://docs.oracle.com/en/cloud/saas/supply-chain-management/20a/faupd/approved-manufacturers-list.html">Oracle SCM — Approved Manufacturers List</a></td></tr>
+          <tr><td>워크스루 부품 사양</td><td><a href="https://www.digikey.com/en/products/detail/samsung-electro-mechanics/CL05A475KP5NRNC/3889566">DigiKey — Samsung CL05A475KP5NRNC</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="appendix-divider" style="margin-top:1.5rem">Internal Files</p>
+    <div class="grid g2">
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">규정 문서</h3></div>
+        <ul class="cellist">
+          <li><span class="mono">회로자재_채번규정(부품코드).xlsx</span></li>
+          <li><span class="mono">DRIMAES_PART NO 채번규칙_회로자재_220902.pptx</span> (v1.0)</li>
+          <li><span class="mono">DRIMAES_PART NO 채번규칙_기구물_220830_V02.pptx</span> (v1.0)</li>
+        </ul>
+      </div></div>
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3">검증 대상 · 연계 문서</h3></div>
+        <ul class="cellist">
+          <li>재고 현황 317행 · 설계 BOM 310행 · ERP BOM 309행</li>
+          <li>KK1~KK6 E-BOM, <span class="mono">M-BOM_생성\</span> 산출물</li>
+          <li><span class="mono">BOM_Agent_지향점(내부용)2026.09.17.md</span>, <span class="mono">M-BOM_다단계확정_시나리오.md</span></li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="callout c-info">
+      <p class="callout-title"><span aria-hidden="true">·</span><span>적용 범위 밖 — 제품·반제품 품번</span></p>
+      <div class="callout-body">제품·반제품 품번(<span class="mono">MS…</span>)에는 별도의 채번 규칙이 없다. 관리 대상 부품이 아니라 회사 자체 양산품의 코드이므로 ERP 코드 채번 규칙의 적용 범위 밖이다. 검증에서도 형식·자리 검사 대상에서 제외했고, 에이전트는 이 품번을 부품 규칙으로 해독하거나 오류로 판정하지 않는다.</div>
+    </div>
+    <div class="callout c-muted">
+      <p class="callout-title"><span aria-hidden="true">·</span><span>확인하지 못한 것</span></p>
+      <div class="callout-body">공통모드 초크의 D6 의미, PCB 구조 코드 <span class="mono">3</span>(R/F)의 뜻, 일부 끝 2자리가 가리키는 제조사는 실데이터에서 추정했으며 담당자 확인이 필요하다. 재고 금액은 싣지 않았다.</div>
+    </div>
+    <p class="meta">상세 근거 · <span class="mono">ERP_Code_채번예시.md</span> v1.1 (2026-09-16)</p>
+  </div>
+</article>
+
+</div><!-- /.wrap -->
+  <div class="pager no-print" id="pager">
+    <button type="button" id="prevBtn" aria-label="이전 슬라이드">&larr;</button>
+    <span class="mono" id="pageLabel">01 / 15</span>
+    <button type="button" id="nextBtn" aria-label="다음 슬라이드">&rarr;</button>
+  </div>
+</main>
+</div><!-- /.shell -->
+<script>
+(function () {
+  "use strict";
+  var NAV = [
+    { id: "overview", label: "개요 · 검증 요약", number: "00", group: 0 },
+    { id: "why", label: "MPN만으로는 왜 부족한가", number: "01", group: 0 },
+    { id: "benefit", label: "자체 품번의 관리상 이점", number: "02", group: 0 },
+    { id: "structure", label: "12자리 구조 · 대분류", number: "03", group: 1 },
+    { id: "res", label: "저항 10", number: "04", group: 1 },
+    { id: "cap", label: "커패시터 12", number: "05", group: 1 },
+    { id: "ind", label: "인덕터 14", number: "06", group: 1 },
+    { id: "others", label: "PCB · 그 외 품목", number: "07", group: 1 },
+    { id: "mech", label: "기구물 · 적용 범위", number: "08", group: 1 },
+    { id: "howto", label: "채번 절차 · 예시", number: "09", group: 2 },
+    { id: "verify", label: "실데이터 검증", number: "10", group: 2 },
+    { id: "types", label: "업체 유형 판정", number: "11", group: 3 },
+    { id: "scenario", label: "유형별 접근 시나리오", number: "12", group: 3 },
+    { id: "agent", label: "에이전트 원칙 · 룰북", number: "13", group: 3 },
+    { id: "refs", label: "출처 · 근거 자료", number: "A", group: 4, appendix: true }
+  ];
+  var IDS = NAV.map(function (n) { return n.id; });
+  var sidebar  = document.getElementById("sidebar");
+  var backdrop = document.getElementById("backdrop");
+  var toggle   = document.getElementById("sbToggle");
+  var pageLbl  = document.getElementById("pageLabel");
+  var prevBtn  = document.getElementById("prevBtn");
+  var nextBtn  = document.getElementById("nextBtn");
+  NAV.forEach(function (n) {
+    var ul = document.getElementById("nav-" + n.group);
+    if (!ul) return;
+    var li = document.createElement("li");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "sb-item" + (n.appendix ? " appendix" : "");
+    btn.dataset.goto = n.id;
+    btn.innerHTML = '<span class="bar"></span><span class="sb-num">' + n.number +
+      '</span><span class="sb-text"></span><span class="dot"></span>';
+    btn.querySelector(".sb-text").textContent = n.label;
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+  var activeId = IDS[0];
+  function closeMobile() {
+    sidebar.classList.remove("open");
+    backdrop.classList.remove("show");
+    toggle.textContent = "목차 ☰";
+  }
+  function render(id, pushHash) {
+    if (IDS.indexOf(id) === -1) id = IDS[0];
+    activeId = id;
+    Array.prototype.forEach.call(document.querySelectorAll(".slide"), function (el) {
+      var on = el.id === id;
+      el.classList.toggle("active", on);
+      el.classList.remove("slide-enter");
+      if (on) { void el.offsetWidth; el.classList.add("slide-enter"); }
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".sb-item[data-goto]"), function (btn) {
+      btn.classList.toggle("active", btn.dataset.goto === id);
+    });
+    var idx = IDS.indexOf(id);
+    pageLbl.textContent = String(idx + 1).padStart(2, "0") + " / " + String(IDS.length).padStart(2, "0");
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx >= IDS.length - 1;
+    if (pushHash !== false && window.location.hash !== "#" + id) {
+      try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    }
+    requestAnimationFrame(function () { window.scrollTo({ top: 0 }); });
+    closeMobile();
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-goto]") : null;
+    if (t) render(t.dataset.goto);
+  });
+  prevBtn.addEventListener("click", function () { render(IDS[Math.max(IDS.indexOf(activeId) - 1, 0)]); });
+  nextBtn.addEventListener("click", function () { render(IDS[Math.min(IDS.indexOf(activeId) + 1, IDS.length - 1)]); });
+  toggle.addEventListener("click", function () {
+    var open = sidebar.classList.toggle("open");
+    backdrop.classList.toggle("show", open);
+    toggle.textContent = open ? "닫기 ✕" : "목차 ☰";
+  });
+  backdrop.addEventListener("click", closeMobile);
+  document.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+    var idx = IDS.indexOf(activeId);
+    if (e.key === "ArrowRight" || e.key === "PageDown") render(IDS[Math.min(idx + 1, IDS.length - 1)]);
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") render(IDS[Math.max(idx - 1, 0)]);
+  });
+  function syncFromHash() {
+    var h = window.location.hash.replace("#", "");
+    render(IDS.indexOf(h) !== -1 ? h : IDS[0], false);
+  }
+  window.addEventListener("hashchange", syncFromHash);
+  window.addEventListener("popstate", syncFromHash);
+  syncFromHash();
+})();
+</script>
+</body>
+</html>

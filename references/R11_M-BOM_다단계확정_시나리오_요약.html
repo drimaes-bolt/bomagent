@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#F4F5F7" />
+<title>M-BOM은 한 번에 확정되지 않는다 — 다단계 수정 시나리오 요약</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+/* =========================================================
+   DrimAES Light Web UI Kit v1.0 — 정적 HTML 이식
+   ========================================================= */
+:root{
+  color-scheme: light;
+  --co-black:#000000; --co-dark:#555555; --co-mid:#A0A0A0; --co-light:#DEDEDE;
+  --co-mint:#7DEAD5; --co-cyan:#1BBBCC; --co-blue:#4383AF; --co-navy:#06438C;
+  --brand-50:#E5F0F5; --brand-100:#C7DCE7; --brand-300:#7CC9D5;
+  --brand-400:#1BBBCC; --brand-500:#4383AF; --brand-600:#06438C;
+  --brand-700:#052E62; --brand-800:#031F44;
+  --em-100:#E5F8F2; --em-300:#7DEAD5; --em-500:#3DC4A7; --em-600:#2BAA8D; --em-700:#1F8F76;
+  --s0:#FFFFFF; --s50:#FAFAFA; --s100:#F4F5F7; --s200:#EEF0F3;
+  --shadow-card:0 4px 6px rgba(0,0,0,0.08);
+  --shadow-glow:0 0 15px rgba(6,67,140,0.16);
+  --ease:cubic-bezier(0.22,1,0.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background-color:var(--s100); color:#111111; min-height:100vh;
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,
+    "Segoe UI","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-feature-settings:"tnum" 1,"ss01" 1; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+.shell{display:flex;min-height:100vh}
+.main{flex:1 1 auto;min-width:0;position:relative}
+.wrap{max-width:82rem;margin:0 auto}
+.pad{padding-left:1.5rem;padding-right:1.5rem}
+@media(min-width:640px){.pad{padding-left:2.5rem;padding-right:2.5rem}}
+@media(min-width:1024px){.pad{padding-left:3.5rem;padding-right:3.5rem}}
+
+/* sidebar */
+.sb{position:fixed;top:0;left:0;z-index:40;height:100vh;width:280px;flex:0 0 280px;
+  border-right:1px solid var(--co-light);background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(18px);transform:translateX(-100%);transition:transform .2s var(--ease)}
+.sb.open{transform:translateX(0)}
+.sb-inner{height:100%;overflow-y:auto;padding:1.5rem 1rem}
+@media(min-width:1024px){.sb{position:sticky;transform:none}}
+.sb-brand{display:flex;align-items:center;gap:.625rem;margin:0 0 1.75rem;padding:0 .5rem;width:100%}
+.sb-mark{position:relative;display:inline-block;height:36px;width:36px;border-radius:12px;
+  background:linear-gradient(135deg,var(--brand-400),var(--brand-700));box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.sb-name{display:block;font-weight:700;font-size:15px;letter-spacing:-.01em;color:var(--co-black);text-align:left}
+.sb-sub{display:block;font-size:12px;font-weight:500;color:var(--brand-600);letter-spacing:.02em;text-align:left}
+.sb-group{margin-bottom:1.25rem}
+.sb-label{padding:0 .5rem;margin-bottom:.375rem;font-size:11px;text-transform:uppercase;
+  letter-spacing:.18em;font-weight:600;color:var(--co-mid)}
+.sb-item{position:relative;display:flex;align-items:center;gap:.75rem;width:100%;
+  border-radius:.5rem;padding:.625rem;color:var(--co-dark);transition:background .15s var(--ease),color .15s var(--ease)}
+.sb-item:hover{background:var(--s200);color:var(--co-black)}
+.sb-num{font-size:12px;font-weight:600;color:var(--co-mid);
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.sb-item:hover .sb-num{color:var(--co-dark)}
+.sb-text{flex:1 1 auto;text-align:left;font-size:15px;line-height:1.25;font-weight:500}
+.sb-item.active{background:linear-gradient(to right,var(--brand-50),rgba(229,240,245,.5),transparent);
+  color:var(--brand-800);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25)}
+.sb-item.active .sb-text{font-weight:600}
+.sb-item.active .sb-num{color:var(--brand-600)}
+.sb-item.active .bar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:24px;width:3px;
+  border-radius:0 999px 999px 0;background:var(--brand-600);box-shadow:0 0 10px 2px rgba(27,187,204,.55)}
+.sb-item.active .dot{height:6px;width:6px;border-radius:999px;background:var(--brand-400);
+  box-shadow:0 0 8px 2px rgba(27,187,204,.55)}
+.sb-backdrop{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);display:none}
+.sb-backdrop.show{display:block}
+@media(min-width:1024px){.sb-backdrop{display:none!important}}
+.sb-toggle{position:fixed;bottom:1.25rem;right:1.25rem;z-index:50;border-radius:999px;
+  background:var(--brand-600);color:#fff;box-shadow:var(--shadow-glow);padding:.75rem 1.25rem;
+  font-size:14px;font-weight:600;transition:transform .1s ease,background .15s ease}
+.sb-toggle:hover{background:var(--brand-700)}
+.sb-toggle:active{transform:scale(.95)}
+@media(min-width:1024px){.sb-toggle{display:none}}
+
+/* slide */
+.slide{display:none}
+.slide.active{display:block}
+.slide-enter{animation:slideEnter .4s var(--ease)}
+@keyframes slideEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.slide-head{padding-top:2.5rem;padding-bottom:1rem}
+@media(min-width:640px){.slide-head{padding-top:3.5rem}}
+.badge-row{display:flex;align-items:center;gap:.625rem;margin-bottom:.75rem;flex-wrap:wrap}
+.num-badge{display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;
+  padding:0 .5rem;border-radius:.375rem;font-size:11px;font-weight:600;background:var(--brand-50);
+  color:var(--brand-700);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25);
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+.eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--brand-600)}
+.slide-h2{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.25;color:var(--co-black);word-break:keep-all}
+@media(min-width:640px){.slide-h2{font-size:2.25rem}}
+.slide-desc{margin-top:.75rem;font-size:14px;line-height:1.7;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.slide-desc{font-size:15px}}
+.slide-body{padding-bottom:4rem}
+.slide-body > * + *{margin-top:1.25rem}
+.stack > * + *{margin-top:.75rem}
+
+.p{font-size:14px;line-height:1.85;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.p{font-size:15px}}
+.sec-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--brand-600);margin-bottom:.5rem}
+.h3{font-size:15px;font-weight:600;color:var(--co-black);word-break:keep-all}
+.meta{font-size:11px;color:var(--co-mid)}
+.gradient-text{background:linear-gradient(135deg,#06438C 0%,#4383AF 50%,#1BBBCC 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+.paper{background:var(--s0);border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+.card{position:relative;border-radius:1rem;padding:1.15rem;overflow:hidden;
+  transition:transform .15s var(--ease),border-color .15s var(--ease),box-shadow .15s var(--ease)}
+@media(min-width:640px){.card{padding:1.25rem}}
+.card:hover{transform:translateY(-2px);border-color:rgba(67,131,175,.5);box-shadow:var(--shadow-glow)}
+.card-tint{pointer-events:none;position:absolute;inset:0;border-radius:1rem;opacity:.6;
+  background:linear-gradient(135deg,var(--brand-50),transparent 55%)}
+.card-tint.mint{background:linear-gradient(135deg,var(--em-100),transparent 55%)}
+.card-tint.navy{background:linear-gradient(135deg,rgba(199,220,231,.7),transparent 55%)}
+.card-tint.slate{background:linear-gradient(135deg,var(--s200),transparent 55%)}
+.card-inner{position:relative}
+.card-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.card-badge{font-size:10px;font-weight:500;padding:.1rem .375rem;border-radius:.375rem;
+  background:var(--brand-50);color:var(--brand-700);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25)}
+.card-body{font-size:13.5px;line-height:1.8;color:var(--co-dark);word-break:keep-all}
+.grid{display:grid;gap:.875rem;grid-template-columns:1fr}
+@media(min-width:640px){.g2,.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1024px){.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+.callout{border-radius:.75rem;border:1px solid;padding:.875rem 1rem;box-shadow:var(--shadow-card)}
+@media(min-width:640px){.callout{padding:1rem 1.15rem}}
+.callout-title{display:flex;align-items:center;gap:.5rem;font-size:14px;font-weight:600;margin-bottom:.375rem}
+.callout-body{font-size:13.5px;line-height:1.8;word-break:keep-all}
+.c-info{background:var(--brand-50);border-color:rgba(67,131,175,.3);color:#333}
+.c-info .callout-title{color:var(--brand-800)}
+.c-success{background:var(--em-100);border-color:rgba(61,196,167,.4);color:#333}
+.c-success .callout-title{color:var(--em-700)}
+.c-muted{background:var(--s50);border-color:var(--co-light);color:var(--co-dark)}
+.c-muted .callout-title{color:var(--co-black)}
+.c-emphasis{background:var(--brand-600);border-color:transparent;color:#fff}
+.c-emphasis .callout-title{color:#fff}
+
+.bullets{font-size:13.5px;line-height:1.75;color:var(--co-dark)}
+.bullets li{position:relative;padding-left:.9rem;word-break:keep-all}
+.bullets li + li{margin-top:.35rem}
+.bullets li::before{content:"";position:absolute;left:0;top:.62em;width:4px;height:4px;border-radius:999px;background:var(--brand-500)}
+.bullets.on-navy{color:rgba(255,255,255,.92)}
+.bullets.on-navy li::before{background:var(--co-cyan)}
+
+.table-wrap{overflow-x:auto;border-radius:.75rem;background:var(--s0);
+  border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead tr{background:var(--co-light)}
+th{text-align:left;padding:.625rem .875rem;font-size:12px;text-transform:uppercase;
+  letter-spacing:.05em;font-weight:700;color:var(--co-black);white-space:nowrap}
+th.em{color:var(--brand-600)}
+tbody tr{border-bottom:1px solid rgba(222,222,222,.7);background:var(--s0);transition:background .15s ease}
+tbody tr:nth-child(even){background:var(--s50)}
+tbody tr:last-child{border-bottom:0}
+tbody tr:hover{background:rgba(229,240,245,.6)}
+td{padding:.7rem .875rem;vertical-align:top;color:var(--co-dark);font-size:13.5px;line-height:1.7;word-break:keep-all}
+td:first-child{color:var(--co-black);font-weight:500}
+td.em{color:var(--brand-700);font-weight:600}
+td.num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sowhat{border-radius:.6rem;background:var(--brand-600);color:#fff;font-weight:700;
+  font-size:13px;line-height:1.6;padding:.65rem 1rem;word-break:keep-all}
+.cellist{font-size:13px;line-height:1.7}
+.cellist li{position:relative;padding-left:.8rem}
+.cellist li + li{margin-top:.3rem}
+.cellist li::before{content:"";position:absolute;left:0;top:.6em;width:3.5px;height:3.5px;border-radius:999px;background:var(--brand-500)}
+
+.tag{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .6rem;border-radius:999px;
+  font-size:.78rem;font-weight:500;background:rgba(27,187,204,.1);color:var(--brand-700);
+  border:1px solid rgba(27,187,204,.35);white-space:nowrap}
+.tag-muted{background:var(--s50);color:var(--co-dark);border-color:var(--co-light)}
+.tag-navy{background:rgba(6,67,140,.08);color:var(--co-navy);border-color:rgba(6,67,140,.25)}
+.tag-mint{background:var(--em-100);color:var(--em-700);border-color:rgba(61,196,167,.4)}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem}
+
+.kpi{position:relative;overflow:hidden;border-radius:1rem;padding:1.15rem;text-align:center;
+  background:var(--s0);border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+.kpi::after{content:"";position:absolute;top:-2.5rem;right:-2.5rem;height:7rem;width:7rem;
+  border-radius:999px;background:rgba(6,67,140,.1);filter:blur(28px)}
+.kpi-val{position:relative;font-size:1.9rem;font-weight:800;color:var(--brand-600);line-height:1}
+@media(min-width:640px){.kpi-val{font-size:2.25rem}}
+.kpi-suf{font-size:1.05rem;color:var(--co-mid);font-weight:700;margin-left:.15rem}
+.kpi-label{position:relative;margin-top:.5rem;font-size:12px;font-weight:500;color:var(--co-dark)}
+.kpi-sub{position:relative;margin-top:.15rem;font-size:11px;color:var(--co-mid)}
+
+.bf{display:flex;flex-direction:column;gap:.375rem;width:100%}
+@media(min-width:640px){.bf{flex-direction:row;align-items:stretch;gap:0}}
+.bf-card{position:relative;padding:.75rem .95rem;border-radius:.85rem;background:var(--s0);
+  border:1px solid rgba(6,67,140,.25);box-shadow:0 2px 5px rgba(0,0,0,.05);
+  display:flex;flex-direction:column;gap:.1rem;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media(min-width:640px){.bf-card{flex:4 1 0;min-width:0}}
+.bf-card:hover{transform:translateY(-2px);border-color:rgba(27,187,204,.6);box-shadow:0 10px 24px rgba(27,187,204,.16)}
+.bf-card .num{font-size:.66rem;font-family:ui-monospace,monospace;color:var(--brand-500);letter-spacing:.04em;line-height:1.1}
+.bf-card .title{font-weight:600;font-size:.92rem;color:var(--co-black);line-height:1.25;word-break:keep-all}
+.bf-card .sub{font-size:.76rem;color:var(--co-mid);margin-top:.1rem;line-height:1.3;word-break:keep-all}
+.bf-conn-v{display:grid;place-items:center;color:var(--co-mid)}
+.bf-conn-h{display:none}
+@media(min-width:640px){
+  .bf-conn-v{display:none}
+  .bf-conn-h{display:flex;flex:1 1 0;min-width:24px;align-items:center;align-self:center;color:var(--co-mid)}
+}
+.flow-line-anim{stroke-dasharray:4 4;animation:dashFlow .9s linear infinite}
+@keyframes dashFlow{to{stroke-dashoffset:-8}}
+
+.flow-card{display:flex;gap:1rem;padding:1rem 1.15rem;border-radius:1rem;background:var(--s0);
+  border:1px solid var(--co-light);box-shadow:0 4px 6px rgba(0,0,0,.06);
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.flow-card:hover{transform:translateY(-1px);border-color:rgba(67,131,175,.55);box-shadow:0 6px 22px rgba(6,67,140,.12)}
+.flow-number{flex:0 0 auto;width:2.4rem;height:2.4rem;border-radius:9999px;
+  background:linear-gradient(135deg,#06438C,#1BBBCC);color:#fff;display:grid;place-items:center;
+  font-weight:700;font-size:.92rem;box-shadow:0 4px 14px rgba(6,67,140,.3)}
+.flow-content{flex:1 1 auto;min-width:0}
+.flow-title{font-weight:600;color:var(--co-black);font-size:1.04rem;word-break:keep-all}
+.flow-body{margin-top:.45rem;font-size:.94rem;line-height:1.75;color:var(--co-dark);word-break:keep-all}
+.flow-arrow{display:grid;place-items:center;color:var(--co-mid);padding:.125rem 0}
+
+.hero{padding-top:3rem;padding-bottom:3rem}
+@media(min-width:640px){.hero{padding-top:5rem}}
+.hero-pill{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;
+  border:1px solid rgba(67,131,175,.25);background:var(--brand-50);padding:.25rem .75rem;
+  font-size:11px;font-weight:600;color:var(--brand-700)}
+.hero-pill .pulse{display:inline-block;height:6px;width:6px;border-radius:999px;background:var(--brand-400);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero-h1{margin-top:1.25rem;font-size:2.25rem;font-weight:800;letter-spacing:-.03em;line-height:1.12;color:var(--co-black);word-break:keep-all}
+@media(min-width:640px){.hero-h1{font-size:3.4rem;line-height:1.05}}
+.hero-lead{margin-top:1.25rem;max-width:46rem;font-size:1rem;line-height:1.8;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.hero-lead{font-size:1.075rem}}
+
+.appendix-divider{position:relative;margin:0 0 1rem;text-align:center;font-size:.65rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--co-mid)}
+.appendix-divider::before,.appendix-divider::after{content:"";position:absolute;top:50%;width:38%;height:1px;
+  background:linear-gradient(to right,transparent,var(--co-light),transparent)}
+.appendix-divider::before{left:0}.appendix-divider::after{right:0}
+
+.pager{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);z-index:30;
+  display:flex;align-items:center;gap:.5rem;border-radius:999px;background:rgba(255,255,255,.9);
+  backdrop-filter:blur(8px);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--co-light);
+  padding:.375rem .75rem;font-size:11px;color:var(--co-dark)}
+@media(min-width:1024px){.pager{left:auto;right:1.5rem;transform:none}}
+.pager button{padding:.125rem .375rem;border-radius:.25rem;transition:background .15s ease}
+.pager button:hover:not(:disabled){background:var(--s200)}
+.pager button:disabled{opacity:.3;cursor:not-allowed}
+
+.code-block{background:var(--s50);border:1px solid var(--co-light);color:#333;border-radius:.75rem;
+  padding:1rem 1.1rem;font-size:.82rem;line-height:1.7;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(85,85,85,.22);border-radius:999px}
+::-webkit-scrollbar-thumb:hover{background:rgba(85,85,85,.34)}
+
+@media print{
+  .no-print{display:none!important}
+  .flow-line-anim{animation:none}
+  .slide{display:block!important}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="sb no-print" id="sidebar">
+  <div class="sb-inner">
+    <button type="button" class="sb-brand" data-goto="overview">
+      <span class="sb-mark"></span>
+      <span>
+        <span class="sb-name">M-BOM 다단계 확정</span>
+        <span class="sb-sub">시나리오 검증 · v1.1</span>
+      </span>
+    </button>
+    <nav>
+      <div class="sb-group"><p class="sb-label">Overview</p><ul id="nav-0"></ul></div>
+      <div class="sb-group"><p class="sb-label">사유 검증</p><ul id="nav-1"></ul></div>
+      <div class="sb-group"><p class="sb-label">구조와 함의</p><ul id="nav-2"></ul></div>
+    </nav>
+  </div>
+</aside>
+<div class="sb-backdrop no-print" id="backdrop"></div>
+<button type="button" class="sb-toggle no-print" id="sbToggle" aria-label="목차 열기">목차 ☰</button>
+
+<main class="main" id="main">
+<div class="wrap">
+
+<!-- ================= 00 OVERVIEW ================= -->
+<article class="slide active" id="overview">
+  <div class="pad hero">
+    <div class="hero-pill"><span class="pulse"></span>현장 진술 검증 · Internal</div>
+    <h1 class="hero-h1">
+      M-BOM은<br />
+      <span class="gradient-text">한 번에 확정되지 않는다</span>
+    </h1>
+    <p class="hero-lead">
+      "E-BOM이 한 번에 M-BOM으로 변환되어 양산 구매까지 적용되는 경우는 실질적으로 없다"는 진술을 검증했다. <strong>진술은 맞다.</strong>
+      M-BOM은 변환 결과물이 아니라 설계 출도부터 양산 유지까지 계속 개정되는 살아 있는 문서다.
+      에이전트의 핵심은 한 번 잘 변환하는 것이 아니라 <strong>개정을 추적하고, 여러 사유가 동시에 걸린 변경을 충돌 없이 처리하는 것</strong>이다.
+    </p>
+
+    <div class="grid g4" style="margin-top:2rem">
+      <div class="kpi"><p class="kpi-val">7<span class="kpi-suf">/7</span></p><p class="kpi-label">제시 사유 현실성 확인</p><p class="kpi-sub">4건은 2025~26년 진행형</p></div>
+      <div class="kpi"><p class="kpi-val">2<span class="kpi-suf">건</span></p><p class="kpi-label">보정이 필요한 전제</p><p class="kpi-sub">ECN 시점 · 원산지 메커니즘</p></div>
+      <div class="kpi"><p class="kpi-val">+12</p><p class="kpi-label">추가 시나리오</p><p class="kpi-sub">4종은 회로 변경 없이 M-BOM만 바뀜</p></div>
+      <div class="kpi"><p class="kpi-val">12<span class="kpi-suf">회</span></p><p class="kpi-label">통합 예시의 개정 횟수</p><p class="kpi-sub">R&amp;D 내부 사유는 2회뿐</p></div>
+    </div>
+
+    <div class="stack" style="margin-top:2rem">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>제시 사유</th><th>판정</th><th>층</th><th>동시 변경</th><th class="em">보정 요지</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>연구소 설계 변경 (ECN)</td><td><span class="tag tag-mint">매우 높음</span></td><td class="mono">L1</td><td>단일~다수</td><td class="em">ECN은 사후 통지. 구매는 ECR 단계에 들어가야 한다</td></tr>
+            <tr><td class="num">2</td><td>고객사 지정 Vendor</td><td><span class="tag tag-mint">높음</span></td><td class="mono">L1</td><td>단일</td><td class="em">"Directed buy"로 계약화. 이후 대체 자체가 금지</td></tr>
+            <tr><td class="num">3</td><td>납기 악화</td><td><span class="tag tag-mint">매우 높음</span></td><td class="mono">L2→L1</td><td>단일~다수</td><td class="em">첫 대응은 할당 협상·승인 대체. 설계 변경은 마지막</td></tr>
+            <tr><td class="num">4</td><td>가격 인상 통보</td><td><span class="tag tag-mint">매우 높음</span></td><td class="mono">L2</td><td><strong>다수</strong></td><td class="em">통보는 제품군 단위. 실데이터 한 제조사가 43.9%</td></tr>
+            <tr><td class="num">5</td><td>원가절감 동시 변경</td><td><span class="tag tag-mint">매우 높음</span></td><td class="mono">L1+L2</td><td><strong>다수</strong></td><td class="em">전장은 연차 단가인하가 계약 구조. 100nF 10변형 실측</td></tr>
+            <tr><td class="num">6</td><td>장기재고 우선 사용</td><td><span class="tag">조건부</span></td><td class="mono">L2</td><td><strong>다수</strong></td><td class="em">표준 처분 옵션. 사양·데이트코드·보관수명 검증 선행</td></tr>
+            <tr><td class="num">7</td><td>원산지 비율 규제</td><td><span class="tag">보정 필요</span></td><td class="mono">L2</td><td><strong>다수</strong></td><td class="em">세 가지 다른 규제가 섞여 있다. 가치 기준</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 구매·경영 사유 변경의 상당수는 E-BOM을 건드리지 않는다. 사전 승인 대체품이 깊을수록 설계 변경이 조달 변경으로 강등된다.</p>
+    </div>
+
+    <p class="meta" style="margin-top:1.5rem">상세 근거 · <span class="mono">M-BOM_다단계확정_시나리오.md</span></p>
+  </div>
+</article>
+
+<!-- ================= 01 생애 단계 ================= -->
+<article class="slide" id="lifecycle">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">01</span><span class="eyebrow">Lifecycle &amp; Evidence</span></div>
+    <h2 class="slide-h2">M-BOM은 7단계를 거치며 다시 쓰인다</h2>
+    <p class="slide-desc">하드웨어는 EVT → DVT → PVT → MP로 빌드를 반복하며 설계를 수렴시킨다. 그리고 <strong>개정의 대부분은 출시 전이 아니라 출시 후에 일어난다.</strong> 전장 장기공급계약은 6~12년이다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="bf">
+      <div class="bf-card"><span class="num">S0</span><span class="title">설계 출도</span><p class="sub">초안 · MPN 미결</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+      <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">S1</span><span class="title">견적</span><p class="sub">납기·가격·지정</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+      <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">S2</span><span class="title">EVT</span><p class="sub">DFM 피드백</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+      <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">S3</span><span class="title">DVT</span><p class="sub">인증·신뢰성</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+      <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">S4</span><span class="title">PVT</span><p class="sub">수율·포장·PPAP</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+      <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">S5</span><span class="title">기준선</span><p class="sub">동결</p></div>
+      <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+      <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+      <div class="bf-card"><span class="num">S6</span><span class="title">양산 유지</span><p class="sub">가격·EOL·정책·규제</p></div>
+    </div>
+
+    <div>
+      <p class="sec-label">작업 폴더 실데이터의 증거 — "M-BOM"이라 부르는 문서조차 확정본이 아니다</p>
+      <div class="grid g4">
+        <div class="kpi"><p class="kpi-val">17<span class="kpi-suf">행</span></p><p class="kpi-label">M-BOM인데 MPN 미결</p><p class="kpi-sub">Refine 페어 215행 중 7.9%</p></div>
+        <div class="kpi"><p class="kpi-val">+1<span class="kpi-suf">행</span></p><p class="kpi-label">변환 중 행 추가</p><p class="kpi-sub">1k2chgr E-BOM 91 → M-BOM 92</p></div>
+        <div class="kpi"><p class="kpi-val">24<span class="kpi-suf">주</span></p><p class="kpi-label">최장 리드타임 4품목</p><p class="kpi-sub">MCU·게이트드라이버·MOSFET·인덕터</p></div>
+        <div class="kpi"><p class="kpi-val">43.9<span class="kpi-suf">%</span></p><p class="kpi-label">단일 제조사 집중도</p><p class="kpi-sub">MPN 확정 198행 중 Walsin 87행</p></div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>층</th><th>무엇이 바뀌는가</th><th>E-BOM</th><th>승인</th><th class="em">예시</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">L1 설계 변경</td><td>FFF · 회로 · 풋프린트</td><td><strong>변경</strong></td><td>R&amp;D + 변경위원회 (전장은 고객)</td><td class="em">부품 추가·삭제, 정격·패키지 변경</td></tr>
+            <tr><td class="mono">L2 승인 대체</td><td>같은 행 안에서 승인된 다른 MPN으로</td><td>없음</td><td>구매 (+ 품질)</td><td class="em">AVL 2nd source, 제조사 변경</td></tr>
+            <tr><td class="mono">L3 조달 속성</td><td>공급처·포장·단가. <strong>부품 동일</strong></td><td>없음</td><td>구매</td><td class="em">유통사 변경, 릴 크기 접미사</td></tr>
+            <tr><td class="mono">L4 공정·부자재</td><td>E-BOM에 없는 M-BOM 전용 행</td><td>없음</td><td>생산기술</td><td class="em">솔더 페이스트, 방열패드</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · L1과 L2의 경계가 핵심 레버다. 사전 승인 대체품이 있는 행은 수일, 없는 행은 수개월이 걸린다.</p>
+    </div>
+
+    <div class="callout c-muted">
+      <p class="callout-title"><span aria-hidden="true">·</span><span>L3의 함정</span></p>
+      <div class="callout-body">포장 접미사만 바뀌어도 MPN 문자열이 달라진다. 문자열만 비교하면 <strong>같은 부품을 다른 부품으로 판정</strong>해 불필요한 승인 절차를 일으킨다.</div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 02 사유 검증 1~4 ================= -->
+<article class="slide" id="reason1">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">02</span><span class="eyebrow">Validation · Reason 1–4</span></div>
+    <h2 class="slide-h2">설계 변경 · 고객 지정 · 납기 · 가격 인상</h2>
+    <p class="slide-desc">네 가지 모두 현실성이 높다. 1번은 전달 시점에 대한 전제를, 3번은 대응 순서를 보정했다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="card paper">
+      <div class="card-tint navy"></div>
+      <div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">① 연구소 설계 변경 — ECN은 사후 통지다</h3><span class="tag tag-mint">매우 높음</span><span class="tag" style="margin-left:.3rem">보정</span></div>
+        <div class="bf" style="margin:.75rem 0">
+          <div class="bf-card"><span class="num">ECR</span><span class="title">변경 요청</span><p class="sub">무엇을 왜 · <strong>구매가 여기서 들어가야</strong></p></div>
+          <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+          <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+          <div class="bf-card"><span class="num">ECO</span><span class="title">변경 승인·지시</span><p class="sub">영향 평가 · 적용 시점 · 재고 처분</p></div>
+          <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+          <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+          <div class="bf-card"><span class="num">ECN</span><span class="title">변경 통지</span><p class="sub">이미 결정된 변경의 실행 지시</p></div>
+        </div>
+        <p class="card-body">
+          ECN이 나왔다면 결정은 끝났다. 그 시점에는 구 부품이 이미 발주됐거나 재고가 쌓여 있다.
+          "발주 취소 가능한가 · 재고가 불용이 되는가 · 새 부품 납기가 맞는가"는 <strong>ECR 영향도 검토 단계</strong>에서 답해져야 한다.
+          <br /><span class="meta">국내 현장은 ECN을 ECR·ECO·ECN 전체를 뜻하는 "설계변경통보"로 쓰는 경우가 많아, 사내 용어 정의가 먼저 필요하다.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card paper">
+        <div class="card-tint"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">② 고객 지정 Vendor</h3><span class="tag tag-mint">높음</span></div>
+          <p class="card-body">
+            자동차의 <strong>지정 부품(directed part)</strong>은 OEM이 지명한 하위 공급사 부품을 Tier 1이 쓰게 하는 구조이며, MEMA는 표준 <strong>지정구매 계약서 양식</strong>까지 공개한다.
+            <br /><br />
+            지정된 순간부터 그 부품은 <strong>대체가 금지</strong>된다. 지정이 DVT 이후로 늦어지고 패키지가 다르면 풋프린트 변경, 즉 L1이 된다.
+          </p>
+        </div>
+      </div>
+      <div class="card paper">
+        <div class="card-tint"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">③ 납기 악화</h3><span class="tag tag-mint">매우 높음</span></div>
+          <div class="card-body">
+            회의록: <strong>대체 사유의 약 80%가 납기</strong>. 2026년 DRAM·NAND는 할당 시장이며 일부 디스크리트는 20주 할당 상태다.
+            <ul class="cellist" style="margin-top:.5rem">
+              <li>① 할당 협상·분할 납품 — 변경 없음</li>
+              <li>② 승인 대체품 전환 — L2</li>
+              <li>③ 브로커·현물 — 위조 위험</li>
+              <li>④ 신규 대체 검증 후 설계 변경 — L1</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="card paper">
+        <div class="card-tint mint"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">대체 착수 기한</h3><span class="card-badge">회의 핵심 요구</span></div>
+          <div class="card-body">
+            "대체품을 찾아야 하는 <strong>타이밍</strong>을 알려주는 것"이 핵심이다.
+            <div class="code-block" style="margin-top:.6rem;font-size:.76rem">착수 기한 = (현재고 + 미입고 PO) 소진일
+         − (대체 검증 + 대체 리드타임)</div>
+            부품 × 모델 단위로 계산된다.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <p class="sec-label">④ 가격 인상 통보 — 2026년 연쇄 발생 중</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>발효</th><th>제조사</th><th>범위</th><th class="em">실데이터와의 연결</th></tr></thead>
+          <tbody>
+            <tr><td class="num">2026.02.01</td><td>Walsin (Yageo 후속)</td><td>칩저항 최대 20%</td><td class="em"><strong>Refine M-BOM 198행 중 87행 (43.9%)</strong></td></tr>
+            <tr><td class="num">2026.04.01</td><td>Murata</td><td>페라이트 비드 · 파워 인덕터 · 공통모드 초크</td><td class="em">EMC 대응 부품군</td></tr>
+            <tr><td class="num">2026.07.01</td><td>Yageo</td><td>커패시터 전 제품군</td><td class="em">수년 내 최대 범위</td></tr>
+            <tr><td class="num">2026.09.01</td><td>Taiyo Yuden</td><td>MLCC</td><td class="em">원부자재 가격 사유</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 통보 한 장이 두 제품 BOM의 절반 가까운 행에 동시에 걸린다. 주요 4사가 8개월 안에 모두 인상했으므로, 대체 제조사 전환만이 답이 아니다.</p>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 03 사유 검증 5~7 ================= -->
+<article class="slide" id="reason2">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">03</span><span class="eyebrow">Validation · Reason 5–7</span></div>
+    <h2 class="slide-h2">원가절감 · 장기재고 · 원산지 규제</h2>
+    <p class="slide-desc">세 가지 모두 <strong>다수 동시 변경</strong>을 일으킨다. 6번은 성립 조건을, 7번은 메커니즘을 보정했다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="grid g2">
+      <div class="card paper">
+        <div class="card-tint"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">⑤ 원가절감 — VE 통합의 원재료가 이미 BOM 안에 있다</h3><span class="tag tag-mint">매우 높음</span></div>
+          <div class="card-body">
+            전장 공급사는 OEM에 <strong>연 1~3% 단가 인하</strong>를 약속하는 것이 일반적이고, 초기에는 연 5%에 달하기도 한다.
+            <div class="table-wrap" style="margin:.7rem 0">
+              <table>
+                <thead><tr><th>KK1 원 표기</th><th>소요</th></tr></thead>
+                <tbody>
+                  <tr><td class="mono">100nF/25v/C1005</td><td class="num">59</td></tr>
+                  <tr><td class="mono">100nF/16V/C1005</td><td class="num">24</td></tr>
+                  <tr><td class="mono">0.1uF/50v/C1005</td><td class="num">14</td></tr>
+                  <tr><td class="mono">100nF/50V/C1005</td><td class="num">12</td></tr>
+                  <tr><td class="mono">… 외 6변형</td><td class="num">22</td></tr>
+                </tbody>
+              </table>
+            </div>
+            한 BOM에 <strong>100nF가 10가지 변형 131개</strong>. C1005만 8개 행이다. 상위 정격 하나로 통합하면 품목 8 → 1.
+            <br /><span class="meta">단 MLCC는 DC 바이어스 특성이 다르므로 자동 확정 대상이 아니다.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card paper">
+        <div class="card-tint slate"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">⑥ 장기재고 우선 사용 — 성립 조건 4가지</h3><span class="tag">조건부</span></div>
+          <div class="card-body">
+            기존 재고 처분은 ECO의 <strong>표준 결정 항목</strong>이다(Oracle 처분 코드: 그대로 사용 / 폐기 등). 상각을 피하려는 경영 판단도 자연스럽다.
+            <ul class="bullets" style="margin-top:.6rem">
+              <li><strong>사양 동등성</strong> — 구 개정 잔여 부품은 정격이 다를 수 있다</li>
+              <li><strong>데이트코드</strong> — 2년 제한을 두는 회사가 많지만, ECIA는 일반 제한을 권장하지 않고 Microchip은 보관 지침 준수 시 제한 없음</li>
+              <li><strong>보관 상태</strong> — MSL 베이킹, 전해·솔더 페이스트 보관수명</li>
+              <li><strong>고객 승인</strong> — 전장은 승인 구성 변경</li>
+            </ul>
+            <p style="margin-top:.6rem">일괄 규칙은 틀린다. <strong>부품 유형별 규칙</strong>(밀봉 반도체 / 습기 민감 / 전해·페이스트)으로 나눈다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <p class="sec-label">⑦ 원산지 비율 규제 — 한 문장에 세 가지 규제가 섞여 있다</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>유형</th><th>판정 기준</th><th>대표 사례</th><th class="em">위반 시</th></tr></thead>
+          <tbody>
+            <tr><td>① 역내부가가치</td><td>협정국 원산 부가가치 <strong>최소 X% 이상</strong></td><td>FTA 원산지 규칙 (RVC)</td><td class="em">특혜관세 상실</td></tr>
+            <tr><td>② 국산 부품 비율</td><td>국산 부품 원가가 <strong>X% 초과</strong></td><td>미국 Buy American: <strong>2024~28년 65%, 2029년~ 75%</strong></td><td class="em">공공조달 불이익·배제</td></tr>
+            <tr><td>③ 존재 자체 금지</td><td>비율 무관 — <strong>하나라도 있으면</strong> 금지</td><td>미국 BIS 커넥티드 차량: 중·러 연관 VCS 하드웨어 <strong>MY2030~</strong>, 소프트웨어 MY2027~</td><td class="em">수입·판매 금지</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 비율은 개수가 아니라 원가 기준이며, "외국산 최대치"보다 "역내·국산 최소치"로 정해지는 경우가 많다. 원산지 미상은 외국산으로 간주된다.</p>
+    </div>
+
+    <div class="grid g2">
+      <div class="callout c-info">
+        <p class="callout-title"><span aria-hidden="true">ℹ</span><span>보정 — 완제품 관세는 대체로 부품 비율이 아니다</span></p>
+        <div class="callout-body">일반 관세에서 완제품 원산지는 <strong>실질적 변형</strong>이 일어난 곳으로 판정된다. 2026년 1월 발효된 미국 반도체 Section 232 관세(25%)는 특정 첨단 반도체와 파생 제품에 한정된다.</div>
+      </div>
+      <div class="callout c-emphasis">
+        <p class="callout-title"><span aria-hidden="true">◆</span><span>학습 데이터와의 연결</span></p>
+        <div class="callout-body">전달된 E51K는 <strong>차량용 인포테인먼트</strong>이며 Wi-Fi·LTE 모듈을 포함한다. 미국향이면 ③ VCS 하드웨어 해당 여부 검토 범주다. 판정은 규정 원문과 법무 확인이 필요하다.</div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 04 추가 시나리오 ================= -->
+<article class="slide" id="added">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">04</span><span class="eyebrow">Additional Scenarios · 12</span></div>
+    <h2 class="slide-h2">E-BOM에서는 보이지 않다가<br />빌드·시험·양산에서 드러나는 사유</h2>
+    <p class="slide-desc">업계 문서·제조사 공지로 실재가 확인되고, 기존 사유로 환원되지 않는 것만 추가했다. v1.1의 A9~A12는 <strong>회로가 그대로인데 M-BOM만 바뀌는</strong> 경우다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="stack">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>시나리오</th><th>단계</th><th>층</th><th>동시</th><th class="em">핵심</th></tr></thead>
+          <tbody>
+            <tr><td class="num">A1</td><td>생산기술 DFM·DFA 피드백</td><td class="mono">S2~S4</td><td class="mono">L1·L4</td><td>다수</td><td class="em">0201 → 0402, 미보유 피더, 수삽 → SMD</td></tr>
+            <tr><td class="num">A2</td><td>인증·신뢰성 시험 불합격</td><td class="mono">S3</td><td class="mono">L1</td><td>다수</td><td class="em">교체가 아니라 <strong>행이 늘어나는</strong> 변경 (비드·초크·TVS)</td></tr>
+            <tr><td class="num">A3</td><td>제조사 PCN·단종</td><td class="mono">S1~S6</td><td class="mono">L2→L1</td><td>단일</td><td class="em">양산 전 NRND 발견은 양산 진입을 막아야</td></tr>
+            <tr><td class="num">A4</td><td>지정학·제재 공급 중단</td><td class="mono">S6</td><td class="mono">L2→L1</td><td><strong>다수</strong></td><td class="em">예고 없이 <strong>제조사 전 품목</strong> 동시. 대응은 일 단위</td></tr>
+            <tr><td class="num">A5</td><td>포장 단위·MOQ</td><td class="mono">S1~S4</td><td class="mono">L3</td><td>다수</td><td class="em">부품 동일 · 품번 문자열만 변경</td></tr>
+            <tr><td class="num">A6</td><td>부품 품질 문제</td><td class="mono">S4~S6</td><td class="mono">L2·L1</td><td>단일</td><td class="em">로트에서 시작해 부품으로 번진다</td></tr>
+            <tr><td class="num">A7</td><td>환경 규제 면제 만료</td><td class="mono">S6</td><td class="mono">L1·L2</td><td>다수</td><td class="em">EU 수출 시. RoHS 7(c)-I 2027.06.30 만료</td></tr>
+            <tr><td class="num">A8</td><td>고객 사양 변경·파생 모델 <span class="meta">+ 지역·인증별 구성</span></td><td class="mono">S2~S6</td><td class="mono">L1·L4</td><td>다수</td><td class="em">공용 PCBA 변경이 원 모델·변형으로 새는가</td></tr>
+            <tr><td class="num">A9</td><td>시제(ES) 품번 → 양산 품번</td><td class="mono">S2~S4</td><td class="mono">L2</td><td>단일</td><td class="em">칩은 같은데 MPN이 <strong>두 번</strong> 바뀐다</td></tr>
+            <tr><td class="num">A10</td><td>프로그래밍 부품의 펌웨어 개정</td><td class="mono">S2~S6</td><td class="mono">L4</td><td>단일</td><td class="em">공 칩 + 펌웨어 개정 = 별도 품목. 구 펌웨어 재고는 재작업</td></tr>
+            <tr><td class="num">A11</td><td>BOM 기록 오류 정정</td><td class="mono">S0~S4</td><td>정정</td><td>단일~다수</td><td class="em">실물은 그대로, <strong>소요량·발주량은 바뀐다</strong></td></tr>
+            <tr><td class="num">A12</td><td>한시 편차·특채</td><td class="mono">S4~S6</td><td><span class="mono">L2</span> 한시</td><td>단일</td><td class="em">만료 후 복귀라는 <strong>두 번째 개정이 예약</strong>된다</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · A1~A8 중 6종이 다수 동시 변경이고, A9~A12는 E-BOM 비교로는 잡히지 않는 변경이다. "E-BOM이 안 바뀌면 M-BOM도 안 바뀐다"는 가정이 성립하지 않는다.</p>
+    </div>
+
+    <div class="grid g2">
+      <div class="card paper">
+        <div class="card-tint navy"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">A2 · EMC 첫 회 불합격률 약 50%</h3></div>
+          <p class="card-body">
+            사전 적합성 시험 없이 진행하면 첫 회 불합격률이 <strong>약 50%</strong>로 보고되며, 규격에 따라 70~90%라는 보고도 있다.
+            한 항목만 불합격해도 전체가 불합격이고 재시험을 다시 잡아야 한다.
+            <br /><br />
+            인증 시험에 쓰인 개정을 <span class="mono">Certified_Revision</span>으로 고정하고, 이후 필터 부품 변경 시 <strong>재시험 경고</strong>를 낸다.
+          </p>
+        </div>
+      </div>
+      <div class="card paper">
+        <div class="card-tint slate"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">A4 · 2025년 Nexperia 사태</h3></div>
+          <p class="card-body">
+            모회사 Wingtech이 2024.12 미국 거래제한 목록에 오르고, 2025.09 네덜란드 정부가 경영 통제권을 확보하자 중국이 Nexperia 중국 공장 완성품 수출을 중단했다.
+            EU 제조사는 생산 중단 "며칠 전"까지 갔고 멕시코 자동차 공장이 멈췄다.
+            <br /><br />
+            범용 디스크리트 대량 공급사 하나가 <strong>BOM 수십 행을 동시에 무력화</strong>한다. 제조사 집중도 자체가 리스크 지표다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="sec-label">v1.1 추가 — 회로는 그대로인데 M-BOM이 바뀐다</p>
+      <div class="grid g2">
+        <div class="card paper">
+          <div class="card-tint navy"></div>
+          <div class="card-inner">
+            <div class="card-head"><h3 class="h3" style="flex:1">A9 · 시제 품번은 바뀔 것이 확정된 품번이다</h3><span class="card-badge">CR-17</span></div>
+            <div class="card-body">
+              제조사는 접두어로 성숙도를 구분한다(TI TMX·TMP·TMS / NXP PC·XC·MC). NXP는 2025년 i.MX 93 마스크 개정 때 시제 샘플을 <span class="mono">P</span> 접두어로 먼저 내고, 양산 품번 끝자리를 <span class="mono">B → C</span>로 바꿨다.
+              <div class="code-block" style="margin:.6rem 0;font-size:.76rem">EVT  PIMX9352CVVXMAC   시제 (새 마스크)
+양산  MIMX9352CVVXMAB → MIMX9352CVVXMAC</div>
+              기준선(S5)에 시제 품번이 남아 있으면 동결을 차단한다(<span class="mono">RB-CF-07</span>). 문자열이 거의 같아도 <strong>동일 부품으로 묶으면 안 된다</strong>.
+            </div>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint"></div>
+          <div class="card-inner">
+            <div class="card-head"><h3 class="h3" style="flex:1">A10 · 펌웨어가 바뀌면 품목이 바뀐다</h3><span class="card-badge">CR-18</span></div>
+            <div class="card-body">
+              완제품에는 프로그래밍된 칩만 들어가지만 M-BOM에는 <strong>공 칩과 정확한 개정의 펌웨어</strong>가 모두 표현된다(Arena). 하드웨어 변경 없이 펌웨어 개정만으로 프로그래밍 완료 품목이 바뀌고, 구 펌웨어 재고는 재프로그래밍 대상이다.
+              <ul class="cellist" style="margin-top:.5rem">
+                <li>사전 프로그래밍 ↔ 실장 후 ISP 전환 시 M-BOM 행 구성이 달라진다</li>
+                <li>Refine MCU 3행 모두 공 칩 MPN 한 행뿐, <strong>펌웨어 개정 칸이 없다</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint slate"></div>
+          <div class="card-inner">
+            <div class="card-head"><h3 class="h3" style="flex:1">A11 · 실데이터 — 정정 방향이 행마다 반대다</h3><span class="card-badge">CR-19</span></div>
+            <div class="card-body">
+              <div class="table-wrap" style="margin:.2rem 0 .6rem">
+                <table>
+                  <thead><tr><th>행</th><th>E-BOM</th><th>M-BOM</th><th class="em">믿은 쪽</th></tr></thead>
+                  <tbody>
+                    <tr><td class="mono">U10</td><td class="mono">RET3 · QFN64</td><td class="mono">RCT3 · LQFP-64</td><td class="em">품번</td></tr>
+                    <tr><td class="mono">IC14·24</td><td class="mono">R8T7 · LQFP48</td><td class="mono">C8T7 · LQFP48</td><td class="em">패키지</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              같은 종류의 모순(품번 ↔ 패키지)을 한 행은 품번, 다른 행은 패키지 기준으로 고쳤다. 판정 근거는 문서가 아니라 <strong>PCB 풋프린트</strong>다. U10은 플래시 코드도 <span class="mono">E(512KB) → C(256KB)</span>로 바뀌었는데 의도인지 기록이 없다.
+            </div>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint mint"></div>
+          <div class="card-inner">
+            <div class="card-head"><h3 class="h3" style="flex:1">A12 · 한시 변경은 복귀가 예약된 변경이다</h3><span class="card-badge">코드 없음 · 한시</span></div>
+            <div class="card-body">
+              IATF 16949 8.7.1.1은 승인 구성과 다를 때 <strong>고객 사전 서면 승인</strong>, <strong>만료일 또는 승인 수량 기록</strong>, 만료 시 원 사양 복귀를 요구한다. 편차는 구성이 한시적으로 바뀌고, 특채는 해당 로트에 승인 번호가 붙는다.
+              <ul class="cellist" style="margin-top:.5rem">
+                <li>사유가 아니라 <strong>형태</strong> — 원래 사유 코드 + 적용 시점 <span class="mono">한시</span></li>
+                <li>만료·수량 도달 시 할당 차단·복귀 (<span class="mono">RB-CF-08</span>)</li>
+                <li>같은 행 편차 반복 = 영구 변경 신호 → ECR 후보</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-muted">
+      <p class="callout-title"><span aria-hidden="true">·</span><span>검토했으나 추가하지 않은 후보</span></p>
+      <div class="callout-body">
+        <strong>위조품</strong> — 지향점 문서의 범위 제외 항목, M-BOM 대응은 A6와 같다 ·
+        <strong>2nd source 의무화</strong> — 사유가 아니라 예방 정책, AVL 커버리지 KPI로 다룬다 ·
+        <strong>생산 공장 이전</strong> — A1·A5·⑦로 분해되며 EMS 이관은 범위 외 ·
+        <strong>지역·인증별 구성</strong> — 축이 같아 A8에 통합
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 05 통합 시나리오 ================= -->
+<article class="slide" id="composite">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">05</span><span class="eyebrow">Composite Scenario</span></div>
+    <h2 class="slide-h2">한 제품의 M-BOM 개정 이력<br />— 12번 다시 쓰인다</h2>
+    <p class="slide-desc">가상 제품 <span class="mono">FG-TCU-1000</span>(산업용 온도 제어 유닛)에 적용한 예시. 규모는 실데이터 Refine 페어(약 215행)에 맞췄다. <span class="meta">가상 예시 · 품번·행 수는 설명용</span></p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="stack">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>개정</th><th>단계</th><th>트리거</th><th>층</th><th class="em">변경 행</th><th>승인</th></tr></thead>
+          <tbody>
+            <tr><td class="num"><strong>0.1</strong></td><td class="mono">S0</td><td>E-BOM 출도 · MPN 미결 17 · 패키지 보충 20</td><td>—</td><td class="em num">215</td><td>구매</td></tr>
+            <tr><td class="num">0.2</td><td class="mono">S1</td><td>RFQ 회신 — 24주 품목 4개 <span class="meta">③</span></td><td class="mono">L2·L1</td><td class="em num">4</td><td>구매·R&amp;D</td></tr>
+            <tr><td class="num">0.3</td><td class="mono">S1</td><td>고객이 외부 커넥터 제조사 지정 <span class="meta">②</span></td><td class="mono">L1</td><td class="em num">2</td><td>R&amp;D·고객</td></tr>
+            <tr><td class="num">0.4</td><td class="mono">S2</td><td>0201 툼스톤 · 수삽 커넥터 <span class="meta">A1</span></td><td class="mono">L1</td><td class="em num">12</td><td>R&amp;D·생산기술</td></tr>
+            <tr><td class="num">0.5</td><td class="mono">S3</td><td>EMC 방사 방출 불합격 <span class="meta">A2</span></td><td class="mono">L1</td><td class="em num">+4</td><td>R&amp;D·품질</td></tr>
+            <tr><td class="num">0.6</td><td class="mono">S4</td><td>컷테이프 납품 · MOQ 과다 <span class="meta">A5</span></td><td class="mono">L3</td><td class="em num">8</td><td>구매</td></tr>
+            <tr><td class="num"><strong>1.0</strong></td><td class="mono">S5</td><td><strong>양산 기준선 동결</strong></td><td>—</td><td class="em">—</td><td>전 부서</td></tr>
+            <tr><td class="num">1.1</td><td class="mono">S6</td><td>칩저항 제조사 +20% 인상 <span class="meta">④</span></td><td class="mono">L2</td><td class="em num"><strong>38</strong></td><td>구매</td></tr>
+            <tr><td class="num">1.2</td><td class="mono">S6</td><td>연차 원가절감 3% — 100nF 변형 통합 <span class="meta">⑤</span></td><td class="mono">L1+L2</td><td class="em num">8→1</td><td>R&amp;D·구매</td></tr>
+            <tr><td class="num">1.3</td><td class="mono">S6</td><td>장기재고 우선 사용 지침 — 검사 2건 탈락 <span class="meta">⑥</span></td><td class="mono">L2</td><td class="em num">5</td><td>경영·품질</td></tr>
+            <tr><td class="num">1.4</td><td class="mono">S6</td><td>전원 IC 단종 통보 <span class="meta">A3</span></td><td class="mono">L1</td><td class="em num">1</td><td>R&amp;D</td></tr>
+            <tr><td class="num">1.5</td><td class="mono">S6</td><td>미국 공공조달 진입 — 원산지 미기재 9행 외국산 간주 <span class="meta">⑦</span></td><td class="mono">L2</td><td class="em num">6</td><td>구매·법무</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 12개 개정 중 연구소 내부 사유로 시작된 것은 2개(0.4, 0.5)뿐이다. R&amp;D의 ECO 체계로만 보면 대부분의 개정이 시스템 밖 엑셀에서 처리된다.</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="card paper"><div class="card-tint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">양산 후 = 묶음 변경</h3></div>
+        <p class="card-body">1.x 개정은 대부분 다수 행 동시 변경이다. 1.1은 <strong>한 번에 38행</strong>이다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">이력 안의 충돌 2건</h3></div>
+        <p class="card-body">1.1에서 전환한 제조사의 생산국이 1.5에 불리할 수 있다. 1.2가 없애려는 변형이 <strong>1.3의 장기재고 목록에</strong> 있을 수 있다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint mint"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">오분류 비용</h3></div>
+        <p class="card-body">0.6(L3)을 L1로 오분류하면 승인 절차가 불필요하게 발동된다. <strong>부품이 동일하다는 판정</strong>이 정확해야 한다.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 06 패턴·충돌 ================= -->
+<article class="slide" id="pattern">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">06</span><span class="eyebrow">Patterns &amp; Conflicts</span></div>
+    <h2 class="slide-h2">사유를 가로지르는 구조<br />— 양산 이후가 가장 빽빽하다</h2>
+    <p class="slide-desc">다수 동시 변경은 경영·시장·규제에서 나온다. 그리고 여러 사유가 한 부품에 동시에 걸리면 <strong>서로 반대 방향을 요구</strong>한다. v1.1 사유는 S2~S4에도 퍼져 있어, 양산 전이라고 M-BOM이 안정되지도 않는다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>발생원</th><th>S0~S1 출도·견적</th><th>S2~S4 빌드·검증</th><th class="em">S6 양산 유지</th></tr></thead>
+        <tbody>
+          <tr><td>설계 (R&amp;D)</td><td>표기 해독 · 기록 정정</td><td><strong>DFM · 인증</strong> · 펌웨어</td><td class="em">설계 변경 · 펌웨어</td></tr>
+          <tr><td>고객</td><td><strong>지정 부품</strong></td><td>사양 변경</td><td class="em">원가절감 요구 · 지역 파생</td></tr>
+          <tr><td>공급망</td><td>납기 · NRND · 포장</td><td>포장 · 시제→양산 품번</td><td class="em"><strong>가격 · EOL · 제재</strong></td></tr>
+          <tr><td>경영</td><td>—</td><td>—</td><td class="em"><strong>장기재고 · 원가절감</strong></td></tr>
+          <tr><td>규제·통상</td><td>—</td><td>—</td><td class="em"><strong>원산지 · 환경규제</strong></td></tr>
+          <tr><td>품질</td><td>—</td><td>수입검사</td><td class="em">필드 고장 · 한시 편차·특채</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stack">
+      <p class="sec-label">사유 간 충돌 — 늦게 발견하면 되돌림이 또 하나의 개정이 된다</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>충돌 쌍</th><th>상황</th><th class="em">판정 원칙</th></tr></thead>
+          <tbody>
+            <tr><td>고객 지정 ↔ 가격 인상</td><td>인상된 부품이 고객 지정 품목</td><td class="em"><strong>지정 우선.</strong> 전환 불가, 고객과 협상</td></tr>
+            <tr><td>가격 인상 ↔ 원산지</td><td>전환 제조사 생산국이 비율 악화</td><td class="em">수출 시장별 판정</td></tr>
+            <tr><td>원가절감 통합 ↔ 장기재고</td><td>없애려는 변형이 재고로 남음</td><td class="em">적용 시점 = 재고 소진 후</td></tr>
+            <tr><td>장기재고 ↔ 보관수명</td><td>데이트코드·MSL 기준 미달</td><td class="em"><strong>품질 규칙 우선.</strong> 지침으로 우회 불가</td></tr>
+            <tr><td>납기 대체 ↔ 인증</td><td>대체 부품이 EMC 특성을 바꿈</td><td class="em">재시험 필요 여부 판정</td></tr>
+            <tr><td>원산지 ↔ 납기</td><td>역내·국산 대체품 납기가 길다</td><td class="em">비율 달성 시점과 양산 일정 병기</td></tr>
+            <tr><td>단종 LTB ↔ 원가절감</td><td>LTB로 확보한 부품을 교체</td><td class="em">LTB 재고 금액을 효과에서 차감</td></tr>
+            <tr><td>한시 편차 ↔ 인증 구성</td><td>편차로 쓰는 대체품이 인증 구성 부품</td><td class="em"><strong>한시라도 재시험 판정 면제 없음</strong></td></tr>
+            <tr><td>펌웨어 개정 ↔ 프로그래밍 재고</td><td>구 펌웨어로 써 둔 칩·보드 재고</td><td class="em">재프로그래밍 또는 소진 후 전환을 처분으로 명시</td></tr>
+            <tr><td>하드웨어 대체 ↔ 펌웨어</td><td>대체 MCU의 플래시·RAM·errata가 다름</td><td class="em">펌웨어 적합 확인을 대체 승인 조건에 포함</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card paper"><div class="card-tint navy"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">승인 경로는 층 × 시장으로 결정된다</h3></div>
+        <p class="card-body">같은 "제조사 변경"이 산업용에서는 <strong>구매 단독 결정</strong>이고, 전장(PPAP 이후)에서는 <strong>고객 승인 사안</strong>이다. 에이전트는 제품의 적용 시장을 알아야 승인 경로를 정할 수 있다.</p>
+      </div></div>
+      <div class="card paper"><div class="card-tint slate"></div><div class="card-inner">
+        <div class="card-head"><h3 class="h3" style="flex:1">엑셀이 먼저 무너지는 지점</h3></div>
+        <p class="card-body">38행을 한 번에 바꾸면서 각 행이 다른 제품·모델에 주는 영향을 손으로 추적할 수 없다. <strong>다수 동시 변경</strong>이 시스템화의 1순위 근거다.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 07 에이전트 함의 ================= -->
+<article class="slide" id="agent">
+  <div class="pad slide-head">
+    <div class="badge-row"><span class="num-badge">07</span><span class="eyebrow">Agent Implications</span></div>
+    <h2 class="slide-h2">M-BOM은 산출물이 아니라 상태다</h2>
+    <p class="slide-desc">생애 단계 · 변경 사유 코드 · 변경 패키지 · 충돌 규칙 · 대체 깊이 KPI. 기존 지향점 문서와 양사 제안서에 반영할 사항을 함께 정리했다(아직 미반영).</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div>
+      <p class="sec-label">변경 사유 코드 19종 — 교정 로그 edit_reason 드롭다운이자 학습 라벨</p>
+      <div class="tags">
+        <span class="tag tag-navy">CR-01 설계 변경</span>
+        <span class="tag tag-navy">CR-02 고객 지정</span>
+        <span class="tag tag-navy">CR-03 납기</span>
+        <span class="tag tag-navy">CR-04 가격 인상</span>
+        <span class="tag tag-navy">CR-05 원가절감·조달</span>
+        <span class="tag tag-navy">CR-06 원가절감·VE</span>
+        <span class="tag tag-navy">CR-07 장기재고</span>
+        <span class="tag tag-navy">CR-08 원산지·통상</span>
+        <span class="tag">CR-09 DFM</span>
+        <span class="tag">CR-10 인증·신뢰성</span>
+        <span class="tag">CR-11 PCN·단종</span>
+        <span class="tag">CR-12 제재·공급 중단</span>
+        <span class="tag">CR-13 포장·MOQ</span>
+        <span class="tag">CR-14 품질</span>
+        <span class="tag">CR-15 환경 규제</span>
+        <span class="tag">CR-16 사양 변경·파생</span>
+        <span class="tag tag-mint">CR-17 시제→양산 품번</span>
+        <span class="tag tag-mint">CR-18 펌웨어·프로그래밍</span>
+        <span class="tag tag-mint">CR-19 기록 정정</span>
+      </div>
+      <p class="meta" style="margin-top:.5rem">원가절감을 CR-05·06으로 나눈 이유 — 조달 원가절감(L2)과 VE(L1)는 승인 경로가 다르다 · A12 한시 편차는 사유가 아니라 형태이므로 코드 대신 적용 시점 <span class="mono">한시</span>로 표현</p>
+    </div>
+
+    <div class="grid g2">
+      <div class="card paper">
+        <div class="card-tint"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">변경 패키지 객체 — 묶음 단위로 다룬다</h3></div>
+          <div class="code-block" style="font-size:.76rem">Change_Package
+ ├ reason_code   CR-xx · trigger_ref
+ ├ affected_lines[]  제품 × 모델 × 행
+ ├ change_layer  L1 / L2 / L3 / L4
+ ├ effectivity   즉시·일자·시리얼·로트·소진후·한시
+ ├ disposition   그대로·재작업·재프로그래밍·폐기·소진후
+ ├ approval_route  층 × 시장 자동 결정
+ ├ customer_approval
+ ├ conflicts[]
+ └ cost_impact · schedule_impact</div>
+        </div>
+      </div>
+      <div class="card paper">
+        <div class="card-tint navy"></div>
+        <div class="card-inner">
+          <div class="card-head"><h3 class="h3" style="flex:1">신규 필드 핵심</h3></div>
+          <div class="card-body">
+            <ul class="bullets">
+              <li><span class="mono">BOM_Stage</span> S0~S6 · <span class="mono">Baseline_Flag</span> · <span class="mono">Certified_Revision</span></li>
+              <li><span class="mono">Change_Layer</span> · <span class="mono">Change_Reason_Code</span> · <span class="mono">Change_Package_ID</span></li>
+              <li><span class="mono">Effectivity</span> · <span class="mono">Disposition</span></li>
+              <li><span class="mono">Designated_By_Customer</span> · <span class="mono">Customer_Approval_Status</span></li>
+              <li><span class="mono">Country_of_Origin</span> + <span class="mono">COO_Basis</span> — <strong>"미상"을 명시 값으로</strong></li>
+              <li><span class="mono">Packaging_Variant_Group</span> — 같은 부품의 포장별 품번 묶음</li>
+              <li><span class="mono">Manufacturer_Exposure</span> — 제조사별 행 수·원가 비중</li>
+              <li><span class="mono">Part_Maturity</span> · <span class="mono">Programmed_Item_Flag</span> · <span class="mono">Firmware_Revision</span> <span class="meta">v1.1</span></li>
+              <li><span class="mono">Deviation_Ref</span> · <span class="mono">Deviation_Expiry</span> · <span class="mono">Deviation_Qty_Limit</span> · <span class="mono">Market_Variant</span> <span class="meta">v1.1</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <p class="sec-label">충돌 검사 — 룰북 신규 분류 RB-CF 제안</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>조건</th><th class="em">판정</th><th>등급</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">RB-CF-01</td><td>변경 대상이 고객 지정 품목</td><td class="em">차단 · 고객 협상으로 라우팅</td><td><span class="tag tag-navy">S</span></td></tr>
+            <tr><td class="mono">RB-CF-02</td><td>대체 전환이 원산지 기준 악화</td><td class="em">시장별 판정 병기</td><td><span class="tag">H</span></td></tr>
+            <tr><td class="mono">RB-CF-03</td><td>통합 대상 변형이 장기재고에 존재</td><td class="em">재고 소진 후 적용 제안</td><td><span class="tag">H</span></td></tr>
+            <tr><td class="mono">RB-CF-04</td><td>장기재고가 보관수명·MSL·데이트코드 미달</td><td class="em">지침 우회 불가 · 차단</td><td><span class="tag tag-navy">S</span></td></tr>
+            <tr><td class="mono">RB-CF-05</td><td>인증 구성 부품의 대체</td><td class="em">재시험 필요 여부 판정</td><td><span class="tag tag-navy">S</span></td></tr>
+            <tr><td class="mono">RB-CF-06</td><td><strong>같은 행에 미완료 변경 패키지 2개 이상</strong></td><td class="em">선행 완료 전 후행 차단</td><td><span class="tag">H</span></td></tr>
+            <tr><td class="mono">RB-CF-07</td><td>기준선 동결 대상에 시제 품번 존재</td><td class="em">동결 차단 · 양산 품번 전환 요구</td><td><span class="tag tag-navy">S</span></td></tr>
+            <tr><td class="mono">RB-CF-08</td><td>편차·특채 만료 또는 승인 수량 도달</td><td class="em">편차 품목 할당 차단 · 원 구성 복귀</td><td><span class="tag tag-navy">S</span></td></tr>
+            <tr><td class="mono">RB-CF-09</td><td>기록 정정이 MPN·값·정격·패키지를 바꿈</td><td class="em">설계 변경으로 재분류</td><td><span class="tag">H</span></td></tr>
+            <tr><td class="mono">RB-CF-10</td><td>펌웨어 개정에 구 펌웨어 재고 처분 누락</td><td class="em">승인 차단 · 처분 선택 요구</td><td><span class="tag">H</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 실무에서 가장 흔한 사고는 두 부서가 같은 행을 각자 다른 사유로 동시에 고치는 것이다(RB-CF-06).</p>
+    </div>
+
+    <div class="grid g4">
+      <div class="kpi"><p class="kpi-val">AVL</p><p class="kpi-label">대체 커버리지</p><p class="kpi-sub">승인 대체 ≥1 행 비율 · L1을 L2로 강등</p></div>
+      <div class="kpi"><p class="kpi-val">0<span class="kpi-suf">%</span></p><p class="kpi-label">ECN 이후 첫 인지 비율</p><p class="kpi-sub">구매가 결정 후에 알게 된 변경</p></div>
+      <div class="kpi"><p class="kpi-val">당일</p><p class="kpi-label">다수 동시 변경 처리</p><p class="kpi-sub">통보 수신 → 영향 범위·대체안</p></div>
+      <div class="kpi"><p class="kpi-val">0<span class="kpi-suf">건</span></p><p class="kpi-label">만료 편차 잔존</p><p class="kpi-sub">만료·수량 초과 후 미복귀 편차</p></div>
+    </div>
+
+    <div style="padding-top:1.5rem">
+      <p class="appendix-divider">End of Summary</p>
+      <p class="meta" style="text-align:center">전체 문서 · <span class="mono">M-BOM_다단계확정_시나리오.md</span> — 사유별 상세 근거 · 참고 출처(부록 A) 포함</p>
+    </div>
+
+  </div>
+</article>
+
+</div><!-- /.wrap -->
+
+  <div class="pager no-print" id="pager">
+    <button type="button" id="prevBtn" aria-label="이전 슬라이드">&larr;</button>
+    <span class="mono" id="pageLabel">01 / 08</span>
+    <button type="button" id="nextBtn" aria-label="다음 슬라이드">&rarr;</button>
+  </div>
+</main>
+</div><!-- /.shell -->
+
+<script>
+(function () {
+  "use strict";
+  var NAV = [
+    { id: "overview",  label: "개요 · 검증 요약",        number: "00", group: 0 },
+    { id: "lifecycle", label: "생애 단계 · 변경 4층",    number: "01", group: 0 },
+    { id: "reason1",   label: "사유 ①~④",              number: "02", group: 1 },
+    { id: "reason2",   label: "사유 ⑤~⑦",              number: "03", group: 1 },
+    { id: "added",     label: "추가 시나리오 12",        number: "04", group: 1 },
+    { id: "composite", label: "통합 개정 이력",          number: "05", group: 2 },
+    { id: "pattern",   label: "패턴 · 충돌",            number: "06", group: 2 },
+    { id: "agent",     label: "에이전트 함의",           number: "07", group: 2 }
+  ];
+  var IDS = NAV.map(function (n) { return n.id; });
+
+  var sidebar  = document.getElementById("sidebar");
+  var backdrop = document.getElementById("backdrop");
+  var toggle   = document.getElementById("sbToggle");
+  var pageLbl  = document.getElementById("pageLabel");
+  var prevBtn  = document.getElementById("prevBtn");
+  var nextBtn  = document.getElementById("nextBtn");
+
+  NAV.forEach(function (n) {
+    var ul = document.getElementById("nav-" + n.group);
+    if (!ul) return;
+    var li = document.createElement("li");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "sb-item";
+    btn.dataset.goto = n.id;
+    btn.innerHTML = '<span class="bar"></span><span class="sb-num">' + n.number +
+      '</span><span class="sb-text"></span><span class="dot"></span>';
+    btn.querySelector(".sb-text").textContent = n.label;
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+
+  var activeId = IDS[0];
+
+  function closeMobile() {
+    sidebar.classList.remove("open");
+    backdrop.classList.remove("show");
+    toggle.textContent = "목차 ☰";
+  }
+
+  function render(id, pushHash) {
+    if (IDS.indexOf(id) === -1) id = IDS[0];
+    activeId = id;
+    Array.prototype.forEach.call(document.querySelectorAll(".slide"), function (el) {
+      var on = el.id === id;
+      el.classList.toggle("active", on);
+      el.classList.remove("slide-enter");
+      if (on) { void el.offsetWidth; el.classList.add("slide-enter"); }
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".sb-item[data-goto]"), function (btn) {
+      btn.classList.toggle("active", btn.dataset.goto === id);
+    });
+    var idx = IDS.indexOf(id);
+    pageLbl.textContent = String(idx + 1).padStart(2, "0") + " / " + String(IDS.length).padStart(2, "0");
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx >= IDS.length - 1;
+    if (pushHash !== false && window.location.hash !== "#" + id) {
+      try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    }
+    requestAnimationFrame(function () { window.scrollTo({ top: 0 }); });
+    closeMobile();
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-goto]") : null;
+    if (t) render(t.dataset.goto);
+  });
+  prevBtn.addEventListener("click", function () { render(IDS[Math.max(IDS.indexOf(activeId) - 1, 0)]); });
+  nextBtn.addEventListener("click", function () { render(IDS[Math.min(IDS.indexOf(activeId) + 1, IDS.length - 1)]); });
+  toggle.addEventListener("click", function () {
+    var open = sidebar.classList.toggle("open");
+    backdrop.classList.toggle("show", open);
+    toggle.textContent = open ? "닫기 ✕" : "목차 ☰";
+  });
+  backdrop.addEventListener("click", closeMobile);
+  document.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+    var idx = IDS.indexOf(activeId);
+    if (e.key === "ArrowRight" || e.key === "PageDown") render(IDS[Math.min(idx + 1, IDS.length - 1)]);
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") render(IDS[Math.max(idx - 1, 0)]);
+  });
+  function syncFromHash() {
+    var h = window.location.hash.replace("#", "");
+    render(IDS.indexOf(h) !== -1 ? h : IDS[0], false);
+  }
+  window.addEventListener("hashchange", syncFromHash);
+  window.addEventListener("popstate", syncFromHash);
+  syncFromHash();
+})();
+</script>
+</body>
+</html>

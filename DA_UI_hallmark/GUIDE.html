@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko" data-hm-profile="doc">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F4F5F7">
+<title>DA UI hallmark 시작하기</title>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* DA UI hallmark v1.0 · 시작하기 (GUIDE.html). 사람이 읽는 안내다. 12_template_doc.html 과 같은 틀로 만들었다. */
+:root{
+  color-scheme: light;
+  --navy:#06438C; --b50:#E5F0F5; --b100:#C7DCE7; --b700:#052E62; --e100:#E5F8F2; --e800:#16735F;
+  --frame:#F4F5F7; --surface:#FFFFFF; --raised:#FAFAFA; --hover:#EEF0F3; --active:#E6E8EC;
+  --edge:#E3E5E9; --rule:#EEF0F3; --control:#CBD0D6; --control-strong:#868C93;
+  --ink:#111111; --ink-2:#555555; --ink-3:#6B6F76;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  --r-tag:4px; --r-ctl:6px; --r-panel:8px; --r-sheet:16px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--frame);color:var(--ink);font-family:var(--font);font-size:16.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+ul{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+a{color:var(--navy);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+code{font-family:inherit;font-size:.94em;font-weight:500;background:var(--hover);border-radius:4px;padding:1px 6px;color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:var(--r-ctl);font-size:14px;font-weight:600;white-space:nowrap;border-width:1px;border-style:solid;border-color:transparent;text-decoration:none;transition:background-color .12s,color .12s}
+.btn-1{background:var(--navy);color:#fff}
+.btn-1:hover{background:var(--b700)}
+.btn-2{background:#fff;color:var(--ink);border-color:var(--control)}
+.btn-2:hover{background:var(--frame)}
+.btn-t{color:var(--ink-2)}
+.btn-t:hover{background:var(--active);color:var(--ink)}
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 7px;border-radius:var(--r-tag);font-size:13px;font-weight:500;white-space:nowrap;background:var(--b50);color:var(--b700)}
+
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;background:var(--frame)}
+.mark{width:26px;height:26px;border-radius:var(--r-ctl);background:var(--navy);display:grid;place-items:center;flex:none}
+.mark svg{width:16px;height:16px;display:block}
+.top .nm{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.top .sp{flex:1}
+.wrap{padding:0 8px 8px}
+.sheet{background:var(--surface);border-radius:var(--r-sheet);padding:56px 40px 72px}
+.doc{display:grid;grid-template-columns:200px minmax(0,760px);gap:64px;justify-content:center}
+.toc{position:sticky;top:96px;align-self:start}
+.toc p{font-size:13px;color:var(--ink-3);padding:0 10px 6px}
+.toc a{display:block;padding:6px 10px;border-radius:var(--r-ctl);color:var(--ink-2);font-size:14px;line-height:1.45;text-decoration:none}
+.toc a:hover{background:var(--hover);color:var(--ink)}
+.toc a[aria-current="true"]{background:var(--active);color:var(--ink);font-weight:600}
+.toc-m{display:none}
+
+article{min-width:0}
+article header h1{font-size:34px;font-weight:700;line-height:1.3;letter-spacing:-.02em}
+article header .meta{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.call{border-radius:var(--r-panel);padding:18px 22px;background:var(--raised)}
+.call.info{background:var(--b50)}
+.call.ok{background:var(--e100)}
+.call .ct{display:block;font-size:16px;font-weight:700;margin-bottom:6px}
+.call ul li{position:relative;padding-left:16px;margin-top:6px}
+.call ul li::before{content:"";position:absolute;left:2px;top:.75em;width:5px;height:5px;border-radius:50%;background:var(--navy)}
+.summary{margin-top:28px}
+section{margin-top:64px}
+section h2{font-size:24px;font-weight:700;line-height:1.35;letter-spacing:-.01em}
+section h3{font-size:18px;font-weight:600;margin-top:32px}
+section p{margin-top:14px;max-width:68ch}
+.cap{margin-top:10px;font-size:14px;color:var(--ink-2)}
+.steps{margin-top:14px;padding-left:1.5em;list-style:decimal}
+.steps li{margin-top:8px;padding-left:4px}
+.steps li::marker{color:var(--ink-2);font-weight:600}
+.steps b{font-weight:600}
+.copy{margin-top:16px;border-radius:var(--r-panel);background:var(--raised);padding:16px 18px}
+.copy .h{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.copy .h b{flex:1;font-size:15px;font-weight:600}
+.copy .txt{white-space:pre-wrap;font-size:16px;line-height:1.7;color:var(--ink)}
+.tbl-wrap{margin-top:20px;overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:16px;line-height:1.6}
+.tbl th{font-weight:400;color:var(--ink-3);font-size:14px;text-align:left;padding:0 14px 8px 0;border-bottom:1px solid var(--edge);white-space:nowrap}
+.tbl td{padding:11px 14px 11px 0;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+.tbl td.k{color:var(--ink);font-weight:600}
+.src{margin-top:12px;font-size:14px;color:var(--ink-3)}
+
+@media (max-width:1199px){
+  .doc{grid-template-columns:minmax(0,760px)}
+  .toc{display:none}
+  .toc-m{display:block;margin-top:24px;background:var(--raised);border-radius:var(--r-panel);padding:4px 14px}
+  .toc-m summary{cursor:pointer;font-size:15px;font-weight:600;padding:10px 0;min-height:44px;display:flex;align-items:center}
+  .toc-m a{display:flex;align-items:center;min-height:40px;color:var(--ink-2);text-decoration:none;font-size:15px}
+}
+@media (max-width:640px){
+  .top{height:52px;padding:0 6px 0 12px}
+  .wrap{padding:0}
+  .sheet{border-radius:0;padding:28px 16px 48px}
+  body{font-size:16px}
+  article header h1{font-size:28px}
+  section{margin-top:48px}
+  section h2{font-size:22px}
+  .btn{height:44px}
+  .tbl.stackable thead{display:none}
+  .tbl.stackable tr{display:block;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .tbl.stackable td{display:block;border:0;padding:2px 0}
+  .tbl.stackable td[data-l]::before{content:attr(data-l) " ";color:var(--ink-3);font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+@media print{html,body{background:#fff}.top,.toc,.toc-m,.copy .btn{display:none!important}.wrap{padding:0}.sheet{padding:0}.doc{display:block}}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 4.5h10M3 8h7M3 11.5h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span>
+  <span class="nm">DA UI hallmark 시작하기</span>
+  <span class="tag">v1.0</span>
+  <span class="sp"></span>
+  <a class="btn btn-t" href="checker.html">검사기 열기</a>
+</header>
+
+<div class="wrap">
+  <main class="sheet">
+    <div class="doc">
+      <nav class="toc" aria-label="목차" id="toc">
+        <p>목차</p>
+        <a href="#s-what">이 폴더로 하는 일</a>
+        <a href="#s-unzip">처음 한 번: 폴더 풀기</a>
+        <a href="#s-claude">처음 한 번: Claude에 알리기</a>
+        <a href="#s-ask">요청하기</a>
+        <a href="#s-check">검사하기</a>
+        <a href="#s-update">새 버전으로 바꾸기</a>
+        <a href="#s-help">막힐 때</a>
+        <a href="#s-note">알아 둘 것</a>
+      </nav>
+
+      <article>
+        <header>
+          <h1>DA UI hallmark 시작하기</h1>
+          <p class="meta">v1.0 · 2026-10-21 · 처음 쓰는 사람용 · 설치할 프로그램 없음</p>
+          <div class="call info summary" role="note" aria-label="요약">
+            <span class="ct">네 단계면 된다</span>
+            <ul>
+              <li>받은 zip을 <b>프로젝트 폴더에 푼다</b>. 폴더 이름은 <code>DA_UI_hallmark</code>이다.</li>
+              <li>Claude 프로젝트에 <b>지침 4줄을 한 번</b> 붙여 넣는다.</li>
+              <li>평소처럼 화면이나 자료를 요청한다. AI가 이 폴더의 규칙을 읽고 만든다.</li>
+              <li>결과 HTML을 <b>checker.html</b>로 검사하고, 보고서를 AI에게 붙여 넣는다. AI가 고친다.</li>
+            </ul>
+          </div>
+          <nav aria-label="목차">
+            <details class="toc-m">
+              <summary>목차</summary>
+              <a href="#s-what">이 폴더로 하는 일</a><a href="#s-unzip">처음 한 번: 폴더 풀기</a><a href="#s-claude">처음 한 번: Claude에 알리기</a><a href="#s-ask">요청하기</a><a href="#s-check">검사하기</a><a href="#s-update">새 버전으로 바꾸기</a><a href="#s-help">막힐 때</a><a href="#s-note">알아 둘 것</a>
+            </details>
+          </nav>
+        </header>
+
+        <section id="s-what" aria-labelledby="h-what">
+          <h2 id="h-what">이 폴더로 하는 일</h2>
+          <p>회사 웹 화면과 웹 문서를 같은 모양으로 만들게 하는 규칙 묶음이다. 사내 웹 키트의 색과 글꼴을 이어받고, "AI가 만든 티"가 나는 장식을 뺐다. 번호가 붙은 파일은 AI가 읽고, 번호가 없는 파일은 사람이 쓴다.</p>
+          <div class="tbl-wrap">
+            <table class="tbl stackable" aria-label="폴더의 파일">
+              <thead><tr><th scope="col">파일</th><th scope="col">누가</th><th scope="col">무엇</th></tr></thead>
+              <tbody>
+                <tr><td class="k">00 ~ 04 (.md)</td><td data-l="누가">AI</td><td data-l="무엇">우선순위, 색·글꼴, 업무 화면 규칙, 발표·문서 규칙, 점검표</td></tr>
+                <tr><td class="k">10 ~ 12 (.html)</td><td data-l="누가">AI</td><td data-l="무엇">업무 화면, 발표, 문서의 시작 틀. 열어 보면 완성된 예시가 보인다</td></tr>
+                <tr><td class="k">checker.html</td><td data-l="누가">사람</td><td data-l="무엇">결과 HTML을 세 가지 폭으로 띄워 규칙을 검사하는 도구</td></tr>
+                <tr><td class="k">GUIDE.html</td><td data-l="누가">사람</td><td data-l="무엇">지금 보는 안내</td></tr>
+                <tr><td class="k">NOTICE.md, CHANGELOG.md</td><td data-l="누가">사람</td><td data-l="무엇">출처·라이선스, 버전 기록</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="s-unzip" aria-labelledby="h-unzip">
+          <h2 id="h-unzip">처음 한 번: 폴더 풀기</h2>
+          <ol class="steps">
+            <li>받은 <code>DA_UI_hallmark_v1.0.zip</code>을 작업할 <b>프로젝트 폴더</b>로 옮긴다. 예: <code>문서\변경요청_개선</code></li>
+            <li>zip을 마우스 오른쪽 단추로 누르고 <b>모두 압축 풀기</b>를 고른다.</li>
+            <li>풀 위치 칸 끝의 <code>\DA_UI_hallmark_v1.0</code>을 지워 프로젝트 폴더만 남기고 <b>압축 풀기</b>를 누른다.</li>
+            <li>프로젝트 폴더 안에 <code>DA_UI_hallmark</code> 폴더가 생기고, 그 안에 <code>00_READ_FIRST.md</code>가 보이면 끝이다.</li>
+          </ol>
+          <p class="cap">3번을 건너뛰어 <code>DA_UI_hallmark_v1.0\DA_UI_hallmark</code>처럼 두 겹이 되어도 동작한다. 안쪽 폴더를 프로젝트 폴더로 옮기면 깔끔하다.</p>
+        </section>
+
+        <section id="s-claude" aria-labelledby="h-claude">
+          <h2 id="h-claude">처음 한 번: Claude에 알리기</h2>
+          <p>Claude는 폴더 안의 규칙 파일을 스스로 찾아 읽지 않는다. 그래서 프로젝트 지침에 "먼저 읽으라"고 한 번 적어 둔다. 쓰는 화면에 맞는 쪽 하나만 하면 된다.</p>
+          <h3>Cowork를 쓸 때 (유료 플랜)</h3>
+          <ol class="steps">
+            <li>Claude 데스크톱 앱 왼쪽의 <b>프로젝트(Projects)</b>에서 <b>+</b>를 누른다.</li>
+            <li><b>기존 폴더 사용(Use an existing folder)</b>을 고르고 프로젝트 폴더를 고른다.</li>
+            <li><b>지침(Instructions)</b> 칸에 아래 지침을 붙여 넣고 만든다.</li>
+            <li>이 프로젝트에서 작업을 시작하면 AI가 폴더의 규칙을 읽고, 결과 파일을 프로젝트 폴더에 저장한다.</li>
+          </ol>
+          <h3>Chat 프로젝트를 쓸 때 (무료 포함)</h3>
+          <ol class="steps">
+            <li>Claude에서 <b>프로젝트(Projects)</b> → <b>새 프로젝트</b>를 만든다.</li>
+            <li><b>프로젝트 지식(Project knowledge)</b>에 <code>DA_UI_hallmark</code> 폴더의 <b>번호 붙은 파일 8개</b>(00~04, 10~12)를 끌어다 놓는다. checker.html과 GUIDE.html은 올리지 않는다.</li>
+            <li><b>지침</b> 칸에 아래 지침을 붙여 넣는다.</li>
+            <li>결과 HTML은 대화에서 내려받아 프로젝트 폴더에 저장한다.</li>
+          </ol>
+          <div class="copy">
+            <div class="h"><b>붙여 넣을 지침</b><button class="btn btn-2" type="button" data-copy="c-inst">복사</button></div>
+            <p class="txt" id="c-inst">이 프로젝트의 화면·문서 디자인은 DA UI hallmark 규칙을 따른다.
+1. 디자인 작업 전에 DA_UI_hallmark 폴더(또는 프로젝트 지식)의 00_READ_FIRST.md를 먼저 읽고, 거기 적힌 순서대로 번호 붙은 파일을 모두 읽는다.
+2. hallmark와 다른 디자인 규칙(DA_WEBUI_KIT 포함)이 충돌하면 hallmark를 따른다.
+3. 결과물을 넘기기 전에 04_checklist.md로 점검하고 5장 양식으로 보고한다. 하지 않은 검사는 했다고 쓰지 않는다.
+4. 내가 checker.html 보고서를 붙여 넣으면 FAIL부터 고친다.</p>
+          </div>
+          <p class="src">메뉴 이름은 앱 언어 설정과 버전에 따라 조금 다를 수 있다. Cowork 프로젝트 안내: <a href="https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-claude-cowork">Claude 도움말</a></p>
+        </section>
+
+        <section id="s-ask" aria-labelledby="h-ask">
+          <h2 id="h-ask">요청하기</h2>
+          <p>무엇을 만들지, 누가 쓰는지, 화면마다 답할 질문(또는 장마다 주장)을 함께 적으면 결과가 좋아진다. 자료가 있으면 같이 올린다.</p>
+          <div class="copy">
+            <div class="h"><b>업무 화면</b><button class="btn btn-2" type="button" data-copy="c-app">복사</button></div>
+            <p class="txt" id="c-app">hallmark 규칙으로 [무엇을 하는] 업무 화면을 만들어 줘.
+쓰는 사람: [부서, 얼마나 자주]
+화면: [목록 / 상세 / 설정 등]
+화면마다 답할 질문: [예: 오늘 먼저 처리할 요청은 무엇인가]
+데이터: [첨부 파일] (없으면 [가상] 예시 값으로)</p>
+          </div>
+          <div class="copy">
+            <div class="h"><b>발표 자료</b><button class="btn btn-2" type="button" data-copy="c-slides">복사</button></div>
+            <p class="txt" id="c-slides">hallmark 발표 템플릿으로 [주제] 발표 자료를 만들어 줘.
+듣는 사람: [누구]
+장마다 주장 하나, 둘째 장은 요약, 결정할 것은 따로 한 장.
+근거 자료: [첨부 파일]</p>
+          </div>
+          <div class="copy">
+            <div class="h"><b>브리핑·보고 문서</b><button class="btn btn-2" type="button" data-copy="c-doc">복사</button></div>
+            <p class="txt" id="c-doc">hallmark 문서 템플릿으로 [주제] 보고서를 만들어 줘.
+결론을 맨 앞 요약에 쓰고, 절마다 주장 하나, 결정 필요 사항은 따로 모아 줘.
+근거 자료: [첨부 파일]</p>
+          </div>
+        </section>
+
+        <section id="s-check" aria-labelledby="h-check">
+          <h2 id="h-check">검사하기</h2>
+          <ol class="steps">
+            <li><code>DA_UI_hallmark</code> 폴더의 <b>checker.html</b>을 두 번 눌러 연다. Edge가 아니라 다른 프로그램으로 열리면 오른쪽 단추 → 연결 프로그램 → Microsoft Edge.</li>
+            <li>결과 HTML 파일을 검사기 화면 위로 끌어다 놓는다. 30초~2분이면 끝난다.</li>
+            <li><b>보고서 복사</b>를 누르고 Claude 대화창에 붙여 넣는다. AI가 FAIL부터 고친다.</li>
+            <li>고친 파일로 다시 검사한다. 세 번까지 반복한다.</li>
+            <li>모양이 어색해 보이면 검사기의 "검사 화면"을 캡처(<code>Win</code> + <code>Shift</code> + <code>S</code>)해 붙여 넣고 "캡처 검토해 줘"라고 쓴다.</li>
+          </ol>
+          <div class="call ok" style="margin-top:20px">
+            <span class="ct">FAIL과 WARN</span>
+            <p style="margin-top:0">FAIL은 고쳐야 하는 것, WARN은 대개 고치는 것이다. WARN을 남길 때는 AI가 이유를 한 줄로 적는다. 검사기는 파일을 이 PC 밖으로 보내지 않는다.</p>
+          </div>
+        </section>
+
+        <section id="s-update" aria-labelledby="h-update">
+          <h2 id="h-update">새 버전으로 바꾸기</h2>
+          <ol class="steps">
+            <li><code>CHANGELOG.md</code>를 열어 무엇이 바뀌었는지 본다.</li>
+            <li>프로젝트 폴더의 <code>DA_UI_hallmark</code> 폴더를 지우고 새 zip을 같은 방법으로 푼다.</li>
+            <li>Chat 프로젝트를 쓰면 프로젝트 지식의 옛 파일 8개를 지우고 새 파일 8개를 올린다.</li>
+            <li>지침은 그대로 둔다. AI는 보고할 때 몇 버전을 적용했는지 밝힌다.</li>
+          </ol>
+        </section>
+
+        <section id="s-help" aria-labelledby="h-help">
+          <h2 id="h-help">막힐 때</h2>
+          <div class="tbl-wrap">
+            <table class="tbl stackable" aria-label="자주 막히는 곳">
+              <thead><tr><th scope="col">이럴 때</th><th scope="col">이렇게</th></tr></thead>
+              <tbody>
+                <tr><td class="k">끌어다 놓아도 반응이 없다</td><td data-l="이렇게">검사기의 <b>파일 고르기</b> 단추로 고른다.</td></tr>
+                <tr><td class="k">글꼴이 예시와 다르다</td><td data-l="이렇게">인터넷이 없으면 Pretendard 대신 시스템 글꼴로 보인다. 검사기에 "지정한 글꼴이 안 불러와졌다" 경고가 나올 수 있다.</td></tr>
+                <tr><td class="k">AI가 규칙을 안 읽은 것 같다</td><td data-l="이렇게">"00_READ_FIRST.md를 읽었는지 확인하고 04_checklist.md 5장 양식으로 보고해 줘"라고 요청한다.</td></tr>
+                <tr><td class="k">검사가 끝나지 않는다</td><td data-l="이렇게">결과 파일이 다른 파일(그림·CSS)을 불러오면 오래 걸릴 수 있다. 그림을 파일 안에 넣어 달라고 AI에게 요청한다.</td></tr>
+                <tr><td class="k">화면이 여러 개인데 하나만 검사됐다</td><td data-l="이렇게">AI에게 화면마다 <code>data-hm-view</code>를 달라고 하거나, 검사기의 "화면 주소를 더 넣어 검사"에 <code>#화면이름</code>을 적는다.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="s-note" aria-labelledby="h-note">
+          <h2 id="h-note">알아 둘 것</h2>
+          <p>검사기는 결과 HTML 안의 스크립트를 검사 화면 안에서 실행한다. 어디서 왔는지 모르는 HTML은 검사하지 않는다.</p>
+          <p>Chat 프로젝트에 올린 파일은 Claude 계정에 저장된다. 회사 자료를 올릴 때는 사내 보안 규정을 따른다. 이 폴더의 규칙 파일에는 회사 기밀이 없다.</p>
+          <p>검사기는 대비와 누르는 곳 크기 일부를 확인하지만 접근성 전체를 보장하지 않는다. 완전한 확인은 화면 읽기 프로그램 같은 보조기기로 직접 써 보는 수동 점검이 필요하다.</p>
+          <h3>변경 이력</h3>
+          <div class="tbl-wrap">
+            <table class="tbl" aria-label="변경 이력">
+              <thead><tr><th scope="col">버전</th><th scope="col">일자</th><th scope="col">내용</th></tr></thead>
+              <tbody><tr><td class="k">v1.0</td><td>2026-10-21</td><td>최초 배포</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+</div>
+<script>
+(function () {
+'use strict';
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); return true; } catch (e) {
+    const ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (_) {} ta.remove(); return ok;
+  }
+}
+document.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+  const ok = await copyText(document.getElementById(b.dataset.copy).textContent);
+  b.textContent = ok ? '복사했다' : '직접 선택해 복사한다'; setTimeout(() => { b.textContent = '복사'; }, 2000);
+}));
+const links = [...document.querySelectorAll('#toc a')];
+const secs = links.map((a) => document.querySelector(a.getAttribute('href')));
+function mark() { let k = 0; secs.forEach((s, i) => { if (s.getBoundingClientRect().top < 140) k = i; }); links.forEach((a, i) => { if (i === k) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }); }
+window.addEventListener('scroll', mark, { passive: true }); mark();
+})();
+</script>
+</body>
+</html>

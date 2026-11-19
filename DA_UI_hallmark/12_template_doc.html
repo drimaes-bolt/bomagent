@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko" data-hm-profile="doc">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F4F5F7">
+<title>3분기 변경 요청 처리 현황 · DA UI hallmark 문서 템플릿</title>
+<!-- 글꼴: Pretendard(인터넷 연결 시). 연결이 없으면 시스템 글꼴로 보인다. -->
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* =====================================================================
+   DA UI hallmark v1.0 · 브리핑·보고 문서 템플릿 (12_template_doc.html)
+   - 이 파일을 새 이름으로 복사해서 고친다. :root 와 '공통' 구역은 바꾸지 않는다.
+   - 구조: 제목 → 요약(결론) → 본문 절(절마다 주장 하나) → 결정 필요 → 근거·변경 이력.
+   - 절 사이는 선이 아니라 여백으로 나눈다. 표만 선을 쓴다.
+   - 예시 수치는 모두 [가상]·[가안]·[제안]이다.
+   ===================================================================== */
+:root{
+  color-scheme: light;
+  --co-black:#000000; --co-dark:#555555; --co-mid:#A0A0A0; --co-light:#DEDEDE;
+  --co-mint:#7DEAD5;  --co-cyan:#1BBBCC; --co-blue:#4383AF; --co-navy:#06438C;
+  --navy:#06438C;
+  --b50:#E5F0F5; --b100:#C7DCE7; --b700:#052E62; --b800:#031F44;
+  --e100:#E5F8F2; --e800:#16735F;
+  --frame:#F4F5F7; --surface:#FFFFFF; --raised:#FAFAFA; --hover:#EEF0F3; --active:#E6E8EC;
+  --edge:#E3E5E9; --rule:#EEF0F3; --control:#CBD0D6; --control-strong:#868C93; --grid:#DEDEDE;
+  --ink:#111111; --ink-2:#555555; --ink-3:#6B6F76;
+  --float:0 10px 28px rgba(0,0,0,.08);
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  --r-tag:4px; --r-ctl:6px; --r-panel:8px; --r-sheet:16px;
+}
+
+/* ------------------------------------------------------------ 공통 */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--frame);color:var(--ink);font-family:var(--font);font-size:16.5px;line-height:1.75;
+  word-break:keep-all;overflow-wrap:break-word;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol,dl,dd,figure,blockquote{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+a{color:var(--navy);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+::selection{background:var(--b100)}
+[hidden]{display:none!important}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:var(--r-ctl);
+  font-size:14px;font-weight:600;white-space:nowrap;border-width:1px;border-style:solid;border-color:transparent;text-decoration:none;transition:background-color .12s,color .12s}
+.btn-t{color:var(--ink-2)}
+.btn-t:hover{background:var(--active);color:var(--ink)}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 7px;border-radius:var(--r-tag);font-size:13px;font-weight:500;white-space:nowrap;flex:none;background:var(--b50);color:var(--b700)}
+
+/* ------------------------------------------------------------ 셸 */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;background:var(--frame)}
+.mark{width:26px;height:26px;border-radius:var(--r-ctl);background:var(--navy);display:grid;place-items:center;flex:none}
+.mark svg{width:16px;height:16px;display:block}
+.top .nm{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.top .sp{flex:1}
+.wrap{padding:0 8px 8px}
+.sheet{background:var(--surface);border-radius:var(--r-sheet);padding:56px 40px 72px}
+.doc{display:grid;grid-template-columns:200px minmax(0,760px);gap:64px;justify-content:center}
+.toc{position:sticky;top:96px;align-self:start}
+.toc p{font-size:13px;color:var(--ink-3);padding:0 10px 6px}
+.toc a{display:block;padding:6px 10px;border-radius:var(--r-ctl);color:var(--ink-2);font-size:14px;line-height:1.45;text-decoration:none}
+.toc a:hover{background:var(--hover);color:var(--ink)}
+.toc a[aria-current="true"]{background:var(--active);color:var(--ink);font-weight:600}
+.toc-m{display:none}
+
+/* ------------------------------------------------------------ 본문 */
+article{min-width:0}
+article header h1{font-size:34px;font-weight:700;line-height:1.3;letter-spacing:-.02em;text-wrap:balance}
+article header .meta{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.call{border-radius:var(--r-panel);padding:18px 22px;background:var(--raised)}
+.call.info{background:var(--b50)}
+.call .ct{display:block;font-size:16px;font-weight:700;margin-bottom:6px}
+.call ul li{position:relative;padding-left:16px;margin-top:6px}
+.call ul li::before{content:"";position:absolute;left:2px;top:.75em;width:5px;height:5px;border-radius:50%;background:var(--navy)}
+.summary{margin-top:28px}
+section{margin-top:64px}
+section h2{font-size:24px;font-weight:700;line-height:1.35;letter-spacing:-.01em;text-wrap:balance}
+section h3{font-size:18px;font-weight:600;margin-top:28px}
+section p{margin-top:14px;max-width:68ch}
+section p b{font-weight:600}
+.cap{margin-top:10px;font-size:14px;color:var(--ink-2)}
+.src{margin-top:12px;font-size:14px;color:var(--ink-3)}
+.sowhat{margin-top:16px;border-radius:var(--r-ctl);background:var(--navy);color:#fff;font-weight:600;font-size:15px;padding:10px 14px;max-width:none}
+
+/* 지표 줄: 상자 없이 숫자를 먼저, 라벨을 아래에 */
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:28px}
+.kpi .v{font-size:36px;font-weight:700;line-height:1.1;white-space:nowrap}
+.kpi .v small{font-size:17px;font-weight:500;color:var(--ink-2);margin-left:3px}
+.kpi .v.key{color:var(--navy)}
+.kpi .l{margin-top:8px;font-size:16px;font-weight:600;color:var(--ink);line-height:1.5}
+.kpi .s{margin-top:2px;font-size:14px;color:var(--ink-2);line-height:1.5}
+
+/* 그림 */
+figure{margin-top:24px}
+.chart svg{display:block;width:100%;height:auto;max-width:640px}
+.chart .bar{fill:var(--control)}
+.chart .bar.now{fill:var(--navy)}
+.chart text{font-family:var(--font);font-size:13px;fill:var(--ink-2)}
+.chart text.val{font-size:14px;fill:var(--ink)}
+.chart text.val.now{fill:var(--navy);font-weight:700}
+
+/* 표 */
+.tbl-wrap{margin-top:20px;overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:15px;line-height:1.55}
+.tbl th{font-weight:400;color:var(--ink-3);font-size:14px;text-align:left;padding:0 14px 8px 0;border-bottom:1px solid var(--edge);white-space:nowrap}
+.tbl td{padding:11px 14px 11px 0;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+.tbl th.r,.tbl td.r{text-align:right;white-space:nowrap}
+.tbl td.k{color:var(--ink);font-weight:600}
+.tbl tr.key td{color:var(--ink)}
+.tbl td.em,.tbl th.em{color:var(--navy);font-weight:700}
+.tbl tfoot td{border-bottom:0;color:var(--ink);font-weight:600}
+
+/* 흐름: 톤 블록 + 정지한 화살표 */
+.flow{display:flex;align-items:stretch;margin-top:24px}
+.flow .st{flex:4 1 0;min-width:0;background:var(--raised);border-radius:var(--r-panel);padding:14px 14px 12px}
+.flow .st.chg{background:var(--b50)}
+.flow .st b{display:block;font-size:16px;font-weight:700;line-height:1.4}
+.flow .st span{display:block;margin-top:4px;font-size:14px;color:var(--ink-2);line-height:1.5}
+.flow .st.chg span{color:var(--ink)}
+.flow .ar{flex:1 1 0;min-width:22px;max-width:40px;display:grid;place-items:center;color:var(--ink-3)}
+.flow .ar svg{width:18px;height:18px}
+
+/* 인용 */
+.quote{margin-top:24px;padding:4px 0 4px 18px;border-left:4px solid var(--b100)}
+.quote p{margin:0;font-size:18px;line-height:1.65;color:var(--ink)}
+.quote cite{display:block;margin-top:6px;font-style:normal;font-size:14px;color:var(--ink-3)}
+
+/* ------------------------------------------------------------ 폭에 따라 */
+@media (max-width:1199px){
+  .doc{grid-template-columns:minmax(0,760px)}
+  .toc{display:none}
+  .toc-m{display:block;margin-top:24px;background:var(--raised);border-radius:var(--r-panel);padding:4px 14px}
+  .toc-m summary{cursor:pointer;font-size:15px;font-weight:600;padding:10px 0;min-height:44px;display:flex;align-items:center}
+  .toc-m a{display:flex;align-items:center;min-height:40px;color:var(--ink-2);text-decoration:none;font-size:15px}
+}
+@media (max-width:640px){
+  .top{height:52px;padding:0 6px 0 12px}
+  .wrap{padding:0}
+  .sheet{border-radius:0;padding:28px 16px 48px}
+  body{font-size:16px}
+  article header h1{font-size:28px}
+  section{margin-top:48px}
+  section h2{font-size:22px}
+  /* 휴대폰: 지표는 라벨 왼쪽, 값 오른쪽 목록 */
+  .kpis{grid-template-columns:minmax(0,1fr);gap:4px}
+  .kpi{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l v" "s v";column-gap:16px;align-items:baseline;padding:10px 0}
+  .kpi .v{grid-area:v;font-size:26px;text-align:right}
+  .kpi .l{grid-area:l;margin-top:0}
+  .kpi .s{grid-area:s}
+  .flow{flex-direction:column}
+  .flow .ar{max-width:none;min-height:24px}
+  .flow .ar svg{transform:rotate(90deg)}
+  .tbl.stackable thead{display:none}
+  .tbl.stackable tr{display:block;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .tbl.stackable td{display:block;border:0;padding:2px 0}
+  .tbl.stackable td[data-l]::before{content:attr(data-l) " ";color:var(--ink-3);font-size:14px}
+  .tbl.stackable td.r{text-align:left}
+  .btn{height:44px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+@media print{
+  html,body{background:#fff}
+  .top,.toc,.toc-m{display:none!important}
+  .wrap{padding:0}.sheet{padding:0;border-radius:0}
+  .doc{display:block}
+  section{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-arrow" viewBox="0 0 22 22"><path d="M4 11h13M12.5 6.5L17 11l-4.5 4.5"/></symbol>
+  <symbol id="i-print" viewBox="0 0 16 16"><path d="M4.5 6V2.5h7V6M4.5 11.5h-2V6h11v5.5h-2"/><path d="M4.5 9.5h7v4h-7z"/></symbol>
+</svg>
+
+<header class="top">
+  <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 4.5h10M3 8h7M3 11.5h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span>
+  <span class="nm">3분기 변경 요청 처리 현황</span>
+  <span class="tag">v0.3 검토용</span>
+  <span class="sp"></span>
+  <button class="btn btn-t" type="button" id="print-btn"><svg class="ic" aria-hidden="true"><use href="#i-print"/></svg>인쇄</button>
+</header>
+
+<div class="wrap">
+  <main class="sheet">
+    <div class="doc">
+      <nav class="toc" aria-label="목차" id="toc">
+        <p>목차</p>
+        <a href="#s-now">처리 현황</a>
+        <a href="#s-cause">원인</a>
+        <a href="#s-plan">제안</a>
+        <a href="#s-decide">결정 필요</a>
+        <a href="#s-refs">근거와 변경 이력</a>
+      </nav>
+
+      <article>
+        <header>
+          <h1>3분기 변경 요청 처리 현황</h1>
+          <p class="meta">2026-10-21 · 자재/구매 · v0.3 검토용 · 수치는 모두 예시 [가상]</p>
+          <div class="call info summary" role="note" aria-label="요약">
+            <span class="ct">요약</span>
+            <ul>
+              <li>평균 처리 기간은 <b>4.8일</b>이다. 2분기보다 0.9일 늘었다 [가상].</li>
+              <li>늘어난 시간의 <b>60%가 승인 대기</b>다. 검토는 하루 안에 끝난다.</li>
+              <li>같은 품번을 다시 쓰는 요청 <b>37%</b>는 사내 이력으로 바로 확정할 수 있다 [가상].</li>
+              <li>승인 단계를 둘로 줄이는 안을 11월에 시범 적용하자고 제안한다 [제안].</li>
+            </ul>
+          </div>
+          <nav aria-label="목차">
+            <details class="toc-m">
+              <summary>목차</summary>
+              <a href="#s-now">처리 현황</a><a href="#s-cause">원인</a><a href="#s-plan">제안</a><a href="#s-decide">결정 필요</a><a href="#s-refs">근거와 변경 이력</a>
+            </details>
+          </nav>
+        </header>
+
+        <section id="s-now" aria-labelledby="h-now">
+          <h2 id="h-now">처리 기간이 석 달 연속 늘었다</h2>
+          <p>3분기에 접수한 변경 요청은 412건이다. 접수부터 승인까지 평균 <b>4.8일</b>이 걸렸고, 승인 뒤 다시 고친 요청이 23%다. 월별로는 7월 4.3일에서 9월 5.2일로 늘었다.</p>
+          <div class="kpis">
+            <div class="kpi"><p class="v">412<small>건</small></p><p class="l">접수한 요청</p><p class="s">7~9월 합계 [가상]</p></div>
+            <div class="kpi"><p class="v key">4.8<small>일</small></p><p class="l">평균 처리 기간</p><p class="s">2분기보다 +0.9일 [가상]</p></div>
+            <div class="kpi"><p class="v">23<small>%</small></p><p class="l">재작업 비율</p><p class="s">95건 / 412건 [가상]</p></div>
+          </div>
+          <figure class="chart" id="month-chart"></figure>
+          <p class="cap">그림 1. 월별 평균 처리 기간. 9월이 가장 길다 [가상]</p>
+        </section>
+
+        <section id="s-cause" aria-labelledby="h-cause">
+          <h2 id="h-cause">늘어난 시간은 대부분 승인 대기다</h2>
+          <p>단계별 시각 기록으로 나눠 보면 승인 대기가 2.9일로 전체의 60.4%다. 부서장 승인을 받은 뒤 최종 승인을 다시 기다리는 구조 때문이다.</p>
+          <div class="tbl-wrap">
+            <table class="tbl stackable" aria-label="단계별 평균 소요 시간">
+              <thead><tr><th scope="col">단계</th><th scope="col" class="r">평균 소요</th><th scope="col" class="r">비중</th><th scope="col">무엇이 걸리나</th></tr></thead>
+              <tbody>
+                <tr><td class="k">접수 → 검토 시작</td><td class="r" data-l="평균 소요">0.5일</td><td class="r" data-l="비중">10.4%</td><td>담당 배정이 오전·오후 두 번이다</td></tr>
+                <tr><td class="k">검토</td><td class="r" data-l="평균 소요">1.1일</td><td class="r" data-l="비중">22.9%</td><td>대체 후보 확인, 재고 조회</td></tr>
+                <tr class="key"><td class="k">승인 대기</td><td class="r em" data-l="평균 소요">2.9일</td><td class="r em" data-l="비중">60.4%</td><td>부서장 승인 뒤 최종 승인을 다시 기다린다</td></tr>
+                <tr><td class="k">반영</td><td class="r" data-l="평균 소요">0.3일</td><td class="r" data-l="비중">6.3%</td><td>ERP 등록</td></tr>
+              </tbody>
+              <tfoot><tr><td>합계</td><td class="r" data-l="평균 소요">4.8일</td><td class="r" data-l="비중">100.0%</td><td></td></tr></tfoot>
+            </table>
+          </div>
+          <p class="sowhat">승인 대기 2.9일을 줄이는 것이 핵심이다</p>
+          <p class="src">근거: 단계별 시각 기록, 412건 평균 [가상]</p>
+        </section>
+
+        <section id="s-plan" aria-labelledby="h-plan">
+          <h2 id="h-plan">승인을 두 단계로 줄인다</h2>
+          <p>부서장 승인과 최종 승인을 하나로 합친다. 같은 품번을 다시 쓰는 요청은 검토 단계에서 바로 확정한다. 바뀐 뒤 평균 처리 기간은 <b>2.5일</b>을 목표로 한다 [가안].</p>
+          <ol class="flow" aria-label="바뀐 처리 흐름">
+            <li class="st"><b>접수</b><span>사유와 대상 품번 필수</span></li>
+            <li class="ar" aria-hidden="true"><svg class="ic"><use href="#i-arrow"/></svg></li>
+            <li class="st"><b>검토</b><span>목표 1일 [가안]</span></li>
+            <li class="ar" aria-hidden="true"><svg class="ic"><use href="#i-arrow"/></svg></li>
+            <li class="st chg"><b>승인 (합침)</b><span>부서장 한 번, 목표 1일 [가안]</span></li>
+            <li class="ar" aria-hidden="true"><svg class="ic"><use href="#i-arrow"/></svg></li>
+            <li class="st"><b>반영</b><span>ERP 등록, 요청 부서에 알림</span></li>
+          </ol>
+          <blockquote class="quote">
+            <p>승인은 이미 부서장이 내용을 보고 하는데, 최종 승인에서 같은 내용을 다시 본다.</p>
+            <cite>구매 담당 면담, 2026-10 [가상]</cite>
+          </blockquote>
+          <h3>11월 시범</h3>
+          <p>자재/구매와 연구소 두 부서에서 한 달 동안 시범 적용한다. 요청 약 140건으로 처리 기간과 재작업 비율을 다시 잰다 [가안].</p>
+        </section>
+
+        <section id="s-decide" aria-labelledby="h-decide">
+          <h2 id="h-decide">결정할 것은 두 가지다</h2>
+          <div class="tbl-wrap">
+            <table class="tbl stackable" aria-label="결정 필요 사항">
+              <thead><tr><th scope="col">결정</th><th scope="col">선택지</th><th scope="col">결정할 역할</th><th scope="col" class="r">기한</th></tr></thead>
+              <tbody>
+                <tr><td class="k">승인 단계 축소</td><td data-l="선택지">2단계로 합침 / 3단계 유지</td><td data-l="결정할 역할">자재/구매 부서장</td><td class="r" data-l="기한">10-28</td></tr>
+                <tr><td class="k">바로 확정 범위</td><td data-l="선택지">같은 품번 재사용만 / 동등품 흡수까지</td><td data-l="결정할 역할">기준정보 담당</td><td class="r" data-l="기한">11-04</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="s-refs" aria-labelledby="h-refs">
+          <h2 id="h-refs">근거와 변경 이력</h2>
+          <div class="tbl-wrap">
+            <table class="tbl stackable" aria-label="근거 자료">
+              <thead><tr><th scope="col">자료</th><th scope="col">내용</th><th scope="col">쓴 곳</th></tr></thead>
+              <tbody>
+                <tr><td class="k">변경 요청 기록</td><td data-l="내용">2026년 3분기 412건, 단계별 시각 [가상]</td><td data-l="쓴 곳">처리 현황, 원인</td></tr>
+                <tr><td class="k">부서 면담</td><td data-l="내용">연구소·생산관리·자재/구매 6회 [가상]</td><td data-l="쓴 곳">제안</td></tr>
+                <tr><td class="k">승인 권한 규정</td><td data-l="내용">변경 승인 권한과 위임 범위 [가상]</td><td data-l="쓴 곳">제안, 결정 필요</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>변경 이력</h3>
+          <div class="tbl-wrap">
+            <table class="tbl" aria-label="변경 이력">
+              <thead><tr><th scope="col">버전</th><th scope="col" class="r">일자</th><th scope="col">내용</th></tr></thead>
+              <tbody>
+                <tr><td class="k">v0.3</td><td class="r">2026-10-21</td><td>제안 절에 시범 계획 추가</td></tr>
+                <tr><td class="k">v0.2</td><td class="r">2026-10-14</td><td>원인 표를 단계별 기록으로 다시 계산</td></tr>
+                <tr><td class="k">v0.1</td><td class="r">2026-10-08</td><td>최초 작성</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="src">이 템플릿의 수치와 자료는 모두 예시다. 실제 자료로 바꿔 쓴다.</p>
+        </section>
+      </article>
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+'use strict';
+// 그림 1: 핵심 막대 하나만 네이비
+const months = [{ m: '7월', v: 4.3 }, { m: '8월', v: 4.8 }, { m: '9월', v: 5.2 }];
+const W = 640, H = 200, pt = 28, pb = 30, top = 6, bw = 120, gap = (W - bw * months.length) / (months.length + 1);
+const y = (v) => pt + (H - pt - pb) * (1 - v / top);
+let g = '';
+months.forEach((d, i) => {
+  const now = i === months.length - 1, x = gap + i * (bw + gap);
+  g += `<rect class="bar${now ? ' now' : ''}" x="${x}" y="${y(d.v)}" width="${bw}" height="${y(0) - y(d.v)}" rx="3"/>`;
+  g += `<text class="val${now ? ' now' : ''}" x="${x + bw / 2}" y="${y(d.v) - 8}" text-anchor="middle">${d.v.toFixed(1)}일</text>`;
+  g += `<text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${d.m}</text>`;
+});
+document.getElementById('month-chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="월별 평균 처리 기간: ${months.map((d) => d.m + ' ' + d.v + '일').join(', ')}">${g}</svg>`;
+
+document.getElementById('print-btn').addEventListener('click', () => window.print());
+
+// 목차: 지금 읽는 절을 표시한다
+const links = [...document.querySelectorAll('#toc a')];
+const secs = links.map((a) => document.querySelector(a.getAttribute('href')));
+function mark() {
+  let k = 0;
+  secs.forEach((s, i) => { if (s.getBoundingClientRect().top < 140) k = i; });
+  links.forEach((a, i) => { if (i === k) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+}
+window.addEventListener('scroll', mark, { passive: true });
+mark();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# 줄 끝 문자를 바꾸지 않는다. 문서는 CRLF로 쓰여 있고, 시연 목업(briefing/*.html)과 엑셀은
+# 바이트 그대로 보존해야 index.html 동기화 확인(cmp)이 맞는다. Git for Windows 기본값(autocrlf=true)을 끈다.
+* -text

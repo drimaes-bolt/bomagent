@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#F4F5F7" />
+<title>BOM 라이프사이클 분석과 AX 추진 전략 · 배경 설명 요약</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+/* =========================================================
+   DrimAES Light Web UI Kit v1.0 — 정적 HTML 이식
+   컬러: 회사 8색 + 구조 중립색만 (의미색 없음)
+   ========================================================= */
+:root{
+  color-scheme: light;
+  --co-black:#000000; --co-dark:#555555; --co-mid:#A0A0A0; --co-light:#DEDEDE;
+  --co-mint:#7DEAD5; --co-cyan:#1BBBCC; --co-blue:#4383AF; --co-navy:#06438C;
+  --brand-50:#E5F0F5; --brand-100:#C7DCE7; --brand-300:#7CC9D5;
+  --brand-400:#1BBBCC; --brand-500:#4383AF; --brand-600:#06438C;
+  --brand-700:#052E62; --brand-800:#031F44;
+  --em-100:#E5F8F2; --em-300:#7DEAD5; --em-500:#3DC4A7; --em-600:#2BAA8D; --em-700:#1F8F76;
+  --s0:#FFFFFF; --s50:#FAFAFA; --s100:#F4F5F7; --s200:#EEF0F3;
+  --shadow-card:0 4px 6px rgba(0,0,0,0.08);
+  --shadow-glow:0 0 15px rgba(6,67,140,0.16);
+  --shadow-elevated:0 12px 16px -4px rgba(6,67,140,0.10);
+  --ease:cubic-bezier(0.22,1,0.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background-color:var(--s100); color:#111111; min-height:100vh;
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,
+    "Segoe UI","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-feature-settings:"tnum" 1,"ss01" 1;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.shell{display:flex;min-height:100vh}
+.main{flex:1 1 auto;min-width:0;position:relative}
+.wrap{max-width:82rem;margin:0 auto}
+.pad{padding-left:1.5rem;padding-right:1.5rem}
+@media(min-width:640px){.pad{padding-left:2.5rem;padding-right:2.5rem}}
+@media(min-width:1024px){.pad{padding-left:3.5rem;padding-right:3.5rem}}
+
+/* ---------- sidebar ---------- */
+.sb{
+  position:fixed;top:0;left:0;z-index:40;height:100vh;width:280px;flex:0 0 280px;
+  border-right:1px solid var(--co-light);background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(18px);transform:translateX(-100%);transition:transform .2s var(--ease);
+}
+.sb.open{transform:translateX(0)}
+.sb-inner{height:100%;overflow-y:auto;padding:1.5rem 1rem}
+@media(min-width:1024px){
+  .sb{position:sticky;transform:none}
+}
+.sb-brand{display:flex;align-items:center;gap:.625rem;margin:0 0 1.75rem;padding:0 .5rem;width:100%}
+.sb-mark{position:relative;display:inline-block;height:36px;width:36px;border-radius:12px;
+  background:linear-gradient(135deg,var(--brand-400),var(--brand-700));box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.sb-mark::before{content:"";position:absolute;inset:0;border-radius:12px;background:var(--brand-500);
+  filter:blur(10px);opacity:.3;z-index:-1}
+.sb-name{display:block;font-weight:700;font-size:15px;letter-spacing:-.01em;color:var(--co-black);text-align:left}
+.sb-sub{display:block;font-size:12px;font-weight:500;color:var(--brand-600);letter-spacing:.02em;text-align:left}
+.sb-group{margin-bottom:1.25rem}
+.sb-label{padding:0 .5rem;margin-bottom:.375rem;font-size:11px;text-transform:uppercase;
+  letter-spacing:.18em;font-weight:600;color:var(--co-mid)}
+.sb-item{position:relative;display:flex;align-items:center;gap:.75rem;width:100%;
+  border-radius:.5rem;padding:.625rem;color:var(--co-dark);transition:background .15s var(--ease),color .15s var(--ease)}
+.sb-item:hover{background:var(--s200);color:var(--co-black)}
+.sb-num{font-size:12px;font-weight:600;color:var(--co-mid);
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.sb-item:hover .sb-num{color:var(--co-dark)}
+.sb-text{flex:1 1 auto;text-align:left;font-size:15px;line-height:1.25;font-weight:500}
+.sb-item.active{
+  background:linear-gradient(to right,var(--brand-50),rgba(229,240,245,.5),transparent);
+  color:var(--brand-800);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25)}
+.sb-item.active .sb-text{font-weight:600}
+.sb-item.active .sb-num{color:var(--brand-600)}
+.sb-item.active .bar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:24px;width:3px;
+  border-radius:0 999px 999px 0;background:var(--brand-600);box-shadow:0 0 10px 2px rgba(27,187,204,.55)}
+.sb-item.active .dot{height:6px;width:6px;border-radius:999px;background:var(--brand-400);
+  box-shadow:0 0 8px 2px rgba(27,187,204,.55)}
+.sb-item.appendix.active{background:#EFF0F2;color:var(--co-black);box-shadow:inset 0 0 0 1px #D5D7DA}
+.sb-item.appendix.active .sb-num{color:var(--co-dark)}
+.sb-backdrop{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);display:none}
+.sb-backdrop.show{display:block}
+@media(min-width:1024px){.sb-backdrop{display:none!important}}
+.sb-toggle{position:fixed;bottom:1.25rem;right:1.25rem;z-index:50;border-radius:999px;
+  background:var(--brand-600);color:#fff;box-shadow:var(--shadow-glow);padding:.75rem 1.25rem;
+  font-size:14px;font-weight:600;transition:transform .1s ease,background .15s ease}
+.sb-toggle:hover{background:var(--brand-700)}
+.sb-toggle:active{transform:scale(.95)}
+@media(min-width:1024px){.sb-toggle{display:none}}
+
+/* ---------- slide ---------- */
+.slide{display:none}
+.slide.active{display:block}
+.slide-enter{animation:slideEnter .4s var(--ease)}
+@keyframes slideEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.slide-head{padding-top:2.5rem;padding-bottom:1rem}
+@media(min-width:640px){.slide-head{padding-top:3.5rem}}
+.badge-row{display:flex;align-items:center;gap:.625rem;margin-bottom:.75rem;flex-wrap:wrap}
+.num-badge{display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;
+  padding:0 .5rem;border-radius:.375rem;font-size:11px;font-weight:600;background:var(--brand-50);
+  color:var(--brand-700);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25);
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+.eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--brand-600)}
+.slide-h2{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.25;color:var(--co-black);word-break:keep-all}
+@media(min-width:640px){.slide-h2{font-size:2.25rem}}
+.slide-desc{margin-top:.75rem;font-size:14px;line-height:1.7;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.slide-desc{font-size:15px}}
+.slide-body{padding-bottom:4rem}
+.slide-body > * + *{margin-top:1.25rem}
+.stack > * + *{margin-top:.75rem}
+.stack-lg > * + *{margin-top:1.25rem}
+
+/* ---------- typography ---------- */
+.p{font-size:14px;line-height:1.85;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.p{font-size:15px}}
+.sec-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--brand-600);margin-bottom:.5rem}
+.h3{font-size:15px;font-weight:600;color:var(--co-black);word-break:keep-all}
+.meta{font-size:11px;color:var(--co-mid)}
+.gradient-text{
+  background:linear-gradient(135deg,#06438C 0%,#4383AF 50%,#1BBBCC 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* ---------- paper card ---------- */
+.paper{background:var(--s0);border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+.card{position:relative;border-radius:1rem;padding:1.15rem;overflow:hidden;
+  transition:transform .15s var(--ease),border-color .15s var(--ease),box-shadow .15s var(--ease)}
+@media(min-width:640px){.card{padding:1.25rem}}
+.card:hover{transform:translateY(-2px);border-color:rgba(67,131,175,.5);box-shadow:var(--shadow-glow)}
+.card-tint{pointer-events:none;position:absolute;inset:0;border-radius:1rem;opacity:.6;
+  background:linear-gradient(135deg,var(--brand-50),transparent 55%)}
+.card-tint.mint{background:linear-gradient(135deg,var(--em-100),transparent 55%)}
+.card-tint.navy{background:linear-gradient(135deg,rgba(199,220,231,.7),transparent 55%)}
+.card-tint.slate{background:linear-gradient(135deg,var(--s200),transparent 55%)}
+.card-inner{position:relative}
+.card-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.card-badge{font-size:10px;font-weight:500;padding:.1rem .375rem;border-radius:.375rem;
+  background:var(--brand-50);color:var(--brand-700);box-shadow:inset 0 0 0 1px rgba(67,131,175,.25)}
+.card-body{font-size:13.5px;line-height:1.8;color:var(--co-dark);word-break:keep-all}
+.grid{display:grid;gap:.875rem;grid-template-columns:1fr}
+@media(min-width:640px){.g2,.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1024px){.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* ---------- callout ---------- */
+.callout{border-radius:.75rem;border:1px solid;padding:.875rem 1rem;box-shadow:var(--shadow-card)}
+@media(min-width:640px){.callout{padding:1rem 1.15rem}}
+.callout-title{display:flex;align-items:center;gap:.5rem;font-size:14px;font-weight:600;margin-bottom:.375rem}
+.callout-body{font-size:13.5px;line-height:1.8;word-break:keep-all}
+.c-info{background:var(--brand-50);border-color:rgba(67,131,175,.3);color:#333}
+.c-info .callout-title{color:var(--brand-800)}
+.c-success{background:var(--em-100);border-color:rgba(61,196,167,.4);color:#333}
+.c-success .callout-title{color:var(--em-700)}
+.c-muted{background:var(--s50);border-color:var(--co-light);color:var(--co-dark)}
+.c-muted .callout-title{color:var(--co-black)}
+.c-emphasis{background:var(--brand-600);border-color:transparent;color:#fff}
+.c-emphasis .callout-title{color:#fff}
+.callout-icon{opacity:.8}
+
+/* ---------- list ---------- */
+.bullets{font-size:13.5px;line-height:1.75;color:var(--co-dark)}
+.bullets li{position:relative;padding-left:.9rem;word-break:keep-all}
+.bullets li + li{margin-top:.35rem}
+.bullets li::before{content:"";position:absolute;left:0;top:.62em;width:4px;height:4px;border-radius:999px;background:var(--brand-500)}
+.bullets.on-navy{color:rgba(255,255,255,.92)}
+.bullets.on-navy li::before{background:var(--co-cyan)}
+
+/* ---------- table ---------- */
+.table-wrap{overflow-x:auto;border-radius:.75rem;background:var(--s0);
+  border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead tr{background:var(--co-light)}
+th{text-align:left;padding:.625rem .875rem;font-size:12px;text-transform:uppercase;
+  letter-spacing:.05em;font-weight:700;color:var(--co-black);white-space:nowrap}
+th.em{color:var(--brand-600)}
+tbody tr{border-bottom:1px solid rgba(222,222,222,.7);background:var(--s0);transition:background .15s ease}
+tbody tr:nth-child(even){background:var(--s50)}
+tbody tr:last-child{border-bottom:0}
+tbody tr:hover{background:rgba(229,240,245,.6)}
+td{padding:.7rem .875rem;vertical-align:top;color:var(--co-dark);font-size:13.5px;line-height:1.7;word-break:keep-all}
+td:first-child{color:var(--co-black);font-weight:500}
+td.em{color:var(--brand-700);font-weight:600}
+.sowhat{border-radius:.6rem;background:var(--brand-600);color:#fff;font-weight:700;
+  font-size:13px;line-height:1.6;padding:.65rem 1rem;word-break:keep-all}
+.cellist{font-size:13px;line-height:1.7}
+.cellist li{position:relative;padding-left:.8rem}
+.cellist li + li{margin-top:.3rem}
+.cellist li::before{content:"";position:absolute;left:0;top:.6em;width:3.5px;height:3.5px;border-radius:999px;background:var(--brand-500)}
+td.em .cellist li::before{background:var(--co-cyan)}
+
+/* ---------- tag ---------- */
+.tag{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .6rem;border-radius:999px;
+  font-size:.78rem;font-weight:500;background:rgba(27,187,204,.1);color:var(--brand-700);
+  border:1px solid rgba(27,187,204,.35);white-space:nowrap}
+.tag-muted{background:var(--s50);color:var(--co-dark);border-color:var(--co-light)}
+.tag-navy{background:rgba(6,67,140,.08);color:var(--co-navy);border-color:rgba(6,67,140,.25)}
+.tag-mint{background:var(--em-100);color:var(--em-700);border-color:rgba(61,196,167,.4)}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem}
+
+/* ---------- KPI ---------- */
+.kpi{position:relative;overflow:hidden;border-radius:1rem;padding:1.15rem;text-align:center;
+  background:var(--s0);border:1px solid var(--co-light);box-shadow:var(--shadow-card)}
+.kpi::after{content:"";position:absolute;top:-2.5rem;right:-2.5rem;height:7rem;width:7rem;
+  border-radius:999px;background:rgba(6,67,140,.1);filter:blur(28px)}
+.kpi-val{position:relative;font-size:1.9rem;font-weight:800;color:var(--brand-600);line-height:1}
+@media(min-width:640px){.kpi-val{font-size:2.25rem}}
+.kpi-suf{font-size:1.05rem;color:var(--co-mid);font-weight:700;margin-left:.15rem}
+.kpi-label{position:relative;margin-top:.5rem;font-size:12px;font-weight:500;color:var(--co-dark)}
+.kpi-sub{position:relative;margin-top:.15rem;font-size:11px;color:var(--co-mid)}
+
+/* ---------- BlockFlow ---------- */
+.bf{display:flex;flex-direction:column;gap:.375rem;width:100%}
+@media(min-width:640px){.bf{flex-direction:row;align-items:stretch;gap:0}}
+.bf-card{position:relative;padding:.75rem .95rem;border-radius:.85rem;background:var(--s0);
+  border:1px solid rgba(6,67,140,.25);box-shadow:0 2px 5px rgba(0,0,0,.05);
+  display:flex;flex-direction:column;gap:.1rem;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media(min-width:640px){.bf-card{flex:4 1 0;min-width:0}}
+.bf-card:hover{transform:translateY(-2px);border-color:rgba(27,187,204,.6);box-shadow:0 10px 24px rgba(27,187,204,.16)}
+.bf-card .num{font-size:.66rem;font-family:ui-monospace,monospace;color:var(--brand-500);letter-spacing:.04em;line-height:1.1}
+.bf-card .title{font-weight:600;font-size:.92rem;color:var(--co-black);line-height:1.25;word-break:keep-all}
+.bf-card .sub{font-size:.76rem;color:var(--co-mid);margin-top:.1rem;line-height:1.3;word-break:keep-all}
+.bf-conn-v{display:grid;place-items:center;color:var(--co-mid)}
+.bf-conn-h{display:none}
+@media(min-width:640px){
+  .bf-conn-v{display:none}
+  .bf-conn-h{display:flex;flex:1 1 0;min-width:24px;align-items:center;align-self:center;color:var(--co-mid)}
+}
+.flow-line-anim{stroke-dasharray:4 4;animation:dashFlow .9s linear infinite}
+@keyframes dashFlow{to{stroke-dashoffset:-8}}
+
+/* ---------- FlowDiagram ---------- */
+.flow-card{display:flex;gap:1rem;padding:1rem 1.15rem;border-radius:1rem;background:var(--s0);
+  border:1px solid var(--co-light);box-shadow:0 4px 6px rgba(0,0,0,.06);
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.flow-card:hover{transform:translateY(-1px);border-color:rgba(67,131,175,.55);box-shadow:0 6px 22px rgba(6,67,140,.12)}
+.flow-number{flex:0 0 auto;width:2.4rem;height:2.4rem;border-radius:9999px;
+  background:linear-gradient(135deg,#06438C,#1BBBCC);color:#fff;display:grid;place-items:center;
+  font-weight:700;font-size:.92rem;box-shadow:0 4px 14px rgba(6,67,140,.3)}
+.flow-content{flex:1 1 auto;min-width:0}
+.flow-title{font-weight:600;color:var(--co-black);font-size:1.04rem;word-break:keep-all}
+.flow-body{margin-top:.45rem;font-size:.94rem;line-height:1.75;color:var(--co-dark);word-break:keep-all}
+.flow-arrow{display:grid;place-items:center;color:var(--co-mid);padding:.125rem 0}
+
+/* ---------- hero ---------- */
+.hero{padding-top:3rem;padding-bottom:3rem}
+@media(min-width:640px){.hero{padding-top:5rem}}
+.hero-pill{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;
+  border:1px solid rgba(67,131,175,.25);background:var(--brand-50);padding:.25rem .75rem;
+  font-size:11px;font-weight:600;color:var(--brand-700)}
+.hero-pill .pulse{display:inline-block;height:6px;width:6px;border-radius:999px;background:var(--brand-400);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero-h1{margin-top:1.25rem;font-size:2.25rem;font-weight:800;letter-spacing:-.03em;line-height:1.12;color:var(--co-black);word-break:keep-all}
+@media(min-width:640px){.hero-h1{font-size:3.4rem;line-height:1.05}}
+.hero-lead{margin-top:1.25rem;max-width:46rem;font-size:1rem;line-height:1.8;color:var(--co-dark);word-break:keep-all}
+@media(min-width:640px){.hero-lead{font-size:1.075rem}}
+
+/* ---------- divider ---------- */
+.appendix-divider{position:relative;margin:0 0 1rem;text-align:center;font-size:.65rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--co-mid)}
+.appendix-divider::before,.appendix-divider::after{content:"";position:absolute;top:50%;width:38%;height:1px;
+  background:linear-gradient(to right,transparent,var(--co-light),transparent)}
+.appendix-divider::before{left:0}.appendix-divider::after{right:0}
+
+/* ---------- pager ---------- */
+.pager{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);z-index:30;
+  display:flex;align-items:center;gap:.5rem;border-radius:999px;background:rgba(255,255,255,.9);
+  backdrop-filter:blur(8px);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--co-light);
+  padding:.375rem .75rem;font-size:11px;color:var(--co-dark)}
+@media(min-width:1024px){.pager{left:auto;right:1.5rem;transform:none}}
+.pager button{padding:.125rem .375rem;border-radius:.25rem;transition:background .15s ease}
+.pager button:hover:not(:disabled){background:var(--s200)}
+.pager button:disabled{opacity:.3;cursor:not-allowed}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(85,85,85,.22);border-radius:999px}
+::-webkit-scrollbar-thumb:hover{background:rgba(85,85,85,.34)}
+
+@media print{
+  .no-print{display:none!important}
+  .flow-line-anim{animation:none}
+  .slide{display:block!important}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ============ Sidebar ============ -->
+<aside class="sb no-print" id="sidebar">
+  <div class="sb-inner">
+    <button type="button" class="sb-brand" data-goto="overview">
+      <span class="sb-mark"></span>
+      <span>
+        <span class="sb-name">BOM Lifecycle &amp; AX</span>
+        <span class="sb-sub">배경 설명 요약 · v1.0</span>
+      </span>
+    </button>
+    <nav>
+      <div class="sb-group">
+        <p class="sb-label">Overview</p>
+        <ul id="nav-0"></ul>
+      </div>
+      <div class="sb-group">
+        <p class="sb-label">현황 진단</p>
+        <ul id="nav-1"></ul>
+      </div>
+      <div class="sb-group">
+        <p class="sb-label">AX 전환</p>
+        <ul id="nav-2"></ul>
+      </div>
+      <div class="sb-group">
+        <p class="sb-label">결론</p>
+        <ul id="nav-3"></ul>
+      </div>
+    </nav>
+  </div>
+</aside>
+<div class="sb-backdrop no-print" id="backdrop"></div>
+<button type="button" class="sb-toggle no-print" id="sbToggle" aria-label="목차 열기">목차 ☰</button>
+
+<!-- ============ Main ============ -->
+<main class="main" id="main">
+<div class="wrap">
+
+<!-- ================= 00 · OVERVIEW ================= -->
+<article class="slide active" id="overview">
+  <div class="pad hero">
+    <div class="hero-pill"><span class="pulse"></span>NCAI · Internal Background Brief</div>
+    <h1 class="hero-h1">
+      전자제품 제조 생태계의<br />
+      <span class="gradient-text">BOM 라이프사이클</span> 분석과<br />
+      AX(AI 전환) 추진 전략
+    </h1>
+    <p class="hero-lead">
+      설계 엔지니어가 BOM을 추출하는 순간부터 자재 소진과 회계 정산이 끝나는 순간까지,
+      전자제품 제조 조달 프로세스는 데이터 흐름·물리적 물류·금융 정산이 맞물린 복합 프로세스다.
+      본 문서는 그 현장 실무를 교차 검증하고, 라이프사이클 단계별 부서 간 소통 구조를 해부한 뒤,
+      4대 구조적 병목을 AX 타깃으로 재정의한다.
+    </p>
+
+    <div style="margin-top:2rem">
+      <p class="sec-label">Document Flow</p>
+      <div class="bf">
+        <div class="bf-card">
+          <span class="num">CH 01</span>
+          <span class="title">현장 실무 교차 검증</span>
+          <p class="sub">진술의 업계 통용성과 사실성 분석</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">CH 02</span>
+          <span class="title">BOM 라이프사이클 6단계</span>
+          <p class="sub">부서 간 커뮤니케이션 메커니즘</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">CH 03</span>
+          <span class="title">구조적 병목과 AX 타깃</span>
+          <p class="sub">4대 병목 · As-Is → To-Be</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">CH 04</span>
+          <span class="title">아키텍처 제언 및 결론</span>
+          <p class="sub">오케스트레이션 계층 + HITL</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g4" style="margin-top:1.75rem">
+      <div class="kpi"><p class="kpi-val">5<span class="kpi-suf">개 영역</span></p><p class="kpi-label">현장 진술 교차 검증</p><p class="kpi-sub">전 항목 업계 관행과 정합</p></div>
+      <div class="kpi"><p class="kpi-val">6<span class="kpi-suf">단계</span></p><p class="kpi-label">BOM 라이프사이클</p><p class="kpi-sub">R&amp;D → 구매 → 재무 → 생산</p></div>
+      <div class="kpi"><p class="kpi-val">4<span class="kpi-suf">대</span></p><p class="kpi-label">구조적 병목 = AX 타깃</p><p class="kpi-sub">정제 · 소싱 · 대체재 · 정산</p></div>
+      <div class="kpi"><p class="kpi-val">3<span class="kpi-suf">축</span></p><p class="kpi-label">전환 아키텍처</p><p class="kpi-sub">Agent · MCP · GraphRAG</p></div>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 01 · 현장 실무 교차 검증 ================= -->
+<article class="slide" id="verify">
+  <div class="pad slide-head">
+    <div class="badge-row">
+      <span class="num-badge">01</span>
+      <span class="eyebrow">Field Reality Check</span>
+    </div>
+    <h2 class="slide-h2">전자제품 제조 산업 현장 실무에 관한<br />교차 검증 및 사실성 분석</h2>
+    <p class="slide-desc">
+      제시된 현장 실무 진술은 국내외 전자제품 제조 및 하드웨어 엔지니어링 업계의 실제 운영 현실을 매우 사실적으로 묘사한다.
+      다만 기업 규모, 전산화 성숙도(PLM 도입 여부), 위탁 생산 모델(OEM 대 EMS)에 따라 편차가 존재하므로
+      산업 공학적 기준의 정밀 검증과 실무 맥락 보완이 필요하다.
+    </p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="callout c-info">
+      <p class="callout-title"><span class="callout-icon" aria-hidden="true">ℹ</span><span>고질적 병목의 4가지 축</span></p>
+      <div class="callout-body">
+        전자기기 제조 생태계에서 발생하는 <strong>정보 파편화</strong>, <strong>다변화된 부품 유통망</strong>,
+        <strong>조달 주기와 대금 지급 조건의 간극</strong>, 그리고 <strong>ERP와 설계 데이터 간의 불일치</strong>는
+        하드웨어 제품 수명 주기 전반에 걸쳐 고질적으로 나타나는 핵심 병목 현상이다.
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="min-width:9rem">분석 영역</th>
+              <th style="min-width:8rem">업계 통용성 및 검증 결과</th>
+              <th>산업 현장 실무 분석 및 보완점</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BOM 파일 추출 및 전달 관행</td>
+              <td><span class="tag tag-navy">정합 (매우 높음)</span></td>
+              <td>Altium Designer, Cadence OrCAD, Siemens Xpedition 등 주요 EDA 도구는 라이브러리 연동 기능을 제공함에도, 부서 간 실무 인계 시에는 통상 <strong>.xlsx / .csv</strong>로 추출해 전달한다. 대기업은 PLM–ERP 다이렉트 인터페이스가 구축되어 있으나, 신규 개발(NPI) 프로토타입 제작이나 긴급 수배에서는 실무자 간 비공식 엑셀 공유가 여전히 주류다.</td>
+            </tr>
+            <tr>
+              <td>다계층 부품 공급망 구조</td>
+              <td><span class="tag tag-navy">정합 (완전 일치)</span></td>
+              <td>제조사 직판(Direct), 공인 대리점(Franchised Distributor), 전문 유통상(구로·광명·부천·용산 전자상가 중심 독립 유통업체/딜러), 글로벌 직구 유통사(Digi-Key, Mouser 등), 자재 일괄 조달 턴키(Turnkey) 업체가 혼재된 다계층 구조. 희소성·납기·인증 조건에 따라 구매 경로를 분기하는 방식이 업계 표준 관행이다.</td>
+            </tr>
+            <tr>
+              <td>납기 및 결제 조건의 비동기화</td>
+              <td><span class="tag tag-navy">정합 (완전 일치)</span></td>
+              <td>리드타임은 수일에서 수십 주까지 극단적으로 갈리며, 여신 조건도 전액 선입금(T/T 사전 송금, 법인카드)부터 마감 후 30~90일 어음/현금 결제까지 다양하다. 이에 따라 구매 담당자와 재무·자금 부서 간 지출 계획 수립 및 실시간 대사 업무에 막대한 소통 비용이 소모된다.</td>
+            </tr>
+            <tr>
+              <td>전사적 BOM 공유의 단절</td>
+              <td><span class="tag tag-navy">정합 (구조적 고착화)</span></td>
+              <td>연구소가 발행한 <strong>E-BOM</strong>은 구매팀을 거쳐 <strong>M-BOM</strong>으로 전환되는데, 이 과정에서 부서별 목적에 맞게 복제·수정되어 실시간 동기화가 완전히 붕괴된다. 현장 자재창고와 생산 라인은 종종 구버전 엑셀 시트에 의존해 자재를 불출하며, 설계 변경(ECO)을 즉각 반영하지 못하는 사고를 겪는다.</td>
+            </tr>
+            <tr>
+              <td>BOM–ERP 품목 코드 괴리</td>
+              <td><span class="tag tag-navy">정합 (필연적 불일치)</span></td>
+              <td>설계 엔지니어는 기능적 사양 중심의 <strong>MPN</strong>(제조사 부품 번호)을 식별자로 삼는 반면, ERP 관리 주체는 패키징 단위(릴·컷테이프·트레이), 공인 대체재(AVL), 입고 단가, 환경 규제(RoHS)가 반영된 <strong>IPN</strong>(사내 관리 번호)을 사용한다. 1:1 매핑이 근본적으로 성립하기 어려운 구조적 간극이다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 5개 분석 영역 모두 업계 관행과 정합한다. 문제는 담당자의 역량이 아니라, 설계 언어(MPN)와 운영 언어(IPN)가 구조적으로 어긋난 데이터 체계 그 자체다.</p>
+    </div>
+
+    <div>
+      <p class="sec-label">Root Cause · 심층 원인</p>
+      <div class="grid g2">
+        <div class="card paper">
+          <div class="card-tint"></div>
+          <div class="card-inner">
+            <div class="card-head">
+              <h3 class="h3" style="flex:1">스팟 바잉(Spot Buying) 중심의 국내 딜러망</h3>
+              <span class="card-badge">ERP 우회</span>
+            </div>
+            <p class="card-body">
+              국내 전자부품 유통의 중심지인 서울 구로·광명·부천 일대의 딜러망은 장기 공급 계약보다 <strong>긴급 자재 조달 및 스팟 바잉</strong>의 성격을 강하게 띤다.
+              공인 대리점 경로에서 20주 이상 장기 리드타임이 발생하는 IC나 단종 부품(EOL)을 웃돈을 지불해 단기 확보하는 경우가 빈번하다.
+              이런 긴급 구매는 ERP 정규 프로세스를 우회해 전화·메신저·선결제 기반 수작업으로 처리되므로, 시스템 간 데이터 괴리를 심화시키는 촉매로 작용한다.
+            </p>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint slate"></div>
+          <div class="card-inner">
+            <div class="card-head">
+              <h3 class="h3" style="flex:1">턴키 위탁의 양면성</h3>
+              <span class="card-badge">가시성 차단</span>
+            </div>
+            <p class="card-body">
+              완제품 조달을 위탁하는 턴키 업체 활용은 구매 부서의 오퍼레이션 공수를 절감하는 효과가 있다.
+              그러나 실제 <strong>BOM 레벨의 세부 단가와 잔여 자재에 대한 가시성을 차단</strong>하여,
+              장기적으로 제조사의 원가 분석 및 공급망 통제력을 저해하는 부작용을 낳기도 한다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 02 · 라이프사이클 & 부서 간 소통 ================= -->
+<article class="slide" id="lifecycle">
+  <div class="pad slide-head">
+    <div class="badge-row">
+      <span class="num-badge">02</span>
+      <span class="eyebrow">Lifecycle Map</span>
+    </div>
+    <h2 class="slide-h2">BOM 라이프사이클 단계별 프로세스 및<br />부서 간 커뮤니케이션 메커니즘</h2>
+    <p class="slide-desc">
+      설계 엔지니어가 회로 설계를 완료하고 BOM을 추출한 시점부터 최종 자재 소진 및 회계 처리로 이어지는 전체 라이프사이클은
+      <strong>데이터 흐름 · 물리적 물류 · 금융 정산</strong>이 정밀하게 맞물리는 복합 프로세스다.
+    </p>
+  </div>
+  <div class="pad slide-body">
+
+    <div>
+      <p class="sec-label">6-Stage Flow</p>
+      <div class="bf">
+        <div class="bf-card">
+          <span class="num">STEP 01</span><span class="title">E-BOM 생성 · 출도</span><p class="sub">연구소 (R&amp;D)</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">STEP 02</span><span class="title">M-BOM 변환 · RFQ</span><p class="sub">구매팀</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">STEP 03</span><span class="title">발주 확정 · 자금 조달</span><p class="sub">구매팀 · 재무/자금팀</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">STEP 04</span><span class="title">입고 · 검수 · 적치</span><p class="sub">창고관리팀 · 품질팀</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">STEP 05</span><span class="title">3-Way Matching · 지급</span><p class="sub">재무/회계팀</p>
+        </div>
+        <div class="bf-conn-v"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><line x1="9" y1="0" x2="9" y2="12" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="9,19 3,11 15,11" fill="currentColor"/></svg></div>
+        <div class="bf-conn-h" aria-hidden="true"><svg viewBox="0 0 100 14" preserveAspectRatio="none" style="flex:1;height:14px;min-width:0"><line x1="0" y1="7" x2="100" y2="7" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" class="flow-line-anim"/></svg><svg width="11" height="14" viewBox="0 0 11 14" style="flex:0 0 auto"><polygon points="11,7 0,1 0,13" fill="currentColor"/></svg></div>
+        <div class="bf-card">
+          <span class="num">STEP 06</span><span class="title">양산 투입 · 재고 소진</span><p class="sub">생산팀 · 원가회계팀</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="min-width:8.5rem">단계</th>
+              <th style="min-width:6rem">주관 부서</th>
+              <th style="min-width:8rem">협업 및 연계 부서</th>
+              <th style="min-width:10rem">생성 및 전달 데이터</th>
+              <th>부서 간 핵심 커뮤니케이션 및 상호작용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1. E-BOM 생성 및 출도</td>
+              <td>연구소 (R&amp;D)</td>
+              <td>구매팀, 생산기술팀</td>
+              <td>회로도, 아트워크, E-BOM (.xlsx/.csv)</td>
+              <td>설계 완료 통보, 특수 스펙 요구사항 인계, 신규 라이브러리 부품 속성 확인</td>
+            </tr>
+            <tr>
+              <td>2. M-BOM 변환 및 RFQ</td>
+              <td>구매팀</td>
+              <td>R&amp;D, 품질팀, 외부 벤더</td>
+              <td>M-BOM 초안, RFQ 시트, 부품 견적서</td>
+              <td>공급망별 견적 의뢰, 장납기·단종 품목에 대한 대체 부품(Cross) 승인 요청</td>
+            </tr>
+            <tr>
+              <td>3. 발주 확정 및 자금 조달</td>
+              <td>구매팀</td>
+              <td>재무/자금팀, 공급업체</td>
+              <td>구매발주서(PO), 선급금 집행 품의서</td>
+              <td>공급사별 결제 조건(선결제 vs 여신) 대조, 주간·월간 자금 지출 스케줄 조율</td>
+            </tr>
+            <tr>
+              <td>4. 입고, 검수 및 적치</td>
+              <td>창고관리팀</td>
+              <td>품질팀, 구매팀, R&amp;D</td>
+              <td>거래명세서, 수입검사성적서, 입고전표</td>
+              <td>발주 대비 납품 수량 과부족 확인, 라벨·패키징 불일치 및 불량 자재 처리 협의</td>
+            </tr>
+            <tr>
+              <td>5. 3-Way Matching 및 대금 지급</td>
+              <td>재무/회계팀</td>
+              <td>구매팀, 공급업체</td>
+              <td>세금계산서, 매입전표, 송금영수증</td>
+              <td>발주서·입고전표·세금계산서 일치 검증, 단수 차이 및 환율 변동 정산</td>
+            </tr>
+            <tr>
+              <td>6. 양산 투입 및 재고 소진</td>
+              <td>생산팀</td>
+              <td>창고관리팀, R&amp;D, 원가회계팀</td>
+              <td>자재불출전표(Pick List), 생산실적, 수불부</td>
+              <td>라인 불출 및 로스율(Drop Loss) 정산, 설계 변경에 따른 잔여 불용 자재 식별</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · 6단계 모두에서 부서 간 인계 매체는 엑셀·이메일·메신저다. 단계 사이의 &lsquo;손으로 옮기는 구간&rsquo;이 곧 AX의 적용 지점이다.</p>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 03 · 단계별 상세 ================= -->
+<article class="slide" id="stages">
+  <div class="pad slide-head">
+    <div class="badge-row">
+      <span class="num-badge">03</span>
+      <span class="eyebrow">Stage Detail · 01 → 06</span>
+    </div>
+    <h2 class="slide-h2">단계별 진행 경과와 상호작용의 실제</h2>
+    <p class="slide-desc">
+      각 단계의 진행 경과와 부서 간 상호작용을 실무 언어로 풀어 쓴 구간이다.
+      데이터가 어디서 복제되고, 어디서 사람의 판단이 개입하는지가 그대로 드러난다.
+    </p>
+  </div>
+  <div class="pad slide-body">
+    <ol>
+      <li>
+        <div class="flow-card">
+          <div class="flow-number">1</div>
+          <div class="flow-content">
+            <p class="flow-title">E-BOM 생성 및 설계 출도</p>
+            <div class="flow-body">
+              설계 엔지니어는 EDA 소프트웨어에서 회로도(Schematic)와 아트워크 설계를 마친 후 부품 목록을 엑셀로 추출한다.
+              이 명세서에는 참조 부호(Reference Designator: R1, C1, U1 등), 제조사 부품 번호(MPN), 규격 사양, 풋프린트 패키지 정보가 수록된다.
+              연구소는 구매팀에 이 파일을 이메일이나 그룹웨어로 공유하며 양산 견적 및 자재 수배를 요청한다.
+              이 과정에서 리비전 관리의 부재로 <strong>&ldquo;최종_v2&rdquo;, &ldquo;수정본_진짜&rdquo;</strong> 같은 다중 버전이 혼재되어 초기 커뮤니케이션 에러가 빈번하게 발생한다.
+            </div>
+          </div>
+        </div>
+        <div class="flow-arrow" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 20 32"><line x1="10" y1="0" x2="10" y2="22" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="10,31 4,21 16,21" fill="currentColor"/></svg></div>
+      </li>
+      <li>
+        <div class="flow-card">
+          <div class="flow-number">2</div>
+          <div class="flow-content">
+            <p class="flow-title">M-BOM 변환 및 다채널 견적 수배(RFQ)</p>
+            <div class="flow-body">
+              구매팀은 전달받은 E-BOM을 생산·조달 관점의 M-BOM으로 전개한다. 완제품 조립에 필요한 부자재(방열 패드, 솔더 페이스트, 와이어 하네스 등)를 추가하고 내부 관리용 품목 코드(IPN)를 매핑한다.
+              이후 공급망 채널을 벤더 직판, 공인 대리점, 상가 유통상, 턴키 업체 등으로 분기해 다수의 RFQ를 엑셀로 발송하고,
+              회신된 견적 단가·납기·최소발주수량(MOQ)·포장단위(SPQ)를 엑셀에서 수작업으로 취합·비교한다.
+              핵심 부품의 납기가 과도하게 길거나 품절된 경우, 구매팀은 대체 부품을 물색해 R&amp;D 엔지니어에게 데이터시트 검토 및 호환성 승인을 구하는 연속적인 이메일·회의 소통을 수행한다.
+            </div>
+          </div>
+        </div>
+        <div class="flow-arrow" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 20 32"><line x1="10" y1="0" x2="10" y2="22" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="10,31 4,21 16,21" fill="currentColor"/></svg></div>
+      </li>
+      <li>
+        <div class="flow-card">
+          <div class="flow-number">3</div>
+          <div class="flow-content">
+            <p class="flow-title">발주(PO) 확정 및 자금 조달 승인</p>
+            <div class="flow-body">
+              최적의 공급처와 단가가 결정되면 구매팀은 전산 시스템에 구매발주서(PO)를 등록한다. 이때 공급처별 결제 조건이 판이하게 달라 자금 집행을 위한 복잡한 소통이 전개된다.
+              영세 유통상이나 해외 직구 플랫폼은 물품 수령 전 선급금 송금을 요구하므로 구매팀은 즉시 송금 결재를 상신하고 자금팀에 긴급 처리를 요청한다.
+              반면 정기 여신 거래가 체결된 공인 대리점은 납품일 기준 익월 말일 결제 등의 조건이 적용되므로,
+              구매팀은 예상 입고 일정표를 재무팀에 제공해 월별 자금 수지 계획에 차질이 없도록 조율한다.
+            </div>
+          </div>
+        </div>
+        <div class="flow-arrow" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 20 32"><line x1="10" y1="0" x2="10" y2="22" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="10,31 4,21 16,21" fill="currentColor"/></svg></div>
+      </li>
+      <li>
+        <div class="flow-card">
+          <div class="flow-number">4</div>
+          <div class="flow-content">
+            <p class="flow-title">입고, 수입검사(IQC) 및 창고 적재</p>
+            <div class="flow-body">
+              물리적 자재가 도착하면 창고 담당자는 납품 박스를 개봉해 거래명세서와 실물 릴(Reel) 라벨을 대조한다.
+              품질 부서는 수입검사(IQC)로 외관 손상, 습도 표시 카드(HIC) 상태, 제조일자(Date Code), 진품 여부를 판정한다.
+              검수를 통과한 자재는 ERP에 입고 전표(Goods Receipt)로 등록되고, 회사 고유 바코드 라벨이 인쇄되어 해당 렉(Rack) 위치에 적치된다.
+              주문 수량보다 적게 들어오는 분할 입고나 사양 불일치(컷테이프로 납품되어 SMT 자동 마운터 장착 불가 등)가 발견되면,
+              창고 담당자가 구매팀에 즉시 클레임을 제기하고 구매팀이 공급사에 대체 납품을 독촉하는 <strong>삼각 소통</strong>이 이뤄진다.
+            </div>
+          </div>
+        </div>
+        <div class="flow-arrow" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 20 32"><line x1="10" y1="0" x2="10" y2="22" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="10,31 4,21 16,21" fill="currentColor"/></svg></div>
+      </li>
+      <li>
+        <div class="flow-card">
+          <div class="flow-number">5</div>
+          <div class="flow-content">
+            <p class="flow-title">3-Way Matching 및 대금 지급 집행</p>
+            <div class="flow-body">
+              전자세금계산서가 발행되면 재무 부서는 ERP 내에서 구매발주서(PO), 자재 입고전표(Goods Receipt), 세금계산서(Invoice)의 삼자 일치 여부를 검증하는 <strong>3-Way Matching</strong>을 실시한다.
+              공급단가의 원화 절사 차이, 환율 변동, 운임 정산 문제, 분할 입고로 인한 수량 오차가 발견되면 전표 처리가 중단되고,
+              재무팀은 구매팀에 원인 규명 및 수정 세금계산서 요청을 통보한다.
+              검증이 정상 완료되면 회계 시스템에 매입채무가 확정 분개되고, 약정 결제일에 은행 펌뱅킹으로 대금이 송금되며 정산 프로세스가 종결된다.
+            </div>
+          </div>
+        </div>
+        <div class="flow-arrow" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 20 32"><line x1="10" y1="0" x2="10" y2="22" stroke="currentColor" stroke-width="2" class="flow-line-anim"/><polygon points="10,31 4,21 16,21" fill="currentColor"/></svg></div>
+      </li>
+      <li>
+        <div class="flow-card">
+          <div class="flow-number">6</div>
+          <div class="flow-content">
+            <p class="flow-title">양산 투입(SMT) 및 재고 실소진 차감</p>
+            <div class="flow-body">
+              생산계획 부서가 작업 지시를 내리면 창고 관리자는 완제품 수량에 맞추어 부품 릴을 피킹해 생산 라인(SMT)으로 불출한다.
+              제조 공정이 완료되면 ERP는 완제품 입고 수량에 M-BOM 소요량을 곱해 원자재 재고를 자동 역산 차감(Backflushing)한다.
+              그러나 SMT 장비의 노즐 흡착 불량이나 테이프 피딩 로스(Drop Loss)로 전산 재고와 실물 재고의 수량 불일치가 발생한다.
+              재고 소진이 전산보다 빠르게 진행되어 결품되면 라인 정지 위험에 직면하므로 현장 반장은 구매팀·창고에 긴급 추가 불출을 요청하며,
+              R&amp;D의 설계 변경 미반영으로 라인에서 부품이 폐기되는 불용 재고가 발견되면 관련 부서 간 책임 소재를 둘러싼 공방이 수반된다.
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <p class="sowhat">So-What · 1단계의 버전 혼재가 6단계의 불용 재고로 귀결된다. 병목은 개별 단계가 아니라 단계 간 데이터 인계 방식에 누적된다.</p>
+  </div>
+</article>
+
+<!-- ================= 04 · 구조적 병목과 AX 타깃 ================= -->
+<article class="slide" id="bottleneck">
+  <div class="pad slide-head">
+    <div class="badge-row">
+      <span class="num-badge">04</span>
+      <span class="eyebrow">Bottleneck → AX Target</span>
+    </div>
+    <h2 class="slide-h2">현행 프로세스의 구조적 병목과<br />AX(AI 전환) 타깃 분석</h2>
+    <p class="slide-desc">
+      조달 프로세스가 파편화되는 근본 원인은 <strong>제조 엔지니어링 도메인의 기술 데이터</strong>와
+      <strong>비즈니스 운영 도메인의 트랜잭션 데이터</strong>가 서로 비정형 형태로 단절되어 있기 때문이다.
+      이로 인해 발생하는 4대 구조적 병목과 AX 혁신 타깃 영역은 명확히 구분된다.
+    </p>
+  </div>
+  <div class="pad slide-body">
+
+    <!-- 병목 1 -->
+    <section>
+      <div class="badge-row">
+        <span class="num-badge">병목 1</span>
+        <h3 class="h3" style="font-size:1.05rem">비정형 원시 BOM 정제(BOM Scrubbing) 및 속성 결측 보정</h3>
+      </div>
+      <div class="grid g2">
+        <div class="card paper">
+          <div class="card-tint slate"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag tag-muted">As-Is</span></div>
+            <p class="card-body">
+              원시 BOM은 벤더 약어 표기 불일치(TI, Texas Instruments, Tex. Inst.), 공백·하이픈 오기,
+              중요 전기적 파라미터(정격전압, 허용오차, 패키지 사이즈) 결측 등 수많은 비정형 노이즈를 내포한다.
+              구매 담당자는 사내 ERP 코드를 지정하거나 견적을 요청하려고 엑셀을 수작업으로 편집하고,
+              누락된 스펙을 파악하기 위해 회로도를 재열람하거나 엔지니어에게 메신저로 질문하는 데 막대한 시간을 소모한다.
+            </p>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag">To-Be · AX 해결책</span></div>
+            <p class="card-body">
+              <strong>LLM 기반 BOM 시맨틱 파서</strong>와 <strong>엔티티 해결(Entity Resolution) 엔진</strong>을 도입한다.
+              비정형 테이블 구조를 시각적·문맥적으로 파악해 제조사명과 파트넘버를 표준화하고,
+              결측 속성은 글로벌 부품 카탈로그와 연동해 자동으로 채워 넣는 BOM 스크러빙 자동화 파이프라인 구축이 가능하다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 병목 2 -->
+    <section>
+      <div class="badge-row">
+        <span class="num-badge">병목 2</span>
+        <h3 class="h3" style="font-size:1.05rem">다채널 견적 수배(RFQ) 파편화와 수동 데이터 취합의 비효율</h3>
+      </div>
+      <div class="grid g2">
+        <div class="card paper">
+          <div class="card-tint slate"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag tag-muted">As-Is</span></div>
+            <p class="card-body">
+              수십 개 부품을 소싱하려고 4~5개 이상의 서로 다른 채널에 엑셀 양식을 개별 발송하고,
+              각기 다른 템플릿과 화폐 단위로 회신된 견적서를 하나의 통합 스프레드시트로 수동 전사하는 과정에서
+              <strong>주당 20시간 이상의 단순 입력 손실</strong>이 발생한다.
+              또한 견적 회신을 기다리는 동안 공급망 단에서 실시간 재고가 소진되어, 발주 시점에 결품을 인지하는 치명적인 일정 지연이 유발된다.
+            </p>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag">To-Be · AX 해결책</span></div>
+            <p class="card-body">
+              <strong>API 및 지능형 에이전트 기반 RFQ 오케스트레이션</strong>이다.
+              주요 공인 유통사(Avnet, Arrow 등)와 직구 플랫폼(LCSC 등)의 실시간 재고·가격 API를 연동해 가용성을 즉시 파악하고,
+              API 미지원 로컬 상가 딜러에게는 표준 RFQ 이메일을 자동 발송한다.
+              비정형 문서 이해(Document AI) 모델로 회신된 다양한 양식의 PDF·엑셀 견적서를 자동 구조화하여,
+              단가·리드타임·공급처 신뢰도를 가중 평가한 최적의 분할 발주 포트폴리오를 알고리즘으로 도출한다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 병목 3 -->
+    <section>
+      <div class="badge-row">
+        <span class="num-badge">병목 3</span>
+        <h3 class="h3" style="font-size:1.05rem">대체 부품(FFF Cross-Reference) 탐색의 지식 사일로화</h3>
+      </div>
+      <div class="grid g2">
+        <div class="card paper">
+          <div class="card-tint slate"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag tag-muted">As-Is</span></div>
+            <p class="card-body">
+              공급망 충격이나 부품 단종(EOL) 시 기존 회로의 폼(Form)·핏(Fit)·기능(Function)을 완벽히 만족하는 대체 부품 탐색은
+              전적으로 시니어 구매 담당자의 개인 경험이나 R&amp;D 엔지니어의 수동 데이터시트 대조에 의존한다.
+              이러한 <strong>암묵지</strong>는 체계적으로 자산화되지 못해, 동일 부품 품귀가 발생할 때마다 원점 탐색과 승인 검토가 반복되며 소싱 주기가 수주 단위로 지연된다.
+            </p>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag">To-Be · AX 해결책</span></div>
+            <p class="card-body">
+              <strong>지식 그래프(Knowledge Graph) 및 검색증강생성(GraphRAG)</strong>의 최우선 적용 대상이다.
+              부품의 전기적 사양(전압, 전류 마진, 주파수 응답 등), 물리적 치수, 핀 배열(Pinout)을 온톨로지로 구축해
+              결품 발생 시 허용 공차 내 100% 호환 대체재를 유사도 순위와 함께 추천한다.
+              엔지니어에게 사양 비교 요약표와 원클릭 승인 인터페이스를 제공하여 대체재 승인 리드타임을 <strong>수일에서 수시간으로</strong> 압축한다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 병목 4 -->
+    <section>
+      <div class="badge-row">
+        <span class="num-badge">병목 4</span>
+        <h3 class="h3" style="font-size:1.05rem">시스템 간 데이터 비동기화 및 정산(3-Way Matching) 검증 부하</h3>
+      </div>
+      <div class="grid g2">
+        <div class="card paper">
+          <div class="card-tint slate"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag tag-muted">As-Is</span></div>
+            <p class="card-body">
+              설계 변경(ECO) 발생 시 E-BOM의 변경점이 생산 현장의 M-BOM이나 ERP 품목 마스터에 실시간 동기화되지 못해
+              불필요한 자재가 계속 발주되거나 조립 라인에서 구버전 부품이 조립되는 사고가 발생한다.
+              또한 입고 이후 공급처별로 상이한 결제 조건과 분할 납품으로 인해 세금계산서와 구매발주서 간 단가·수량 대조를 수작업으로 처리하면서
+              <strong>월말 결산 지연과 정산 오류</strong>가 누적된다.
+            </p>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint"></div>
+          <div class="card-inner">
+            <div class="card-head"><span class="tag">To-Be · AX 해결책</span></div>
+            <p class="card-body">
+              E-BOM과 M-BOM 간 변경 영향도를 역추적하는 <strong>이벤트 기반 자동 전개 에이전트</strong>와 <strong>자율형 3-Way Matching 엔진</strong>을 구축한다.
+              거래명세서·세금계산서 OCR 판독 결과를 ERP 입고 데이터와 실시간 대조해 단수 차이나 허용 오차 범위 내 변동을 자동 보정하고,
+              이상 징후가 감지된 비정형 케이스만 담당자 승인을 요청하는 <strong>예외 중심 운영(Human-in-the-Loop)</strong> 체제로 전환한다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="callout c-emphasis">
+      <p class="callout-title"><span class="callout-icon" aria-hidden="true">◆</span><span>4대 병목의 공통 구조</span></p>
+      <div class="callout-body">
+        네 병목 모두 &lsquo;사람이 비정형 문서를 읽어 다른 시스템의 정형 필드로 옮기는 구간&rsquo;에서 발생한다.
+        따라서 AX의 적용 지점은 ERP나 PLM 내부가 아니라, <strong>시스템과 실무자 사이의 해석 계층</strong>이다.
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 05 · As-Is → To-Be 종합 ================= -->
+<article class="slide" id="impact">
+  <div class="pad slide-head">
+    <div class="badge-row">
+      <span class="num-badge">05</span>
+      <span class="eyebrow">As-Is → To-Be · Impact</span>
+    </div>
+    <h2 class="slide-h2">병목별 As-Is / To-Be 아키텍처와<br />정량·정성적 개선 지표</h2>
+    <p class="slide-desc">4대 병목 영역을 기존 실무 방식과 AX 기반 자동화 구조로 대비하고, 기대되는 개선 효과를 정리한다.</p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="grid g4">
+      <div class="kpi"><p class="kpi-val">22<span class="kpi-suf">시간/주</span></p><p class="kpi-label">데이터 입력 공수 감축</p><p class="kpi-sub">BOM 정제 및 입력</p></div>
+      <div class="kpi"><p class="kpi-val">5일 → 4<span class="kpi-suf">시간</span></p><p class="kpi-label">BOM 재소싱 기간 단축</p><p class="kpi-sub">소싱 및 견적(RFQ)</p></div>
+      <div class="kpi"><p class="kpi-val">8~12<span class="kpi-suf">%</span></p><p class="kpi-label">지출 비용 절감 효과</p><p class="kpi-sub">최적 분할 구매 조합</p></div>
+      <div class="kpi"><p class="kpi-val">80<span class="kpi-suf">%↑</span></p><p class="kpi-label">대체재 발굴 리드타임 단축</p><p class="kpi-sub">자동 PO 발행률 80% 상회</p></div>
+    </div>
+
+    <div class="stack">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="min-width:7.5rem">핵심 병목 영역</th>
+              <th style="min-width:14rem">기존 실무 방식 (As-Is Bottlenecks)</th>
+              <th class="em" style="min-width:14rem">AX 기반 자동화 구조 (To-Be Architecture)</th>
+              <th style="min-width:12rem">정량·정성적 개선 지표 (Impact)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BOM 정제 및 입력</td>
+              <td>
+                <ul class="cellist">
+                  <li>비정형 엑셀 수동 정규화</li>
+                  <li>누락 스펙 파악을 위한 이메일·메신저 재문의</li>
+                  <li>오타 및 파트넘버 수기 교정</li>
+                </ul>
+              </td>
+              <td class="em">
+                <ul class="cellist">
+                  <li>LLM 기반 다변화 엑셀 구조 자동 파싱</li>
+                  <li>글로벌 부품 DB 연동 속성 자동 완성</li>
+                  <li>부품 단종(EOL) 및 위험도 사전 경고</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="cellist">
+                  <li>데이터 입력 공수 대폭 절감 (주당 약 22시간 감축)</li>
+                  <li>수기 오기로 인한 오발주 방지</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>소싱 및 견적(RFQ)</td>
+              <td>
+                <ul class="cellist">
+                  <li>3~5개 선호 벤더 대상 개별 이메일 발송</li>
+                  <li>상이한 양식의 회신 견적서 수작업 대사</li>
+                  <li>장납기로 인한 생산 라인 중단 위험</li>
+                </ul>
+              </td>
+              <td class="em">
+                <ul class="cellist">
+                  <li>유통사 API(LCSC 등) 실시간 연동</li>
+                  <li>다중 에이전트 기반 RFQ 동시 발송 및 파싱</li>
+                  <li>단가·납기 최적 분할 구매 조합 추천</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="cellist">
+                  <li>BOM 재소싱 기간 단축 (5일 → 4시간)</li>
+                  <li>지출 비용 8~12% 절감 효과 창출</li>
+                  <li>라인 스톱 손실 예방</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>대체 부품 발굴</td>
+              <td>
+                <ul class="cellist">
+                  <li>시니어 구매자의 직관에 의존</li>
+                  <li>R&amp;D 엔지니어의 반복적 데이터시트 수동 분석</li>
+                  <li>대체 부품 승인 이력의 유실 및 사일로화</li>
+                </ul>
+              </td>
+              <td class="em">
+                <ul class="cellist">
+                  <li>지식 그래프(GraphRAG) 기반 FFF 대체재 추천</li>
+                  <li>핀배열·전기특성 오차율 비교 보고서 생성</li>
+                  <li>대체재 승인 히스토리 지식 자산화</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="cellist">
+                  <li>대체재 발굴 리드타임 80% 이상 단축</li>
+                  <li>담당자 퇴사 시에도 조달 노하우 영구 보존</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>정산 및 데이터 연동</td>
+              <td>
+                <ul class="cellist">
+                  <li>구매-재무 간 결제조건 엑셀 수기 관리</li>
+                  <li>발주서-입고증-계산서 간 수작업 3-Way 대조</li>
+                  <li>E-BOM/M-BOM 불일치로 인한 불용 재고</li>
+                </ul>
+              </td>
+              <td class="em">
+                <ul class="cellist">
+                  <li>조건별 자금 흐름(Cash-flow) 자동 스케줄링</li>
+                  <li>다큐먼트 AI 기반 3-Way Matching 자동화</li>
+                  <li>ECO 발생 시 전사적 영향도 실시간 역추적</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="cellist">
+                  <li>자동 구매발주서(PO) 발행률 80% 상회</li>
+                  <li>월말 결산 소요 기간 단축</li>
+                  <li>사장 불용 재고 발생 최소화</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sowhat">So-What · To-Be 열은 신규 시스템 도입 목록이 아니라, 기존 엑셀·이메일 업무를 그대로 두고 그 해석을 자동화하는 계층이다.</p>
+    </div>
+
+  </div>
+</article>
+
+<!-- ================= 06 · 아키텍처 제언 및 결론 ================= -->
+<article class="slide" id="conclusion">
+  <div class="pad slide-head">
+    <div class="badge-row">
+      <span class="num-badge">06</span>
+      <span class="eyebrow">Architecture &amp; Conclusion</span>
+    </div>
+    <h2 class="slide-h2">AX 추진을 위한 아키텍처 관점의<br />제언 및 결론</h2>
+    <p class="slide-desc">
+      조달 프로세스의 비효율은 부서 간 소통 미숙이나 담당자 부주의로 인한 단편적 문제가 아니다.
+      설계 관점의 물리적·기능적 언어 체계(E-BOM)와 제조·물류·재무 관점의 비즈니스 언어 체계(M-BOM, 재고 단위, 회계 분개)가
+      구조적으로 일치하지 않는 데서 기인하는 <strong>본원적 간극</strong>이다.
+    </p>
+  </div>
+  <div class="pad slide-body">
+
+    <div class="callout c-muted">
+      <p class="callout-title"><span class="callout-icon" aria-hidden="true">·</span><span>과거 접근의 한계</span></p>
+      <div class="callout-body">
+        과거 제조업계는 거대한 단일 ERP나 PLM 시스템을 구축해 이 격차를 해소하려 시도했으나,
+        정형화된 시스템의 높은 경직성으로 인해 실무자들은 오히려 시스템 외부의 엑셀 시트와 비공식 메신저로 이탈하는 결과를 낳았다.
+        따라서 성공적인 AX를 위해서는 <strong>기존 엔터프라이즈 레거시를 전면 재구축하는 무리한 접근을 지양</strong>해야 한다.
+      </div>
+    </div>
+
+    <div>
+      <p class="sec-label">Recommended Architecture · 3축</p>
+      <div class="grid g3">
+        <div class="card paper">
+          <div class="card-tint"></div>
+          <div class="card-inner">
+            <div class="card-head">
+              <h3 class="h3" style="flex:1">오케스트레이션 에이전트 계층</h3>
+              <span class="card-badge">Layer</span>
+            </div>
+            <p class="card-body">
+              시스템과 실무자 사이에 존재하는 비정형 데이터(엑셀 BOM, PDF 견적서, 전자세금계산서, 비정형 커뮤니케이션)를
+              지능적으로 해석하고 매핑하는 <strong>유연한 오케스트레이션 에이전트 계층</strong> 수립에 초점을 맞춘다.
+            </p>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint navy"></div>
+          <div class="card-inner">
+            <div class="card-head">
+              <h3 class="h3" style="flex:1">MCP 표준 도구 인터페이스</h3>
+              <span class="card-badge">Integration</span>
+            </div>
+            <p class="card-body">
+              각 레거시 ERP와 유통사 데이터베이스를 <strong>모델 컨텍스트 프로토콜(MCP)</strong>과 같은 표준화된 도구 인터페이스로 감싸,
+              에이전트가 재고 조회·발주 등록·단가 추적을 원활히 수행할 수 있는 실행 환경을 마련한다.
+            </p>
+          </div>
+        </div>
+        <div class="card paper">
+          <div class="card-tint mint"></div>
+          <div class="card-inner">
+            <div class="card-head">
+              <h3 class="h3" style="flex:1">GraphRAG 지식 자산화</h3>
+              <span class="card-badge">Knowledge</span>
+            </div>
+            <p class="card-body">
+              사내에 축적된 수천 가지 부품의 대체 이력과 사양 정보를 구조화된 <strong>지식 그래프(GraphRAG)</strong>로 자산화하여,
+              공급망 위기 시 AI가 엔지니어링 도메인 지식을 바탕으로 즉각적인 판단을 보조하도록 설계한다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-emphasis">
+      <p class="callout-title"><span class="callout-icon" aria-hidden="true">◆</span><span>의사결정 원칙 · Human-in-the-Loop</span></p>
+      <div class="callout-body">
+        <ul class="bullets on-navy">
+          <li><strong>자동화 대상</strong> — 정형화된 일상 업무(루틴 MRO 조달, 표준 부품 최저가 발주)</li>
+          <li><strong>담당자 확인 필수</strong> — 핵심 IC의 대체 부품 채택, 결제 조건 조정과 같은 고위험 결정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout c-success">
+      <p class="callout-title"><span class="callout-icon" aria-hidden="true">✓</span><span>결론</span></p>
+      <div class="callout-body">
+        이러한 단계적 AX 파이프라인이 정립될 때, 연구소의 회로 설계 데이터는 구매와 재무를 거쳐 공장 생산 라인과 결산 단계까지
+        끊김 없이 유기적으로 연계될 수 있으며, 제조 기업은 극심한 글로벌 공급망 변동성 속에서도
+        <strong>견고한 원가 경쟁력과 납기 준수율</strong>을 확보할 수 있다.
+      </div>
+    </div>
+
+    <div style="padding-top:1.5rem">
+      <p class="appendix-divider">End of Document</p>
+      <p class="meta" style="text-align:center">
+        출처 · <span class="mono">BOM배경설명.docx</span> · 목차와 서술 순서를 유지해 시각화한 요약 브리프
+      </p>
+    </div>
+
+  </div>
+</article>
+
+</div><!-- /.wrap -->
+
+  <div class="pager no-print" id="pager">
+    <button type="button" id="prevBtn" aria-label="이전 슬라이드">&larr;</button>
+    <span class="mono" id="pageLabel">01 / 07</span>
+    <button type="button" id="nextBtn" aria-label="다음 슬라이드">&rarr;</button>
+  </div>
+</main>
+</div><!-- /.shell -->
+
+<script>
+(function () {
+  "use strict";
+
+  var NAV = [
+    { id: "overview",   label: "개요",                    number: "00", group: 0 },
+    { id: "verify",     label: "현장 실무 교차 검증",      number: "01", group: 1 },
+    { id: "lifecycle",  label: "BOM 라이프사이클 6단계",   number: "02", group: 1 },
+    { id: "stages",     label: "단계별 상세 프로세스",     number: "03", group: 1 },
+    { id: "bottleneck", label: "구조적 병목과 AX 타깃",    number: "04", group: 2 },
+    { id: "impact",     label: "As-Is → To-Be 종합",      number: "05", group: 2 },
+    { id: "conclusion", label: "아키텍처 제언 및 결론",    number: "06", group: 3 }
+  ];
+  var IDS = NAV.map(function (n) { return n.id; });
+
+  var sidebar  = document.getElementById("sidebar");
+  var backdrop = document.getElementById("backdrop");
+  var toggle   = document.getElementById("sbToggle");
+  var pageLbl  = document.getElementById("pageLabel");
+  var prevBtn  = document.getElementById("prevBtn");
+  var nextBtn  = document.getElementById("nextBtn");
+
+  /* ---- 사이드바 렌더 ---- */
+  NAV.forEach(function (n) {
+    var ul = document.getElementById("nav-" + n.group);
+    if (!ul) return;
+    var li = document.createElement("li");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "sb-item";
+    btn.dataset.goto = n.id;
+    btn.innerHTML =
+      '<span class="bar"></span>' +
+      '<span class="sb-num">' + n.number + '</span>' +
+      '<span class="sb-text"></span>' +
+      '<span class="dot"></span>';
+    btn.querySelector(".sb-text").textContent = n.label;
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+
+  var activeId = IDS[0];
+
+  function closeMobile() {
+    sidebar.classList.remove("open");
+    backdrop.classList.remove("show");
+    toggle.textContent = "목차 ☰";
+  }
+
+  function render(id, pushHash) {
+    if (IDS.indexOf(id) === -1) id = IDS[0];
+    activeId = id;
+
+    Array.prototype.forEach.call(document.querySelectorAll(".slide"), function (el) {
+      var on = el.id === id;
+      el.classList.toggle("active", on);
+      el.classList.remove("slide-enter");
+      if (on) { void el.offsetWidth; el.classList.add("slide-enter"); }
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll(".sb-item[data-goto]"), function (btn) {
+      btn.classList.toggle("active", btn.dataset.goto === id);
+    });
+
+    var idx = IDS.indexOf(id);
+    pageLbl.textContent =
+      String(idx + 1).padStart(2, "0") + " / " + String(IDS.length).padStart(2, "0");
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx >= IDS.length - 1;
+
+    if (pushHash !== false && window.location.hash !== "#" + id) {
+      try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    }
+    requestAnimationFrame(function () { window.scrollTo({ top: 0 }); });
+    closeMobile();
+  }
+
+  /* ---- 이벤트 위임: 사이드바 · 브랜드 버튼 ---- */
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-goto]") : null;
+    if (t) { render(t.dataset.goto); }
+  });
+
+  prevBtn.addEventListener("click", function () {
+    render(IDS[Math.max(IDS.indexOf(activeId) - 1, 0)]);
+  });
+  nextBtn.addEventListener("click", function () {
+    render(IDS[Math.min(IDS.indexOf(activeId) + 1, IDS.length - 1)]);
+  });
+
+  toggle.addEventListener("click", function () {
+    var open = sidebar.classList.toggle("open");
+    backdrop.classList.toggle("show", open);
+    toggle.textContent = open ? "닫기 ✕" : "목차 ☰";
+  });
+  backdrop.addEventListener("click", closeMobile);
+
+  /* ---- 키보드 ←/→ ---- */
+  document.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+    var idx = IDS.indexOf(activeId);
+    if (e.key === "ArrowRight" || e.key === "PageDown") {
+      render(IDS[Math.min(idx + 1, IDS.length - 1)]);
+    } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+      render(IDS[Math.max(idx - 1, 0)]);
+    }
+  });
+
+  /* ---- URL 해시 동기화 ---- */
+  function syncFromHash() {
+    var h = window.location.hash.replace("#", "");
+    render(IDS.indexOf(h) !== -1 ? h : IDS[0], false);
+  }
+  window.addEventListener("hashchange", syncFromHash);
+  window.addEventListener("popstate", syncFromHash);
+  syncFromHash();
+})();
+</script>
+</body>
+</html>

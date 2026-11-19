@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ko" data-hm-profile="app">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F4F5F7">
+<title>변경 요청함 · DA UI hallmark 업무 화면 템플릿</title>
+<!-- 글꼴: Pretendard(인터넷 연결 시). 연결이 없으면 시스템 글꼴로 보인다. -->
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* =====================================================================
+   DA UI hallmark v1.0 · 업무 화면 템플릿 (10_template_app.html)
+   - 이 파일을 새 이름으로 복사해서 고친다. :root 와 '공통' 구역은 바꾸지 않는다.
+   - 화면 = <section class="view" data-hm-view="이름">. 주소 #이름 또는 window.hmShow("이름")으로 연다.
+   - 셸: 회색 틀(사이드바 228px + 상단 막대 48px) 안에 흰 시트 한 장. 시트는 오른쪽·아래 8px 띄움, 모서리 16px.
+   - 예시 데이터는 모두 [가상]이다. 아래 script 의 DATA 만 바꾸면 화면이 다시 그려진다.
+   ===================================================================== */
+:root{
+  color-scheme: light;
+  --co-black:#000000; --co-dark:#555555; --co-mid:#A0A0A0; --co-light:#DEDEDE;
+  --co-mint:#7DEAD5;  --co-cyan:#1BBBCC; --co-blue:#4383AF; --co-navy:#06438C;
+  --navy:#06438C;
+  --b50:#E5F0F5; --b100:#C7DCE7; --b700:#052E62; --b800:#031F44;
+  --e100:#E5F8F2; --e800:#16735F;
+  --frame:#F4F5F7; --surface:#FFFFFF; --raised:#FAFAFA; --hover:#EEF0F3; --active:#E6E8EC;
+  --edge:#E3E5E9; --rule:#EEF0F3; --control:#CBD0D6; --control-strong:#868C93; --grid:#DEDEDE;
+  --ink:#111111; --ink-2:#555555; --ink-3:#6B6F76;
+  --float:0 10px 28px rgba(0,0,0,.08);
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  --sheet-font:"HM Sheet","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --r-tag:4px; --r-ctl:6px; --r-panel:8px; --r-sheet:16px;
+  --side-w:228px;
+}
+/* 엑셀형 표 글꼴: 시스템의 맑은 고딕을 이름 하나로 묶는다(설치 글꼴을 웹 글꼴처럼 확인할 수 있게) */
+@font-face{font-family:"HM Sheet";src:local("Malgun Gothic"),local("MalgunGothic"),local("맑은 고딕");font-weight:400}
+@font-face{font-family:"HM Sheet";src:local("Malgun Gothic Bold"),local("MalgunGothicBold"),local("맑은 고딕 Bold");font-weight:700}
+
+/* ------------------------------------------------------------ 공통 */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--frame);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;
+  word-break:keep-all;overflow-wrap:break-word;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+input,select,textarea{font:inherit;color:inherit}
+a{color:var(--navy);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+h1[tabindex="-1"]:focus{outline:none} /* 화면을 바꿀 때 제목으로 옮긴 초점은 화면 읽기용이라 테두리를 그리지 않는다 */
+::selection{background:var(--b100)}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.muted{color:var(--ink-3)}
+.row{display:flex;align-items:center;gap:8px}
+.sp{flex:1 1 auto}
+.mini{font-size:12px;color:var(--ink-3)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#C9CDD3;border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+
+/* 글자 */
+h1.t{font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.3;text-wrap:balance}
+.desc{margin-top:4px;font-size:14px;color:var(--ink-2);line-height:1.6;max-width:84ch}
+.desc b{color:var(--ink);font-weight:600}
+.sec-t{display:flex;align-items:baseline;gap:8px;font-size:16px;font-weight:600;margin-bottom:10px;flex-wrap:wrap}
+.sec-t .mini{font-weight:400}
+
+/* 버튼: 주 버튼(네이비)은 화면에 하나 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--r-ctl);
+  font-size:13px;font-weight:600;white-space:nowrap;border-width:1px;border-style:solid;border-color:transparent;text-decoration:none;transition:background-color .12s,border-color .12s,color .12s}
+.btn:active:not([disabled]){transform:translateY(1px)}
+.btn-1{background:var(--navy);color:#fff}
+.btn-1:hover{background:var(--b700)}
+.btn-2{background:#fff;color:var(--ink);border-color:var(--control)}
+.btn-2:hover{background:var(--frame);border-color:#B9BFC7}
+.btn-t{color:var(--ink-2)}
+.btn-t:hover{background:var(--hover);color:var(--ink)}
+.btn.sm{height:28px;padding:0 10px}
+.btn.lg{height:36px;padding:0 16px;font-size:14px}
+.btn[disabled]{background:var(--hover);color:var(--ink-2);border-color:transparent;cursor:not-allowed}
+
+/* 상태 꼬리표 */
+.tag{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:var(--r-tag);font-size:12px;font-weight:500;
+  white-space:nowrap;flex:none;line-height:1;background:var(--hover);color:var(--ink-2);border:1px solid transparent}
+.tag.n{background:var(--b50);color:var(--b700)}
+.tag.e{background:var(--e100);color:var(--e800)}
+.tag.o{background:#fff;color:var(--navy);border-color:var(--navy)}
+.tag.s{background:var(--navy);color:#fff}
+.tag.f{background:none;padding:0;color:var(--ink-3);font-weight:400}
+
+/* 알림 상자: 테두리 없는 틴트 */
+.call{border-radius:var(--r-panel);padding:12px 14px;font-size:13px;line-height:1.6;color:var(--ink-2);background:var(--raised)}
+.call .ct{display:block;font-weight:600;font-size:14px;color:var(--ink);margin-bottom:2px}
+.call.info{background:var(--b50);color:var(--ink)}
+.call.ok{background:var(--e100);color:var(--ink)}
+.call.emp{background:var(--navy);color:#fff}
+.call.emp .ct{color:#fff}
+.sowhat{border-radius:var(--r-ctl);background:var(--navy);color:#fff;font-weight:600;font-size:13px;padding:8px 12px}
+
+/* 지표: 한 상자를 1px로 나눈다 */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-panel);overflow:hidden}
+.kpi{background:#fff;padding:12px 16px;min-width:0}
+.kpi .l{font-size:13px;color:var(--ink-2)}
+.kpi .v{margin-top:2px;font-size:24px;font-weight:600;line-height:1.2;white-space:nowrap}
+.kpi .v small{font-size:13px;font-weight:400;color:var(--ink-3);margin-left:3px}
+.kpi .s{margin-top:2px;font-size:12px;color:var(--ink-3)}
+
+/* 필터 칩: 선택 하나만 네이비 */
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{height:28px;padding:0 10px;border-radius:var(--r-ctl);font-size:13px;font-weight:500;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px;transition:background-color .12s,color .12s}
+.chip:hover{background:var(--hover);color:var(--ink)}
+.chip .c{font-size:12px;color:var(--ink-3)}
+.chip:hover .c{color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff}
+.chip[aria-pressed="true"] .c{color:var(--b100)}
+.chip-sel{display:none}
+
+/* 입력 */
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label,.field>.lb{font-size:13px;font-weight:500;color:var(--ink-2)}
+.inp{height:32px;border-radius:var(--r-ctl);border:1px solid var(--control-strong);background:#fff;padding:0 10px;font-size:13px;min-width:0;color:var(--ink)}
+.inp::placeholder{color:var(--ink-3)}
+.inp:focus{outline:2px solid rgba(6,67,140,.28);outline-offset:0;border-color:var(--navy)}
+select.inp{padding-right:26px}
+.search{position:relative}
+.search .ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink-3);pointer-events:none}
+.search .inp{padding-left:32px;width:100%}
+.seg{display:inline-flex;background:var(--hover);border-radius:var(--r-panel);padding:2px;gap:2px}
+.seg button{height:28px;padding:0 12px;border-radius:var(--r-ctl);font-size:13px;font-weight:500;color:var(--ink-2);border:1px solid transparent}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);border-color:var(--edge)}
+/* 켜기·끄기: 켜짐은 거의 검정, 꺼짐도 3:1 */
+.sw{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--ink);cursor:pointer;user-select:none}
+.sw input{position:absolute;opacity:0;width:1px;height:1px}
+.sw i{position:relative;width:28px;height:16px;border-radius:999px;background:var(--control-strong);transition:background-color .12s;flex:none}
+.sw i::after{content:"";position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:transform .15s ease-out}
+.sw input:checked+i{background:var(--ink)}
+.sw input:checked+i::after{transform:translateX(12px)}
+.sw input:focus-visible+i{outline:2px solid var(--navy);outline-offset:2px}
+.sw input:disabled+i{background:var(--hover)}
+.sw.dis{color:var(--ink-2);cursor:not-allowed}
+
+/* 탭: 1px 선 위 2px 네이비 밑줄 */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--edge);margin-bottom:12px}
+.tabs [role="tab"]{position:relative;height:38px;padding:0 10px;font-size:14px;font-weight:500;color:var(--ink-2)}
+.tabs [role="tab"]:hover{color:var(--ink)}
+.tabs [role="tab"][aria-selected="true"]{color:var(--ink);font-weight:600}
+.tabs [role="tab"][aria-selected="true"]::after{content:"";position:absolute;left:2px;right:2px;bottom:-1px;height:2px;background:var(--navy)}
+
+/* 패널 */
+.panel{background:#fff;border:1px solid var(--edge);border-radius:var(--r-panel);padding:14px 16px}
+.panel-h{display:flex;align-items:center;gap:8px;margin-bottom:10px;min-height:24px}
+.panel-h h2,.panel-h h3{flex:1;min-width:0;font-size:14px;font-weight:600}
+.kv{display:grid;grid-template-columns:96px minmax(0,1fr);gap:6px 12px;font-size:13px;line-height:1.5}
+.kv dt{color:var(--ink-3)}
+.kv dd{color:var(--ink);min-width:0;overflow-wrap:anywhere}
+
+/* 표: 머리글 띠·대문자·줄무늬 없음, 숫자 오른쪽 */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl caption{text-align:left}
+.tbl th{font-weight:400;color:var(--ink-3);text-align:left;padding:0 12px 8px 0;font-size:12px;border-bottom:1px solid var(--edge);white-space:nowrap}
+.tbl td{padding:10px 12px 10px 0;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:middle}
+.tbl th.r,.tbl td.r{text-align:right}
+.tbl td.id{color:var(--ink)}
+.tbl td.id b{display:block;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:340px}
+.tbl td.id small{display:block;font-size:12px;color:var(--ink-3)}
+.tbl tbody tr{cursor:pointer;transition:background-color .12s}
+.tbl tbody tr:hover{background:var(--raised)}
+.tbl tbody tr[aria-selected="true"]{background:var(--b50)}
+.tbl tbody tr[aria-selected="true"] td small{color:var(--ink-2)}
+.tbl .num-col{width:88px}
+.tbl-foot{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--ink-3)}
+.mlist{display:none}
+
+/* 엑셀형 표 (data-sheet): 맑은 고딕 13px, 24px 행, 격자선. 머리글 띠는 이 표만 예외 */
+.xg{display:flex;flex-direction:column;border:1px solid var(--control);border-radius:var(--r-ctl);overflow:hidden;background:#fff;font-family:var(--sheet-font);font-size:13px;color:#000}
+.xg-fbar{display:flex;height:28px;border-bottom:1px solid var(--grid);flex:none}
+.xg-name{width:72px;flex:none;border-right:1px solid var(--grid);display:flex;align-items:center;padding:0 8px}
+.xg-fx{width:30px;flex:none;border-right:1px solid var(--grid);display:grid;place-items:center;color:var(--ink-3);font-style:italic}
+.xg-val{flex:1;min-width:0;padding:0 8px;display:flex;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xg-scroll{position:relative;overflow:auto;height:calc(100vh - 330px);min-height:240px;outline:none}
+.xg-scroll:focus-visible{box-shadow:inset 0 0 0 2px rgba(6,67,140,.3)} /* hallmark-ignore: 키보드 초점 표시 */
+.xg table{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content}
+.xg th,.xg td{height:24px;padding:0 6px;border-right:1px solid var(--grid);border-bottom:1px solid var(--grid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:400;line-height:23px}
+.xg td{background:#fff;cursor:cell}
+.xg thead th{position:sticky;top:0;z-index:3;background:var(--frame);color:var(--ink-2);text-align:center;font-size:12px;border-color:#D6D9DE;user-select:none}
+.xg thead th.corner{left:0;z-index:4}
+.xg thead th.on{background:var(--active);color:var(--navy);font-weight:600;box-shadow:inset 0 -2px 0 var(--navy)} /* hallmark-ignore: 엑셀식 선택 표시 */
+.xg th.rn{position:sticky;left:0;z-index:2;background:var(--frame);color:var(--ink-2);text-align:center;font-size:12px;border-color:#D6D9DE;padding:0 3px}
+.xg th.rn.on{background:var(--active);color:var(--navy);font-weight:600;box-shadow:inset -2px 0 0 var(--navy)} /* hallmark-ignore: 엑셀식 선택 표시 */
+.xg tr.hd td{background:var(--hover);font-weight:700;text-align:center;border-color:#D6D9DE;cursor:default}
+.xg td.r{text-align:right}
+.xg td.sel{outline:2px solid var(--navy);outline-offset:-2px;position:relative;z-index:1}
+.xg td.ed{color:var(--navy);font-weight:700;background:var(--b50);position:relative}
+.xg td.ed::after{content:"";position:absolute;top:0;right:0;border-left:7px solid transparent;border-top:7px solid var(--navy)}
+.xg td.zero{color:var(--ink-2)}
+.xg-edit{position:absolute;z-index:8;height:24px;border:2px solid var(--navy);font-family:var(--sheet-font);font-size:13px;padding:0 4px;outline:none;background:#fff;box-shadow:var(--float)} /* hallmark-ignore: 셀 편집기는 시트 위에 뜬다 */
+.xg-tabs{display:flex;height:30px;background:var(--frame);border-top:1px solid #D6D9DE;flex:none}
+.xg-tab{display:flex;align-items:center;padding:0 14px;border-right:1px solid #D6D9DE;font-size:13px;color:var(--ink-2);white-space:nowrap}
+.xg-tab[aria-current="true"]{background:#fff;color:var(--navy);font-weight:700;box-shadow:inset 0 -2px 0 var(--navy)} /* hallmark-ignore: 엑셀식 시트 탭 */
+.xg-tab.fut{color:var(--ink-3)}
+.xg-status{display:flex;gap:16px;height:26px;align-items:center;padding:0 10px;background:var(--frame);border-top:1px solid #D6D9DE;font-size:12px;color:var(--ink-2);font-family:var(--font)}
+
+/* 차트: 핵심 막대 하나만 네이비, 나머지 회색 */
+.chart svg{display:block;width:100%;height:auto}
+.chart .bar{fill:var(--control)}
+.chart .bar.now{fill:var(--navy)}
+.chart .gl{stroke:var(--rule);stroke-width:1}
+.chart text{font-family:var(--font);font-size:12px;fill:var(--ink-3)}
+.chart text.val{fill:var(--ink-2)}
+.chart text.val.now{fill:var(--navy);font-weight:600}
+.blist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:7px 0;font-size:13px;color:var(--ink-2)}
+.blist li b{font-weight:600;color:var(--ink)}
+.blist li i{grid-column:1/-1;display:block;height:2px;background:var(--control)}
+.blist li:first-child i{background:var(--ink)}
+
+/* 상태: 빈 상태 · 불러오는 중 · 오류 */
+.empty{padding:20px 16px;text-align:center;color:var(--ink-2);border:1px dashed var(--control);border-radius:var(--r-panel);font-size:13px;line-height:1.6}
+.empty b{display:block;color:var(--ink);font-size:14px;font-weight:600;margin-bottom:2px}
+.empty .btn{margin-top:10px}
+.skel{display:block;height:13px;border-radius:3px;background:var(--hover);margin:6px 0}
+.skel.w60{width:60%}.skel.w80{width:80%}.skel.w40{width:40%}
+.err{font-size:13px;line-height:1.6;color:var(--ink)}
+.err b{display:flex;align-items:center;gap:6px;font-weight:600}
+.err b .ic{color:var(--navy)}
+.err p{color:var(--ink-2);margin:2px 0 8px}
+
+/* 떠 있는 요소: 그림자는 여기에만 */
+.pop{position:absolute;z-index:60;min-width:240px;padding:6px;border-radius:var(--r-panel);background:#fff;border:1px solid var(--edge);box-shadow:var(--float)} /* hallmark-ignore: 떠 있는 요소 */
+.pop .mi{display:flex;align-items:center;gap:10px;width:100%;padding:8px;border-radius:var(--r-ctl);text-align:left;font-size:13px;color:var(--ink)}
+.pop .mi:hover,.pop .mi:focus-visible{background:var(--hover)}
+.pop .mi[aria-checked="true"]{font-weight:600}
+.pop .mi small{display:block;font-size:12px;color:var(--ink-2);font-weight:400}
+.pop .ph{font-size:12px;color:var(--ink-3);padding:6px 8px 4px}
+.pop kbd{font:12px var(--font);color:var(--ink-2);background:var(--frame);border-radius:4px;padding:1px 6px;margin-right:8px}
+#tip{position:fixed;z-index:1000;max-width:320px;pointer-events:none;background:#fff;border:1px solid var(--edge);border-radius:var(--r-panel);box-shadow:var(--float); /* hallmark-ignore: 떠 있는 요소 */
+  padding:8px 10px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+#toasts{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:900;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{min-width:300px;max-width:520px;background:#fff;border:1px solid var(--edge);border-radius:var(--r-panel);box-shadow:var(--float); /* hallmark-ignore: 떠 있는 요소 */
+  padding:10px 14px;font-size:13px;color:var(--ink-2);opacity:0;transition:opacity .2s ease-out}
+.toast.in{opacity:1}
+.toast b{display:block;color:var(--ink);font-size:14px;font-weight:600}
+.dlg-root{position:fixed;inset:0;z-index:800}
+.dlg-bg{position:absolute;inset:0;background:rgba(17,17,17,.32)}
+.dlg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(600px,calc(100vw - 32px));max-height:calc(100vh - 48px);display:flex;flex-direction:column;
+  background:#fff;border-radius:12px;border:1px solid var(--edge);box-shadow:var(--float)} /* hallmark-ignore: 떠 있는 요소 */
+.dlg-h{padding:18px 20px 6px}
+.dlg-h h2{font-size:16px;font-weight:600}
+.dlg-b{padding:4px 20px 16px;overflow:auto;font-size:14px;color:var(--ink-2);line-height:1.6}
+.dlg-b b{color:var(--ink)}
+.dlg-f{display:flex;justify-content:flex-end;gap:8px;padding:12px 20px 16px;border-top:1px solid var(--rule)}
+
+/* ------------------------------------------------------------ 셸 */
+.app{display:grid;grid-template-columns:var(--side-w) minmax(0,1fr);grid-template-rows:48px minmax(0,1fr);height:100dvh}
+.top{grid-column:1/-1;display:grid;grid-template-columns:var(--side-w) minmax(0,1fr) auto;align-items:center;padding-right:12px;position:relative;z-index:30}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;padding-left:16px;text-decoration:none;color:inherit}
+.mark{width:26px;height:26px;border-radius:var(--r-ctl);background:var(--navy);display:grid;place-items:center;flex:none}
+.mark svg{width:16px;height:16px;display:block}
+.brand .nm{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.15;color:var(--ink)}
+.brand .sb{display:block;font-size:12px;color:var(--ink-3);line-height:1.2}
+.top .mid{display:flex;justify-content:center;min-width:0;padding:0 16px}
+.gsearch{position:relative;width:min(548px,100%)}
+.gsearch .inp{width:100%;padding-left:32px;padding-right:44px;border-color:var(--control-strong)}
+.gsearch>.ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink-3);pointer-events:none}
+.gsearch kbd{position:absolute;right:8px;top:50%;transform:translateY(-50%);font:12px var(--font);color:var(--ink-2);background:var(--frame);border-radius:4px;padding:1px 6px}
+.top-r{display:flex;align-items:center;gap:4px;position:relative;justify-self:end}
+.ibtn{width:32px;height:32px;border-radius:var(--r-ctl);display:grid;place-items:center;color:var(--ink-2)}
+.ibtn:hover{background:var(--active);color:var(--ink)}
+.ibtn .ic{width:17px;height:17px}
+.who{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 8px 0 6px;border-radius:var(--r-ctl);font-size:13px;font-weight:600}
+.who:hover{background:var(--active)}
+.av{width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;font-size:12px;font-weight:600;background:var(--b50);color:var(--navy);flex:none}
+.menu-btn{display:none}
+
+.side{grid-column:1;grid-row:2;overflow-y:auto;padding:8px 10px 16px;display:flex;flex-direction:column}
+.nav-g{margin-bottom:14px}
+.nav-l{padding:0 10px;margin:4px 0;font-size:12px;color:var(--ink-3)}
+.nav-i{width:100%;display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:var(--r-ctl);color:var(--ink-2);font-size:14px;text-align:left;text-decoration:none;margin-bottom:2px;transition:background-color .12s,color .12s}
+.nav-i .ic{color:var(--ink-3)}
+.nav-i:hover{background:var(--active);color:var(--ink)}
+.nav-i:hover .ic{color:var(--ink-2)}
+.nav-i .lb{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-i .bd{font-size:12px;font-weight:600;min-width:20px;height:18px;padding:0 6px;border-radius:9px;background:var(--navy);color:#fff;display:inline-grid;place-items:center}
+.nav-i[aria-current="page"]{background:var(--active);color:var(--ink);font-weight:600}
+.nav-i[aria-current="page"] .ic{color:var(--ink)}
+.nav-i.fut{color:var(--ink-3)}
+.nav-i.fut:hover{color:var(--ink-2)}
+.scope{margin:auto 8px 0;padding-top:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;font-size:12px;line-height:1.5}
+.scope dt{color:var(--ink-3)}
+.scope dd{color:var(--ink-2)}
+
+.main{grid-column:2;grid-row:2;margin:0 8px 8px 0;background:var(--surface);border:1px solid var(--edge);border-radius:var(--r-sheet);overflow:auto;min-width:0;position:relative}
+.page{padding:24px}
+.pg-head{display:flex;align-items:flex-end;gap:16px;margin-bottom:20px}
+.pg-head .l{flex:1;min-width:0}
+.pg-head .r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.stamp{font-size:12px;color:var(--ink-3);white-space:nowrap}
+
+/* 화면별 배치 */
+.with-rail{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.m-search{display:none}
+.work{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.hist li{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-2)}
+.hist li:first-child{border-top:0;padding-top:0}
+.hist li b{color:var(--ink);font-weight:600}
+/* 설정: 라벨 열 · 설정 패널 · 결과 미리 보기 */
+.set-row{display:grid;grid-template-columns:minmax(200px,280px) minmax(0,1fr) minmax(240px,340px);gap:24px;padding:24px 0;border-top:1px solid var(--rule)}
+.set-row:first-of-type{border-top:0;padding-top:0}
+.set-row h2{font-size:16px;font-weight:600}
+.set-row .lc p{margin-top:4px;font-size:14px;color:var(--ink-2);line-height:1.6}
+.set-row .wide{grid-column:2 / -1}
+.set-panel{background:var(--raised);border-radius:var(--r-panel);padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.set-panel .why{font-size:13px;color:var(--ink-2);margin:-8px 0 0 38px}
+.pv .pl{font-size:13px;color:var(--ink-2);margin-bottom:6px}
+.note-pv{background:#fff;border:1px solid var(--edge);border-radius:var(--r-panel);padding:12px 14px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.note-pv b{display:block;font-size:14px;font-weight:600;color:var(--ink)}
+.note-pv small{display:block;margin-top:4px;font-size:12px;color:var(--ink-3)}
+.steps-pv{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--ink-2)}
+.steps-pv span{padding:4px 8px;border-radius:var(--r-tag);background:var(--hover);color:var(--ink)}
+.steps-pv span.chg{background:var(--b50);color:var(--b700);font-weight:600}
+@media (max-width:1280px){.set-row{grid-template-columns:minmax(200px,260px) minmax(0,1fr)}.set-row .pv{grid-column:2}.set-row .wide{grid-column:2}}
+
+/* ------------------------------------------------------------ 폭에 따라 */
+@media (max-width:1280px){
+  .with-rail{grid-template-columns:minmax(0,1fr)}
+  .rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+}
+/* 태블릿: 사이드바는 상단 막대의 메뉴로 접힌다 */
+@media (max-width:1100px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .top{grid-template-columns:auto auto minmax(0,1fr) auto;padding-left:6px}
+  .brand{padding-left:2px}
+  .menu-btn{display:grid}
+  .side{display:none}
+  .app.nav-open .side{display:flex;position:fixed;left:0;right:0;top:48px;bottom:0;z-index:50;background:var(--frame);padding:8px 16px 24px}
+  .main{grid-column:1;margin:0 8px 8px}
+  .work{grid-template-columns:minmax(0,1fr)}
+}
+/* 휴대폰: 틀이 사라지고 시트가 화면이 된다 */
+@media (max-width:640px){
+  .top{padding-right:4px}
+  .top .mid,.who .role,.brand .sb{display:none}
+  .main{margin:0;border:0;border-radius:0}
+  .page{padding:16px}
+  h1.t{font-size:20px}
+  .pg-head{flex-direction:column;align-items:stretch;gap:12px}
+  .pg-head .r{justify-content:flex-start}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rail{grid-template-columns:minmax(0,1fr)}
+  .chips{display:none}
+  .chip-sel{display:block;width:100%}
+  .m-search{display:block}
+  .tbl-wrap{display:none}
+  .mlist{display:block}
+  .set-row{grid-template-columns:minmax(0,1fr);gap:12px}
+  .hist li{grid-template-columns:minmax(0,1fr);gap:0}
+  .btn,.inp,.chip-sel{min-height:40px}
+  .ibtn,.who,.menu-btn{width:40px;height:40px}
+  .who{width:auto}
+  .nav-i{height:44px}
+  .seg button{height:40px}
+  .brand{min-height:40px}
+  .set-row{grid-template-columns:minmax(0,1fr)}
+  .set-row .pv,.set-row .wide{grid-column:auto}
+  .xg-scroll{max-height:60vh}
+  .toast{min-width:0;width:calc(100vw - 32px)}
+}
+.mlist li{border-bottom:1px solid var(--rule)}
+.mlist button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;width:100%;min-height:56px;padding:10px 0;text-align:left}
+.mlist b{font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mlist small{grid-column:1/-1;font-size:13px;color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.side,.top,#toasts{display:none!important}.app{display:block;height:auto}.main{margin:0;border:0;overflow:visible}}
+</style>
+</head>
+<body>
+<!-- 아이콘: 16px 회색 선 아이콘 한 벌 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-inbox" viewBox="0 0 16 16"><path d="M2 9.5h3.2l1 1.8h3.6l1-1.8H14"/><path d="M3.6 3h8.8L14 9.5V13H2V9.5z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 16 16"><rect x="2" y="2.5" width="12" height="11" rx="1"/><path d="M2 6.2h12M2 9.8h12M6.5 2.5v11"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.8v1.6M8 12.6v1.6M14.2 8h-1.6M3.4 8H1.8M12.4 3.6l-1.1 1.1M4.7 11.3l-1.1 1.1M12.4 12.4l-1.1-1.1M4.7 4.7L3.6 3.6"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 16 16"><path d="M2.5 13.5h11M4.5 11V7.5M8 11V4.5M11.5 11V9"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="M10.4 10.4L14 14"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 16 16"><path d="M2.5 4h11M2.5 8h11M2.5 12h11"/></symbol>
+  <symbol id="i-help" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M6.3 6.2a1.8 1.8 0 0 1 3.5.6c0 1.2-1.8 1.5-1.8 2.6M8 11.6v.1"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path d="M4.5 6.5L8 10l3.5-3.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.8v3.8M8 10.9v.1"/></symbol>
+  <symbol id="i-left" viewBox="0 0 16 16"><path d="M9.5 3.5L5 8l4.5 4.5"/></symbol>
+</svg>
+
+<div class="app" id="app">
+  <header class="top">
+    <button class="ibtn menu-btn" type="button" id="menu-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="side"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <a class="brand" href="#requests" aria-label="변경 요청함 처음 화면">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 4.5h10M3 8h7M3 11.5h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span>
+      <span><span class="nm">변경 요청함</span><span class="sb">드림에이스 · 예시 화면 [가상]</span></span>
+    </a>
+    <div class="mid">
+      <div class="gsearch" role="search">
+        <label class="sr" for="gq">요청·품번 검색</label>
+        <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+        <input class="inp" id="gq" type="search" placeholder="요청 제목, ID, 품번 검색" autocomplete="off">
+        <kbd aria-hidden="true">/</kbd>
+      </div>
+    </div>
+    <div class="top-r">
+      <button class="ibtn" type="button" id="help-btn" aria-label="단축키 도움말" aria-haspopup="true" aria-expanded="false"><svg class="ic" aria-hidden="true"><use href="#i-help"/></svg></button>
+      <button class="who" type="button" id="who-btn" aria-haspopup="menu" aria-expanded="false"><span class="av" id="who-av" aria-hidden="true">구</span><span class="role" id="who-role">구매 담당</span><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button>
+      <div class="pop" id="help-pop" hidden style="top:40px;right:120px">
+        <p class="ph">단축키</p>
+        <p class="mi"><kbd>/</kbd>검색으로 이동</p>
+        <p class="mi"><kbd>Esc</kbd>창·메뉴 닫기</p>
+      </div>
+      <div class="pop" id="who-pop" role="menu" aria-label="역할 바꾸기" hidden style="top:40px;right:0">
+        <p class="ph">역할 바꾸기 (예시 화면에서는 표시만 바뀐다)</p>
+        <button class="mi" type="button" role="menuitemradio" aria-checked="false" data-role="연구소 담당"><span class="av" aria-hidden="true">연</span><span>연구소 담당<small>요청을 만든다</small></span></button>
+        <button class="mi" type="button" role="menuitemradio" aria-checked="false" data-role="생산관리 담당"><span class="av" aria-hidden="true">생</span><span>생산관리 담당<small>구조를 확정한다</small></span></button>
+        <button class="mi" type="button" role="menuitemradio" aria-checked="true" data-role="구매 담당"><span class="av" aria-hidden="true">구</span><span>구매 담당<small>승인하고 공급사를 고른다</small></span></button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="side" id="side" aria-label="주 메뉴">
+    <div class="nav-g">
+      <p class="nav-l">업무</p>
+      <a class="nav-i" href="#requests" data-v="requests"><svg class="ic" aria-hidden="true"><use href="#i-inbox"/></svg><span class="lb">변경 요청</span><span class="bd" id="nav-bd" aria-label="확인 필요 건수"></span></a>
+      <a class="nav-i" href="#items" data-v="items"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg><span class="lb">품목</span></a>
+    </div>
+    <div class="nav-g">
+      <p class="nav-l">관리</p>
+      <a class="nav-i" href="#settings" data-v="settings"><svg class="ic" aria-hidden="true"><use href="#i-gear"/></svg><span class="lb">설정</span></a>
+      <button class="nav-i fut" type="button" data-fut="보고서는 다음 버전에서 연다. 지금은 변경 요청 화면의 내보내기를 쓴다."><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg><span class="lb">보고서</span><span class="tag f">향후</span></button>
+    </div>
+    <dl class="scope">
+      <dt>부서</dt><dd>자재/구매</dd>
+      <dt>제품</dt><dd>E51K 외 4종</dd>
+      <dt>값</dt><dd>모두 예시 [가상]</dd>
+    </dl>
+  </nav>
+
+  <main class="main" id="main">
+    <!-- 화면 1: 변경 요청 목록 -->
+    <section class="view page" data-hm-view="requests" id="v-requests" aria-labelledby="h-requests">
+      <div class="pg-head">
+        <div class="l">
+          <h1 class="t" id="h-requests" tabindex="-1">변경 요청</h1>
+          <p class="desc" id="finding"></p>
+        </div>
+        <div class="r">
+          <span class="stamp" id="stamp"></span>
+          <button class="btn btn-2" type="button" data-toast="내보내기|예시 화면에서는 파일을 만들지 않는다.">내보내기</button>
+          <button class="btn btn-1" type="button" data-toast="새 요청|예시 화면에서는 요청을 만들지 않는다.">새 요청</button>
+        </div>
+      </div>
+      <div class="with-rail">
+        <div class="stack">
+          <div class="kpis" id="kpis"></div>
+          <div class="toolbar">
+            <div class="chips" id="chips" role="group" aria-label="상태로 거르기"></div>
+            <label class="sr" for="chip-sel">상태로 거르기</label>
+            <select class="inp chip-sel" id="chip-sel"></select>
+            <div class="search m-search" style="width:100%">
+              <label class="sr" for="mq">요청 검색</label>
+              <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+              <input class="inp" id="mq" type="search" placeholder="요청 제목, ID, 품번 검색">
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table class="tbl" aria-label="변경 요청 목록">
+              <thead><tr><th scope="col">요청</th><th scope="col">요청 부서</th><th scope="col" class="r num-col">영향 품목</th><th scope="col" class="r">요청일</th><th scope="col">상태</th><th scope="col"><span class="sr">동작</span></th></tr></thead>
+              <tbody id="req-body"></tbody>
+            </table>
+          </div>
+          <ul class="mlist" id="req-mlist" aria-label="변경 요청 목록"></ul>
+          <div id="req-empty" hidden></div>
+          <p class="tbl-foot" id="req-foot"></p>
+        </div>
+        <div class="stack rail">
+          <section class="panel" aria-labelledby="h-dept">
+            <div class="panel-h"><h2 id="h-dept">부서별 열린 요청</h2><span class="mini" id="dept-total"></span></div>
+            <ul class="blist" id="dept-list"></ul>
+          </section>
+          <section class="panel" aria-labelledby="h-weeks">
+            <div class="panel-h"><h2 id="h-weeks">최근 8주 승인 건수</h2><span class="mini">[가상]</span></div>
+            <figure class="chart" id="week-chart"></figure>
+            <p class="mini" id="week-note" style="margin-top:6px"></p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- 화면 2: 요청 상세 -->
+    <section class="view page" data-hm-view="detail" id="v-detail" aria-labelledby="h-detail" hidden>
+      <div class="pg-head">
+        <div class="l">
+          <a class="btn btn-t sm" href="#requests" style="margin:0 0 6px -8px"><svg class="ic" aria-hidden="true"><use href="#i-left"/></svg>변경 요청</a>
+          <h1 class="t" id="h-detail" tabindex="-1"></h1>
+          <p class="desc" id="d-desc"></p>
+        </div>
+        <div class="r" id="d-actions"></div>
+      </div>
+      <div class="work">
+        <div class="stack">
+          <section class="panel" aria-labelledby="h-change">
+            <div class="panel-h"><h2 id="h-change">변경 내용</h2></div>
+            <dl class="kv" id="d-kv"></dl>
+          </section>
+          <section class="panel" aria-labelledby="h-impact">
+            <div class="panel-h"><h2 id="h-impact">영향 품목</h2><span class="mini" id="d-impact-n"></span></div>
+            <div id="d-impact"></div>
+          </section>
+          <section class="panel" aria-labelledby="h-hist">
+            <div class="panel-h"><h2 id="h-hist">처리 기록</h2></div>
+            <ol class="hist" id="d-hist"></ol>
+          </section>
+        </div>
+        <div class="stack">
+          <section class="panel" aria-labelledby="h-files">
+            <div class="panel-h"><h2 id="h-files">첨부</h2></div>
+            <div class="empty"><b>첨부 문서가 없다</b>사양서나 시험 성적서를 붙이면 검토가 빨라진다.<br><button class="btn btn-2 sm" type="button" data-toast="문서 추가|예시 화면에서는 파일을 받지 않는다.">문서 추가</button></div>
+          </section>
+          <section class="panel" aria-labelledby="h-stock" aria-busy="false" id="stock-panel">
+            <div class="panel-h"><h2 id="h-stock">재고 영향</h2></div>
+            <div id="stock-body"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- 화면 3: 품목 (엑셀형 표) -->
+    <section class="view page" data-hm-view="items" id="v-items" aria-labelledby="h-items" hidden>
+      <div class="pg-head">
+        <div class="l">
+          <h1 class="t" id="h-items" tabindex="-1">품목</h1>
+          <p class="desc" id="items-desc"></p>
+        </div>
+        <div class="r"><button class="btn btn-2" type="button" data-toast="내보내기|예시 화면에서는 파일을 만들지 않는다.">내보내기</button></div>
+      </div>
+      <div class="stack">
+        <div class="toolbar">
+          <div class="search" style="width:min(320px,100%)">
+            <label class="sr" for="iq">품번·사양 검색</label>
+            <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="inp" id="iq" type="search" placeholder="품번, 사양, MPN">
+          </div>
+          <div class="seg" role="group" aria-label="재고로 거르기" id="stock-seg">
+            <button type="button" aria-pressed="true" data-f="all">전체</button>
+            <button type="button" aria-pressed="false" data-f="in">재고 있음</button>
+            <button type="button" aria-pressed="false" data-f="out">재고 없음</button>
+          </div>
+        </div>
+        <div class="xg" data-sheet>
+          <div class="xg-fbar"><span class="xg-name" id="xg-name" aria-live="polite">A1</span><span class="xg-fx" aria-hidden="true">fx</span><span class="xg-val" id="xg-val"></span></div>
+          <div class="xg-scroll" id="xg-scroll" tabindex="0" aria-label="품목 시트. 화살표로 칸을 옮기고 Enter로 고친다.">
+            <table id="xg"></table>
+          </div>
+          <div class="xg-tabs" role="list">
+            <span class="xg-tab" role="listitem" aria-current="true">품목</span>
+            <span class="xg-tab fut" role="listitem">대체 관계 (향후)</span>
+          </div>
+          <div class="xg-status" id="xg-status"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 화면 4: 설정 -->
+    <section class="view page" data-hm-view="settings" id="v-settings" aria-labelledby="h-settings" hidden>
+      <div class="pg-head">
+        <div class="l">
+          <h1 class="t" id="h-settings" tabindex="-1">설정</h1>
+          <p class="desc">알림과 승인 규칙. 바꾸면 바로 저장된다.</p>
+        </div>
+        <div class="r"><span class="stamp" id="saved" aria-live="polite"></span></div>
+      </div>
+      <div class="set-row">
+        <div class="lc"><h2>알림</h2><p>확인이 필요한 요청을 언제 어떻게 알릴지 정한다.</p></div>
+        <div class="set-panel">
+          <label class="sw"><input type="checkbox" checked data-save id="s-now"><i aria-hidden="true"></i>확인 필요 요청이 생기면 바로 알림</label>
+          <label class="sw"><input type="checkbox" data-save id="s-daily"><i aria-hidden="true"></i>매일 아침 요약 받기</label>
+          <div class="field" style="max-width:240px"><label for="s-time">요약 받는 시각</label>
+            <select class="inp" id="s-time" data-save><option>08:00</option><option selected>09:00</option><option>10:00</option></select></div>
+        </div>
+        <div class="pv" aria-live="polite">
+          <p class="pl">받게 될 알림</p>
+          <div class="note-pv" id="pv-note"></div>
+        </div>
+      </div>
+      <div class="set-row">
+        <div class="lc"><h2>승인 규칙</h2><p>요청이 몇 단계를 거쳐 확정되는지 정한다.</p></div>
+        <div class="set-panel">
+          <div class="field" style="max-width:280px"><label for="s-step">승인 단계</label>
+            <select class="inp" id="s-step" data-save><option value="2" selected>2단계 (검토 → 승인)</option><option value="3">3단계 (검토 → 부서장 → 승인)</option></select></div>
+          <label class="sw dis"><input type="checkbox" disabled aria-describedby="why-auto"><i aria-hidden="true"></i>같은 품번을 다시 쓰는 요청은 자동 승인</label>
+          <p class="why" id="why-auto">관리자만 바꿀 수 있다.</p>
+        </div>
+        <div class="pv" aria-live="polite">
+          <p class="pl">요청이 지나는 단계</p>
+          <p class="steps-pv" id="pv-steps"></p>
+        </div>
+      </div>
+      <div class="set-row">
+        <div class="lc"><h2>예시 데이터</h2><p>이 템플릿에 든 예시 요청을 지우면 처음 쓰는 화면을 볼 수 있다.</p></div>
+        <div class="set-panel wide">
+          <p style="font-size:14px;color:var(--ink-2)" id="demo-note"></p>
+          <div><button class="btn btn-2" type="button" id="demo-clear">예시 요청 지우기</button> <button class="btn btn-2" type="button" id="demo-restore" hidden>예시 요청 되살리기</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="tip" role="tooltip" hidden></div>
+<div id="toasts" aria-live="polite"></div>
+<div class="dlg-root" id="dlg" hidden>
+  <div class="dlg-bg" data-close></div>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-t">
+    <div class="dlg-h"><h2 id="dlg-t"></h2></div>
+    <div class="dlg-b" id="dlg-b"></div>
+    <div class="dlg-f"><button class="btn btn-2" type="button" data-close>취소</button><button class="btn btn-1" type="button" id="dlg-ok"></button></div>
+  </div>
+</div>
+
+<script>
+(function () {
+'use strict';
+/* ------------------------------------------------------------ 예시 데이터 [가상] */
+const DATA = {
+  asOf: '2026-10-21 10:24', weekStart: '2026-10-19',
+  requests: [
+    { id: 'CR-2026-0412', title: '전원부 커패시터 동등품 전환', dept: '연구소', items: 6, date: '2026-10-20', status: 'need', reason: '단종 예고', part: '12-035310400' },
+    { id: 'CR-2026-0411', title: '커넥터 공급사 추가', dept: '자재/구매', items: 2, date: '2026-10-20', status: 'review', reason: '공급 지연', part: '40-118200100' },
+    { id: 'CR-2026-0409', title: 'LCD 케이블 길이 변경', dept: '생산관리', items: 1, date: '2026-10-17', status: 'need', reason: '설계 변경', part: '12-035310400' },
+    { id: 'CR-2026-0408', title: '방열 패드 두께 변경', dept: '연구소', items: 3, date: '2026-10-17', status: 'review', reason: '설계 변경', part: '55-220010300' },
+    { id: 'CR-2026-0406', title: '저항 어레이 통합', dept: '연구소', items: 14, date: '2026-10-16', status: 'hold', reason: '원가 절감', part: '10-182000000' },
+    { id: 'CR-2026-0405', title: '포장 상자 규격 통일', dept: '생산관리', items: 4, date: '2026-10-15', status: 'done', doneAt: '2026-10-20', reason: '원가 절감', part: '90-000120000' },
+    { id: 'CR-2026-0403', title: '수정 발진자 대체 후보 등록', dept: '자재/구매', items: 2, date: '2026-10-14', status: 'review', reason: '단종 예고', part: '30-012000500' },
+    { id: 'CR-2026-0401', title: '퓨즈 정격 상향', dept: '품질', items: 1, date: '2026-10-13', status: 'block', reason: '고객 요청', part: '12-035310400' },
+    { id: 'CR-2026-0398', title: '나사 표면처리 변경', dept: '생산관리', items: 8, date: '2026-10-10', status: 'done', doneAt: '2026-10-16', reason: '공급 지연', part: '70-301000200' },
+    { id: 'CR-2026-0396', title: 'MCU 펌웨어 버전 반영', dept: '연구소', items: 1, date: '2026-10-08', status: 'hold', reason: '설계 변경', part: '20-500100100' },
+    { id: 'CR-2026-0394', title: '라벨 문구 수정', dept: '품질', items: 1, date: '2026-10-07', status: 'done', doneAt: '2026-10-21', reason: '고객 요청', part: '90-000340000' },
+    { id: 'CR-2026-0390', title: '인덕터 동등품 흡수', dept: '자재/구매', items: 5, date: '2026-10-02', status: 'review', reason: '원가 절감', part: '14-100470000' }
+  ],
+  impact: {
+    '12-035310400': [
+      { prod: 'E51K', asm: '메인보드', qty: 12 }, { prod: 'KK13', asm: 'LCD 보드', qty: 4 }, { prod: 'KK14', asm: '메인보드', qty: 8 },
+      { prod: 'KK15', asm: '전원 보드', qty: 6 }, { prod: 'KK16', asm: '메인보드', qty: 10 }, { prod: 'KK16', asm: '센서 보드', qty: 2 }
+    ]
+  },
+  weeks: [ { w: '9.1', n: 3 }, { w: '9.8', n: 5 }, { w: '9.15', n: 2 }, { w: '9.22', n: 4 }, { w: '9.29', n: 6 }, { w: '10.6', n: 3 }, { w: '10.13', n: 4 }, { w: '10.19', n: 2 } ],
+  items: [
+    ['12-035310400', 'CAP/MLCC/C0603/100nF/10V/X7R', 'Murata', 'GRM188R71A104KA01', 'EA', 12000, 5],
+    ['12-035310500', 'CAP/MLCC/C0603/1uF/16V/X5R', 'Samsung EM', 'CL10A105KO8NNNC', 'EA', 8400, 4],
+    ['10-182000000', 'RES/THICK-FILM/R1608/0Ω/1/10W', 'Yageo', 'RC0603JR-070RL', 'EA', 0, 3],
+    ['14-100470000', 'IND/POWER/4.7uH/2.2A', 'TDK', 'VLS3015CX-4R7M', 'EA', 1500, 2],
+    ['30-012000500', 'XTAL/12MHz/20pF/3225', 'Epson', 'FA-238 12.0000MB', 'EA', 600, 2],
+    ['40-118200100', 'CONN/WTB/1.25mm/4P', 'JST', 'SM04B-GHS-TB', 'EA', 2200, 3],
+    ['55-220010300', 'PAD/THERMAL/1.0t/20x20', '대체 후보 2', '–', 'EA', 0, 1],
+    ['20-500100100', 'MCU/ARM M4/LQFP64', 'ST', 'STM32F405RGT6', 'EA', 320, 2],
+    ['70-301000200', 'SCREW/M2x4/NI', '국내 공급사', '–', 'EA', 30000, 5],
+    ['90-000120000', 'BOX/포장/A형', '국내 공급사', '–', 'EA', 900, 5]
+  ],
+  itemCols: ['품번', '사양', '제조사', 'MPN', '단위', '재고', '사용 제품 수']
+};
+const SAMPLE = JSON.parse(JSON.stringify(DATA.requests));
+const ST = {
+  need: { lb: '확인 필요', cls: 'o' }, block: { lb: '차단', cls: 's' }, review: { lb: '검토 중', cls: 'n' },
+  hold: { lb: '보류', cls: '' }, done: { lb: '승인', cls: 'e' }
+};
+const ORDER = ['need', 'block', 'review', 'hold', 'done'];
+
+/* ------------------------------------------------------------ 도구 */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (n) => Number(n).toLocaleString('ko-KR');
+const tag = (st) => `<span class="tag ${ST[st].cls}">${ST[st].lb}</span>`;
+const days = (a, b) => Math.round((new Date(b) - new Date(a)) / 864e5);
+function toast(t, s) {
+  const el = document.createElement('div'); el.className = 'toast'; el.innerHTML = `<b>${esc(t)}</b>${s ? esc(s) : ''}`;
+  $('#toasts').appendChild(el); requestAnimationFrame(() => el.classList.add('in'));
+  setTimeout(() => { el.classList.remove('in'); setTimeout(() => el.remove(), 250); }, 3200);
+}
+
+/* ------------------------------------------------------------ 상태 */
+const S = { view: 'requests', filter: 'all', q: '', sel: null, stockLoaded: false, itemFilter: 'all', iq: '', cell: [0, 0], edited: {} };
+
+/* ------------------------------------------------------------ 화면 1: 변경 요청 */
+function counts(rows) { const c = { all: rows.length }; ORDER.forEach((k) => { c[k] = rows.filter((r) => r.status === k).length; }); return c; }
+function visibleRows() {
+  const q = S.q.trim().toLowerCase();
+  return DATA.requests.filter((r) => (S.filter === 'all' || r.status === S.filter) && (!q || (r.title + ' ' + r.id + ' ' + r.part).toLowerCase().includes(q)));
+}
+function renderRequests() {
+  const rows = DATA.requests, c = counts(rows);
+  const open = rows.filter((r) => r.status !== 'done');
+  const attn = rows.filter((r) => r.status === 'need' || r.status === 'block');
+  const done = rows.filter((r) => r.status === 'done');
+  const thisWeek = done.filter((r) => r.doneAt >= DATA.weekStart).length;
+  const avg = done.length ? (done.reduce((a, r) => a + days(r.date, r.doneAt), 0) / done.length).toFixed(1) : null;
+  // 발견 한 줄: 확인이 필요한 요청이 어느 품번에 몰려 있는가
+  const byPart = {}; attn.forEach((r) => { byPart[r.part] = (byPart[r.part] || 0) + 1; });
+  const top = Object.entries(byPart).sort((a, b) => b[1] - a[1])[0];
+  $('#finding').innerHTML = !rows.length ? '아직 요청이 없다. 연구소나 생산관리에서 요청을 만들면 여기에 쌓인다.'
+    : !attn.length ? '확인이 필요한 요청이 없다.'
+    : top[1] === attn.length && attn.length > 1 ? `확인이 필요한 <b>${attn.length}건</b>이 모두 품번 <b>${esc(top[0])}</b> 하나에 걸려 있다.`
+    : `확인이 필요한 요청 <b>${attn.length}건</b>. 가장 많이 걸린 품번은 <b>${esc(top[0])}</b>(${top[1]}건)이다.`;
+  $('#stamp').textContent = DATA.asOf.slice(11) + ' 기준';
+  $('#kpis').innerHTML = [
+    ['열린 요청', open.length, '건', `전체 ${rows.length}건 중`],
+    ['확인 필요', attn.length, '건', c.block ? `차단 ${c.block}건 포함` : '차단 없음'],
+    ['이번 주 승인', thisWeek, '건', `${DATA.weekStart.slice(5).replace('-', '.')}부터`],
+    ['평균 처리 기간', avg === null ? '–' : avg, avg === null ? '' : '일', `승인 ${done.length}건 기준`]
+  ].map(([l, v, u, s]) => `<div class="kpi"><p class="l">${l}</p><p class="v">${v}<small>${u}</small></p><p class="s">${s}</p></div>`).join('');
+  const chipList = [['all', '전체']].concat(ORDER.map((k) => [k, ST[k].lb]));
+  $('#chips').innerHTML = chipList.map(([k, lb]) => `<button class="chip" type="button" data-f="${k}" aria-pressed="${S.filter === k}">${lb}<span class="c">${c[k]}</span></button>`).join('');
+  $('#chip-sel').innerHTML = chipList.map(([k, lb]) => `<option value="${k}"${S.filter === k ? ' selected' : ''}>${lb} ${c[k]}</option>`).join('');
+  const vis = visibleRows();
+  $('#req-body').innerHTML = vis.map((r) => `<tr data-id="${r.id}" aria-selected="${r.id === S.sel}">
+      <td class="id"><b title="${esc(r.title)}">${esc(r.title)}</b><small>${r.id} · ${esc(r.reason)}</small></td>
+      <td>${esc(r.dept)}</td><td class="r">${r.items}</td><td class="r">${r.date}</td><td>${tag(r.status)}</td>
+      <td class="r"><a class="btn btn-t sm" href="#detail/${r.id}">열기</a></td></tr>`).join('');
+  $('#req-mlist').innerHTML = vis.map((r) => `<li><button type="button" data-id="${r.id}"><b>${esc(r.title)}</b>${tag(r.status)}<small>${r.id} · ${esc(r.dept)} · 품목 ${r.items} · ${r.date}</small></button></li>`).join('');
+  const empty = $('#req-empty');
+  empty.hidden = vis.length > 0;
+  empty.innerHTML = !rows.length
+    ? '<div class="empty"><b>처음 쓰는 화면이다</b>요청이 들어오면 상태별로 여기에 쌓인다. 설정에서 예시 요청을 되살릴 수 있다.<br><a class="btn btn-2 sm" href="#settings">설정 열기</a></div>'
+    : '<div class="empty"><b>조건에 맞는 요청이 없다</b>검색어나 상태 필터를 바꿔 본다.<br><button class="btn btn-2 sm" type="button" id="clear-f">필터 지우기</button></div>';
+  $('.tbl-wrap').hidden = !vis.length;
+  $('#req-foot').textContent = rows.length ? `${rows.length}건 중 ${vis.length}건` : '';
+  // 부서별 열린 요청: 행에서 계산
+  const byDept = {}; open.forEach((r) => { byDept[r.dept] = (byDept[r.dept] || 0) + 1; });
+  const depts = Object.entries(byDept).sort((a, b) => b[1] - a[1]);
+  const max = depts.length ? depts[0][1] : 1;
+  $('#dept-total').textContent = `${open.length}건`;
+  $('#dept-list').innerHTML = depts.length ? depts.map(([d, n]) => `<li><span>${esc(d)}</span><b>${n}</b><i style="width:${Math.round((n / max) * 100)}%" aria-hidden="true"></i></li>`).join('')
+    : '<li><span>열린 요청이 없다</span><b>0</b></li>';
+  renderWeeks();
+}
+function renderWeeks() {
+  const W = 300, H = 150, pad = { l: 4, r: 4, t: 18, b: 22 };
+  const ws = DATA.weeks, max = Math.max(4, ...ws.map((x) => x.n));
+  const top = Math.ceil(max / 2) * 2, bw = (W - pad.l - pad.r) / ws.length;
+  const y = (v) => pad.t + (H - pad.t - pad.b) * (1 - v / top);
+  let g = '';
+  [0, top / 2, top].forEach((v) => { g += `<line class="gl" x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}"/>`; });
+  ws.forEach((x, i) => {
+    const now = i === ws.length - 1, bx = pad.l + i * bw + bw * 0.22, w = bw * 0.56;
+    g += `<rect class="bar${now ? ' now' : ''}" x="${bx}" y="${y(x.n)}" width="${w}" height="${y(0) - y(x.n)}" rx="2"/>`;
+    g += `<text class="val${now ? ' now' : ''}" x="${bx + w / 2}" y="${y(x.n) - 5}" text-anchor="middle">${x.n}</text>`;
+    g += `<text x="${bx + w / 2}" y="${H - 6}" text-anchor="middle">${x.w}</text>`;
+  });
+  $('#week-chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="최근 8주 승인 건수. ${ws.map((x) => x.w + ' 주 ' + x.n + '건').join(', ')}">${g}</svg>`;
+  $('#week-note').textContent = `이번 주(${ws[ws.length - 1].w}~)는 ${DATA.asOf.slice(5, 10).replace('-', '.')} 수요일까지 ${ws[ws.length - 1].n}건이다.`;
+}
+
+/* ------------------------------------------------------------ 화면 2: 요청 상세 */
+function renderDetail(id) {
+  const r = DATA.requests.find((x) => x.id === (id || S.sel)) || DATA.requests[0];
+  if (!r) { $('#h-detail').textContent = '요청이 없다'; $('#d-desc').textContent = '목록에서 요청을 고른다.'; $('#d-actions').innerHTML = ''; $('#d-kv').innerHTML = ''; $('#d-impact').innerHTML = ''; $('#d-hist').innerHTML = ''; $('#d-impact-n').textContent = ''; $('#stock-body').innerHTML = ''; return; }
+  S.sel = r.id;
+  $('#h-detail').textContent = r.title;
+  $('#d-desc').innerHTML = `${r.id} · ${esc(r.dept)} 요청 · ${r.date} · ${tag(r.status)}`;
+  const closed = r.status === 'done';
+  $('#d-actions').innerHTML = closed
+    ? '<span class="stamp">이미 승인했다</span><button class="btn btn-1" type="button" disabled>승인</button>'
+    : '<button class="btn btn-2" type="button" id="d-hold">보류</button><button class="btn btn-1" type="button" id="d-ok">승인</button>';
+  $('#d-kv').innerHTML = [['사유', r.reason], ['대상 품번', r.part], ['영향 품목', r.items + '개'], ['요청 부서', r.dept], ['요청일', r.date], ['처리 담당', '구매 담당'], ['요청 내용', '같은 사양의 사내 기존 품목으로 바꾸고, 남은 재고는 기존 생산분에 먼저 쓴다. [가상]']]
+    .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
+  const imp = DATA.impact[r.part];
+  $('#d-impact-n').textContent = imp ? `${imp.length}개 반제품` : '';
+  $('#d-impact').innerHTML = imp
+    ? `<table class="tbl" aria-label="영향 품목"><thead><tr><th scope="col">제품</th><th scope="col">반제품</th><th scope="col" class="r">사용 수량</th></tr></thead><tbody>${imp.map((x) => `<tr><td class="id"><b>${x.prod}</b></td><td>${x.asm}</td><td class="r">${x.qty} EA</td></tr>`).join('')}</tbody></table>`
+    : '<div class="empty"><b>영향 품목 정보가 아직 없다</b>품번 사용처를 조회하면 여기에 제품별로 보인다.</div>';
+  const hist = [[r.date + ' 09:12', '접수', r.dept + ' 담당이 요청을 만들었다.']];
+  if (r.status !== 'need') hist.push([r.date + ' 14:30', '검토', '구매 담당이 대체 후보를 확인했다.']);
+  if (r.status === 'hold') hist.push(['2026-10-18 11:05', '보류', '공급사 회신을 기다린다.']);
+  if (r.status === 'block') hist.push(['2026-10-15 16:40', '차단', '고객 승인 전에는 바꿀 수 없다.']);
+  if (closed) hist.push([r.doneAt + ' 10:02', '승인', '구매 담당이 승인했다.']);
+  $('#d-hist').innerHTML = hist.reverse().map(([t, a, d]) => `<li><span>${t}</span><span><b>${a}</b> · ${esc(d)}</span></li>`).join('');
+  renderStock();
+}
+function renderStock() {
+  const b = $('#stock-body');
+  if (!S.stockLoaded) {
+    b.innerHTML = '<div class="err" role="status"><b><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>재고를 불러오지 못했다</b><p>마지막 정상 값은 10:02 값이다. 재고 시스템 연결을 다시 시도한다.</p><button class="btn btn-2 sm" type="button" id="stock-retry">다시 시도</button></div>';
+    return;
+  }
+  b.innerHTML = '<dl class="kv"><dt>가용 재고</dt><dd>12,000 EA [가상]</dd><dt>이번 달 소요</dt><dd>3,800 EA [가상]</dd><dt>예상 소진</dt><dd>2027-01 [가상]</dd></dl>';
+}
+function retryStock() {
+  const p = $('#stock-panel'); p.setAttribute('aria-busy', 'true');
+  $('#stock-body').innerHTML = '<span class="skel w80"></span><span class="skel w60"></span><span class="skel w40"></span><span class="sr">불러오는 중</span>';
+  setTimeout(() => { S.stockLoaded = true; p.setAttribute('aria-busy', 'false'); renderStock(); }, 700);
+}
+
+/* ------------------------------------------------------------ 화면 3: 품목 (엑셀형 표) */
+function itemRows() {
+  const q = S.iq.trim().toLowerCase();
+  return DATA.items.map((r, i) => ({ r, i })).filter(({ r }) => (S.itemFilter === 'all' || (S.itemFilter === 'in' ? r[5] > 0 : r[5] === 0)) && (!q || r.join(' ').toLowerCase().includes(q)));
+}
+const COLW = [120, 250, 110, 170, 56, 90, 100];
+const L = (c) => String.fromCharCode(65 + c);
+function cellVal(i, c) { const k = i + ':' + c; return k in S.edited ? S.edited[k] : DATA.items[i][c]; }
+function renderItems() {
+  const rows = itemRows(), out = DATA.items.filter((r) => r[5] === 0).length;
+  $('#items-desc').innerHTML = `사내 품목 ${DATA.items.length}개 중 재고가 없는 품목은 <b>${out}개</b>다. 값은 예시 [가상]이다.`;
+  const [sr, sc] = S.cell;
+  let h = '<thead><tr><th class="corner" style="width:40px" aria-hidden="true"></th>' + COLW.map((w, c) => `<th scope="col" style="width:${w}px" class="${c === sc ? 'on' : ''}">${L(c)}</th>`).join('') + '</tr></thead><tbody>';
+  h += '<tr class="hd"><th class="rn" scope="row">1</th>' + DATA.itemCols.map((t) => `<td>${t}</td>`).join('') + '</tr>';
+  rows.forEach(({ i }, ri) => {
+    h += `<tr><th class="rn${ri === sr ? ' on' : ''}" scope="row">${ri + 2}</th>`;
+    for (let c = 0; c < COLW.length; c++) {
+      const v = cellVal(i, c), num = typeof DATA.items[i][c] === 'number';
+      const cls = [num ? 'r' : '', ri === sr && c === sc ? 'sel' : '', (i + ':' + c) in S.edited ? 'ed' : '', num && Number(v) === 0 ? 'zero' : ''].filter(Boolean).join(' ');
+      h += `<td data-r="${ri}" data-c="${c}"${cls ? ` class="${cls}"` : ''} title="${esc(v)}">${num ? fmt(v) : esc(v)}</td>`;
+    }
+    h += '</tr>';
+  });
+  if (!rows.length) h += `<tr><th class="rn" scope="row">2</th><td colspan="${COLW.length}" style="text-align:center;color:var(--ink-2)">조건에 맞는 품목이 없다</td></tr>`;
+  // 엑셀처럼 빈 행으로 시트를 채운다
+  for (let k = rows.length + (rows.length ? 2 : 3); k <= 40; k++) h += `<tr aria-hidden="true"><th class="rn">${k}</th>${'<td></td>'.repeat(COLW.length)}</tr>`;
+  $('#xg').innerHTML = h + '</tbody>';
+  const cur = rows[sr];
+  $('#xg-name').textContent = cur ? L(sc) + (sr + 2) : '–';
+  $('#xg-val').textContent = cur ? String(cellVal(cur.i, sc)) : '';
+  $('#xg-status').innerHTML = `<span>행 ${rows.length}</span><span>재고 없음 ${rows.filter(({ r }) => r[5] === 0).length}</span><span>고친 칸 ${Object.keys(S.edited).length}</span>`;
+}
+function moveCell(dr, dc) {
+  const n = itemRows().length; if (!n) return;
+  S.cell = [Math.max(0, Math.min(n - 1, S.cell[0] + dr)), Math.max(0, Math.min(COLW.length - 1, S.cell[1] + dc))];
+  renderItems();
+  const td = $(`#xg td[data-r="${S.cell[0]}"][data-c="${S.cell[1]}"]`); if (td) td.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+function editCell() {
+  const rows = itemRows(), cur = rows[S.cell[0]]; if (!cur) return;
+  const td = $(`#xg td[data-r="${S.cell[0]}"][data-c="${S.cell[1]}"]`); if (!td) return;
+  const box = $('#xg-scroll'), rb = box.getBoundingClientRect(), r = td.getBoundingClientRect();
+  const inp = document.createElement('input'); inp.className = 'xg-edit'; inp.setAttribute('aria-label', '칸 고치기');
+  inp.value = cellVal(cur.i, S.cell[1]);
+  Object.assign(inp.style, { left: r.left - rb.left + box.scrollLeft + 'px', top: r.top - rb.top + box.scrollTop + 'px', width: Math.max(r.width, 120) + 'px' });
+  box.appendChild(inp); inp.focus(); inp.select();
+  const done = (save) => {
+    if (!inp.isConnected) return;
+    if (save) {
+      const num = typeof DATA.items[cur.i][S.cell[1]] === 'number';
+      let v = inp.value.trim(); if (num) v = Number(v.replace(/,/g, '')) || 0;
+      if (String(v) !== String(DATA.items[cur.i][S.cell[1]])) S.edited[cur.i + ':' + S.cell[1]] = v; else delete S.edited[cur.i + ':' + S.cell[1]];
+    }
+    inp.remove(); renderItems(); box.focus();
+  };
+  inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); done(true); } if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); done(false); } });
+  inp.addEventListener('blur', () => done(true));
+}
+
+/* ------------------------------------------------------------ 화면 4: 설정 */
+function renderSettings() {
+  // 설정이 만드는 결과를 옆에 보여 준다
+  const first = DATA.requests.find((r) => r.status === 'need' || r.status === 'block');
+  const now = $('#s-now').checked, daily = $('#s-daily').checked;
+  $('#pv-note').innerHTML = now && first
+    ? `<b>확인 필요 요청 1건</b>${first.id} ${esc(first.title)} · ${esc(first.dept)} 요청<small>바로 알림 · 변경 요청함</small>`
+    : daily ? `<b>오늘의 요약</b>열린 요청 ${DATA.requests.filter((r) => r.status !== 'done').length}건을 ${$('#s-time').value}에 한 번 보낸다.<small>매일 아침 요약 · 변경 요청함</small>`
+    : '<b>알림을 받지 않는다</b>요청은 변경 요청 화면에서만 확인한다.';
+  const three = $('#s-step').value === '3';
+  $('#pv-steps').innerHTML = ['접수', '검토'].concat(three ? ['부서장 승인', '최종 승인'] : ['승인']).concat(['반영'])
+    .map((s) => `<span class="${!three && s === '승인' ? 'chg' : ''}">${s}</span>`).join('<span aria-hidden="true" style="background:none;padding:0;color:var(--ink-3)">→</span>');
+  $('#demo-note').textContent = DATA.requests.length ? `지금 예시 요청 ${DATA.requests.length}건이 들어 있다.` : '예시 요청을 지웠다. 변경 요청 화면이 처음 쓰는 모양으로 보인다.';
+  $('#demo-clear').hidden = !DATA.requests.length; $('#demo-restore').hidden = !!DATA.requests.length;
+}
+
+/* ------------------------------------------------------------ 대화상자 */
+let lastFocus = null, onOk = null;
+function openDlg(title, body, okLabel, fn) {
+  lastFocus = document.activeElement; onOk = fn;
+  $('#dlg-t').textContent = title; $('#dlg-b').innerHTML = body; $('#dlg-ok').textContent = okLabel;
+  $('#dlg').hidden = false; $('#dlg-ok').focus();
+}
+function closeDlg() { $('#dlg').hidden = true; onOk = null; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+
+/* ------------------------------------------------------------ 화면 전환 */
+const VIEWS = ['requests', 'detail', 'items', 'settings'];
+function badge() {
+  // 사이드바 숫자: 확인이 필요한 요청 수 (어느 화면에서 열어도 맞게)
+  const n = DATA.requests.filter((r) => r.status === 'need' || r.status === 'block').length;
+  $('#nav-bd').textContent = n || ''; $('#nav-bd').hidden = !n;
+}
+function show(v, arg, focus) {
+  if (!VIEWS.includes(v)) v = 'requests';
+  S.view = v;
+  badge();
+  $$('.view').forEach((s) => { s.hidden = s.dataset.hmView !== v; });
+  $$('.nav-i[data-v]').forEach((a) => { if (a.dataset.v === (v === 'detail' ? 'requests' : v)) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  if (v === 'requests') renderRequests();
+  if (v === 'detail') renderDetail(arg);
+  if (v === 'items') renderItems();
+  if (v === 'settings') renderSettings();
+  const h = $('#v-' + v + ' h1'); document.title = (h ? h.textContent + ' · ' : '') + '변경 요청함';
+  $('#main').scrollTop = 0;
+  $('#app').classList.remove('nav-open'); $('#menu-btn').setAttribute('aria-expanded', 'false');
+  if (focus && h) h.focus({ preventScroll: true });
+}
+function route(focus) { const [v, arg] = decodeURIComponent(location.hash.slice(1)).split('/'); show(v || 'requests', arg, focus); }
+window.hmShow = function (v) { if (location.hash.slice(1) !== v) location.hash = v; else route(false); };
+window.addEventListener('hashchange', () => route(true));
+
+/* ------------------------------------------------------------ 이벤트 */
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  const chip = t.closest('.chip'); if (chip) { S.filter = chip.dataset.f; renderRequests(); return; }
+  const row = t.closest('#req-body tr, #req-mlist button');
+  if (row && !t.closest('a')) { location.hash = 'detail/' + row.dataset.id; return; }
+  const ts = t.closest('[data-toast]'); if (ts) { const [a, b] = ts.dataset.toast.split('|'); toast(a, b); return; }
+  const fut = t.closest('[data-fut]'); if (fut) { toast('보고서 · 향후', fut.dataset.fut); return; }
+  if (t.closest('#clear-f')) { S.filter = 'all'; S.q = ''; $('#gq').value = ''; $('#mq').value = ''; renderRequests(); return; }
+  if (t.closest('#stock-retry')) { retryStock(); return; }
+  if (t.closest('#d-ok')) {
+    const r = DATA.requests.find((x) => x.id === S.sel);
+    openDlg(`${r.id} 승인`, `<b>${esc(r.title)}</b>을 승인한다. 영향 품목 ${r.items}개의 BOM에 변경이 반영된다. 되돌리려면 새 요청을 만들어야 한다.`, '승인', () => {
+      r.status = 'done'; r.doneAt = DATA.asOf.slice(0, 10); closeDlg(); renderDetail(r.id); toast('승인했다', r.id + ' · ' + r.title);
+    });
+    return;
+  }
+  if (t.closest('#d-hold')) { const r = DATA.requests.find((x) => x.id === S.sel); r.status = 'hold'; renderDetail(r.id); toast('보류했다', r.id + ' · 공급사 회신을 기다린다.'); return; }
+  if (t.closest('#dlg-ok')) { if (onOk) onOk(); return; }
+  if (t.closest('[data-close]')) { closeDlg(); return; }
+  if (t.closest('#demo-clear')) {
+    openDlg('예시 요청 지우기', `예시 요청 <b>${DATA.requests.length}건</b>을 지운다. 이 화면을 다시 열면 되돌아온다.`, '지우기', () => { DATA.requests = []; closeDlg(); renderSettings(); toast('예시 요청을 지웠다', '변경 요청 화면에서 처음 쓰는 모양을 볼 수 있다.'); });
+    return;
+  }
+  if (t.closest('#demo-restore')) { DATA.requests = JSON.parse(JSON.stringify(SAMPLE)); S.sel = DATA.requests[0].id; renderSettings(); toast('예시 요청을 되살렸다', ''); return; }
+  const segb = t.closest('#stock-seg button'); if (segb) { S.itemFilter = segb.dataset.f; $$('#stock-seg button').forEach((b) => b.setAttribute('aria-pressed', b === segb)); S.cell = [0, 0]; renderItems(); return; }
+  const td = t.closest('#xg td[data-r]'); if (td) { S.cell = [+td.dataset.r, +td.dataset.c]; renderItems(); $('#xg-scroll').focus(); return; }
+  if (t.closest('#menu-btn')) { const o = $('#app').classList.toggle('nav-open'); $('#menu-btn').setAttribute('aria-expanded', o); return; }
+  const mi = t.closest('#who-pop [data-role]');
+  if (mi) { $$('#who-pop [data-role]').forEach((b) => b.setAttribute('aria-checked', b === mi)); $('#who-role').textContent = mi.dataset.role; $('#who-av').textContent = mi.dataset.role[0]; togglePop('who', false); toast('역할을 바꿨다', mi.dataset.role + ' (예시 화면에서는 표시만 바뀐다)'); return; }
+  if (t.closest('#who-btn')) { togglePop('who'); return; }
+  if (t.closest('#help-btn')) { togglePop('help'); return; }
+  if (!t.closest('.pop')) { togglePop('who', false); togglePop('help', false); }
+});
+function togglePop(name, force) {
+  const p = $('#' + name + '-pop'), b = $('#' + name + '-btn'), open = force === undefined ? p.hidden : force;
+  p.hidden = !open; b.setAttribute('aria-expanded', open);
+  if (open) { const f = p.querySelector('button'); if (f) f.focus(); }
+}
+$('#chip-sel').addEventListener('change', (e) => { S.filter = e.target.value; renderRequests(); });
+['#gq', '#mq'].forEach((sel) => $(sel).addEventListener('input', (e) => { S.q = e.target.value; if (S.view !== 'requests') location.hash = 'requests'; else renderRequests(); }));
+$('#iq').addEventListener('input', (e) => { S.iq = e.target.value; S.cell = [0, 0]; renderItems(); });
+$('#xg-scroll').addEventListener('keydown', (e) => {
+  if (e.target !== e.currentTarget) return;
+  const k = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[e.key];
+  if (k) { e.preventDefault(); moveCell(k[0], k[1]); } else if (e.key === 'Enter' || e.key === 'F2') { e.preventDefault(); editCell(); }
+});
+$('#xg').addEventListener('dblclick', (e) => { if (e.target.closest('td[data-r]')) editCell(); });
+let savedT = null;
+$$('[data-save]').forEach((el) => el.addEventListener('change', () => { renderSettings(); clearTimeout(savedT); $('#saved').textContent = '저장 중'; savedT = setTimeout(() => { $('#saved').textContent = '저장됨 ' + new Date().toTimeString().slice(0, 5); }, 400); }));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { if (!$('#dlg').hidden) closeDlg(); togglePop('who', false); togglePop('help', false); $('#app').classList.remove('nav-open'); }
+  if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); (getComputedStyle($('#gq')).display !== 'none' && $('#gq').offsetParent ? $('#gq') : $('#mq')).focus(); }
+  if (e.key === 'Tab' && !$('#dlg').hidden) { // 대화상자 안에서만 초점이 돈다
+    const f = $$('#dlg button'), i = f.indexOf(document.activeElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+  }
+});
+/* 설명 풍선: data-tip 이 있는 요소 */
+document.addEventListener('mouseover', (e) => {
+  const el = e.target.closest('[data-tip]'), tip = $('#tip');
+  if (!el) { tip.hidden = true; return; }
+  tip.textContent = el.dataset.tip; tip.hidden = false;
+  const r = el.getBoundingClientRect();
+  tip.style.left = Math.min(innerWidth - tip.offsetWidth - 8, Math.max(8, r.left)) + 'px';
+  tip.style.top = (r.bottom + 8 + tip.offsetHeight > innerHeight ? r.top - tip.offsetHeight - 8 : r.bottom + 8) + 'px';
+});
+
+route(false);
+})();
+</script>
+</body>
+</html>
