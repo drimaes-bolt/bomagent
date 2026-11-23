@@ -1,6 +1,6 @@
 ---
 name: dabom-mockup
-description: 다봄 시연 목업(briefing/DaBOM_expand_20261123.html 등 단일 HTML)을 읽거나 고칠 때, 목업에 새 화면·기능·미리보기 화면을 넣을 때 쓴다. 파일 구조, 코드 위치, 1MB 넘는 데이터 줄 주의, 화면 추가 절차, 판 관리 규칙을 담았다.
+description: 다봄 시연 목업(briefing/DaBOM_root_20261124.html 등 단일 HTML)을 읽거나 고칠 때, 목업에 새 화면·기능·미리보기 화면을 넣을 때 쓴다. 파일 구조, 코드 위치, 1MB 넘는 데이터 줄 주의, 화면 추가 절차, 판 관리 규칙을 담았다.
 ---
 
 # 다봄 시연 목업 수정 가이드
@@ -11,9 +11,10 @@ description: 다봄 시연 목업(briefing/DaBOM_expand_20261123.html 등 단일
 
 | 파일 | 성격 |
 |---|---|
-| `briefing/DaBOM_expand_20261123.html` | **현재 기준 판(확장 판).** taste-skill 판을 복사해 재고(Inventory.xlsx)·사용 이력·분류 필터·거래처 카탈로그·미리보기 부서(생산기술·회계·품질·기준정보)를 더했다. 근거 docs/14 |
-| `briefing/index.html` | **현재 기준 판의 사본.** 기준 판과 항상 바이트 단위로 같게 유지한다(아래 판 관리). 2026-11-02 생성, 2026-11-23 확장 판으로 교체 |
-| `briefing/DaBOM_taste_skill_20261021.html` | 이전 기준 판. taste-skill 규칙으로 화면 구성을 다시 정한 판. 고치지 않는다 |
+| `briefing/DaBOM_root_20261124.html` | **현재 기준 판(뿌리 판).** 확장 판을 복사해 진입 화면과 미리보기 화면의 머리를 고쳤다(동작 화면과 데이터는 같다). "시작도 뿌리도 BOM이다"를 첫머리에 두고, 뿌리(BOM = E-BOM + SCM 정보 → M-BOM) → 줄기(처음 만든 여섯 기능) → 가지(부서) 지도 안에 부서 선택을 넣었다. 코드는 `BOM_ROOT`(부서마다 BOM의 어디를 보는지)·`TRUNK`(줄기)·`renderLanding`, 미리보기 화면의 `FUT_BOM`(화면마다 BOM에서 읽는 것·돌려주는 것). 근거 DEC-18, docs/01 1.6 |
+| `briefing/DaBOM_expand_20261123.html` | 이전 기준 판(확장 판). taste-skill 판을 복사해 재고(Inventory.xlsx)·사용 이력·분류 필터·거래처 카탈로그·미리보기 부서(생산기술·회계·품질·기준정보)를 더했다. 근거 docs/14. 고치지 않는다 |
+| `briefing/index.html` | **현재 기준 판의 사본.** 기준 판과 항상 바이트 단위로 같게 유지한다(아래 판 관리). 2026-11-02 생성, 2026-11-23 확장 판으로, 2026-11-24 뿌리 판으로 교체 |
+| `briefing/DaBOM_taste_skill_20261021.html` | 그 이전 기준 판. taste-skill 규칙으로 화면 구성을 다시 정한 판. 고치지 않는다 |
 | `briefing/DaBOM_20261020.html` | 그 이전 판(v0.1.1). 고치지 않는다 |
 | `briefing/DaBOM_plan_board_20261123.html` | 목업이 아니라 기획 현황판. `tools/build_plan_board.py`가 docs/에서 만든다. 목업 진입 화면 아래 안내문에서 링크한다 |
 | 루트 `SS_SKPRT_EBOM.xlsx` | 연구소 화면 Import에서 고르는 시연 입력(KK16 E-BOM). 다른 PC 시연 때 HTML과 한 폴더에 둔다 |
@@ -36,15 +37,15 @@ cp briefing/<기준판>.html briefing/index.html && cmp briefing/<기준판>.htm
 줄 번호는 수정하면 밀린다. 위치는 아래 명령으로 다시 뽑는다. `-o`로 일치 부분만 출력하므로 데이터 줄이 통째로 나오지 않는다.
 
 ```bash
-grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^']+'\]" briefing/DaBOM_expand_20261123.html
+grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^']+'\]" briefing/DaBOM_root_20261124.html
 ```
 
-| 영역 | 위치(확장 판, 2026-11-23 기준) | 내용 |
+| 영역 | 위치(뿌리 판, 2026-11-24 기준) | 내용 |
 |---|---|---|
-| `<style>` | 10~764줄 | `:root` 색 토큰(회사 8색 + 무채색), 셸·시트·그리드·반응형 |
-| 머리 주석 | 767~783줄 | 판 설명, 다른 PC 시연 방법, 화면 주소 규칙 |
-| `const DATA = {...}` | **791줄 한 줄, 약 112만 자**(확장 판. taste-skill 판은 738줄) | 내장 데이터(3장). 절대 통째로 읽지 않는다 |
-| 공통 스크립트 | `const $`부터 | 유틸, `ACT`(클릭 동작 표), `PAGES`(화면 등록 표), `ICONS`, `Tip`(설명 풍선), `XGrid`(엑셀형 표), xlsx 읽기(`DecompressionStream`), `INV`·`INB`(재고·입고 색인), `PRODUCTS`·`PROD`, `S`(전역 상태), `DEPT`, `FUT_DEPT`, 주소 처리(`routeFromHash`·`setHash`·`go`·`render`), `renderShell`·`renderSide`·`renderPage`·`futurePage`, 상단 검색(`gsFind`), 진입 화면(`renderLanding`) |
+| `<style>` | 10~804줄 | `:root` 색 토큰(회사 8색 + 무채색), 셸·시트·그리드·반응형 |
+| 머리 주석 | 807~828줄 | 판 설명, 다른 PC 시연 방법, 화면 주소 규칙 |
+| `const DATA = {...}` | **836줄 한 줄, 약 112만 자**(뿌리 판. 확장 판은 791줄, taste-skill 판은 738줄) | 내장 데이터(3장). 절대 통째로 읽지 않는다 |
+| 공통 스크립트 | `const $`부터 | 유틸, `ACT`(클릭 동작 표), `PAGES`(화면 등록 표), `ICONS`, `Tip`(설명 풍선), `XGrid`(엑셀형 표), xlsx 읽기(`DecompressionStream`), `INV`·`INB`(재고·입고 색인), `PRODUCTS`·`PROD`, `S`(전역 상태), `DEPT`, `FUT_DEPT`, 주소 처리(`routeFromHash`·`setHash`·`go`·`render`), `renderShell`·`renderSide`·`renderPage`·`futurePage`, 상단 검색(`gsFind`), 진입 화면(`BOM_ROOT`·`TRUNK`·`renderLanding`) |
 | `const TIPS` | 공통 뒤 | 설명 풍선 사전. 항목 형식 `{ t 제목, w 존재 이유, h 실무 쓰임, r 근거, ph 단계, id 기능 ID }` |
 | `const FUT` | `TIPS` 뒤 | 미리보기 화면 정의. `{ what, why, later, prep, refs, mock: { cols: [[이름, 폭]...], rows } }` |
 | 연구소 | `const R`부터 | `rnd.import`(5단계: 파일 가져오기 → E-BOM 확인 → M-BOM 변환 → 검토·수정 → 생산관리로 전송), `rnd.requests`, `rnd.search`, `rnd.sent` |
@@ -67,12 +68,12 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 | `inbound` | 입고 예정 42건 | [가상] |
 | `kk16codes` | KK16 ERP 코드 발번 내역 130행 | KK16 샘플 [가상] |
 
-데이터를 바꿀 때는 줄을 손으로 고치지 않는다. Python으로 데이터 줄(확장 판 791줄)의 `const DATA = ` 뒤 JSON을 읽어 고친 뒤 `json.dumps(d, ensure_ascii=False, separators=(',', ':'))`로 다시 써 넣는다. 스크립트는 scratchpad에 두고, 쓰기 전에 원본을 백업한다.
+데이터를 바꿀 때는 줄을 손으로 고치지 않는다. Python으로 데이터 줄(뿌리 판 836줄)의 `const DATA = ` 뒤 JSON을 읽어 고친 뒤 `json.dumps(d, ensure_ascii=False, separators=(',', ':'))`로 다시 써 넣는다. 스크립트는 scratchpad에 두고, 쓰기 전에 원본을 백업한다.
 
 ## 4. 읽기·검색 요령
 
-- `Read`는 `offset`·`limit`로 데이터 줄(확장 판 791줄)을 범위에 넣지 않는다.
-- 검색은 `Grep`에 함수명·키 수준으로 좁힌 패턴을 쓰거나, Bash에서 `awk 'NR!=791' 파일 | grep -n 패턴`으로 데이터 줄을 뺀다. 결과 줄 번호는 데이터 줄 이후부터 1씩 작게 나오므로 주의한다. 데이터 줄 번호는 `grep -n -m1 '^const DATA = ' 파일 | cut -c1-20`으로 먼저 확인한다.
+- `Read`는 `offset`·`limit`로 데이터 줄(뿌리 판 836줄)을 범위에 넣지 않는다.
+- 검색은 `Grep`에 함수명·키 수준으로 좁힌 패턴을 쓰거나, Bash에서 `awk 'NR!=836' 파일 | grep -n 패턴`으로 데이터 줄을 뺀다. 결과 줄 번호는 데이터 줄 이후부터 1씩 작게 나오므로 주의한다. 데이터 줄 번호는 `grep -n -m1 '^const DATA = ' 파일 | cut -c1-20`으로 먼저 확인한다.
 - `Edit`은 앱 코드 부분의 고유 문자열로 한다. 데이터 줄 안의 문자열을 `old_string`으로 쓰지 않는다.
 
 ## 5. 화면을 더하는 절차
@@ -88,7 +89,7 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 | 5 | — | 클릭은 `data-act="키"` + `ACT['키'] = el => { ... }`. 표는 `new XGrid(host, { cols, pre, rows, cell, ... })` |
 | 6 | 주소 `#<부서>/f-xxx`로 열리는지 확인 | 주소 `#<부서>/xxx`로 열리는지 확인 |
 
-부서는 `DEPT` 한 곳에 정의한다(확장 판). 미리보기 부서는 `preview: true`, `nav: []`(동작 화면이 없으면 비움), `fut: [...]`로 둔다. 첫 화면은 `firstPage(d)`(동작 화면이 없으면 첫 미리보기)이고, 주소 정규식은 `DEPT_KEYS`로 만들어 새 부서를 더해도 고칠 곳이 없다. 새 부서를 더할 때 같이 고칠 것: `AV`(아바타 글자), `.av-<부서>` CSS, `NAV_IC`. `GS_PH`는 없으면 기본 문구가 붙는다. 진입 화면의 "화면 기획 부서" 목록과 부서 전환 메뉴는 `preview` 표시로 저절로 나뉜다. `FUT_DEPT`에는 화면이 전혀 없는 참여 부서(영업)만 남았다.
+부서는 `DEPT` 한 곳에 정의한다(확장 판). 미리보기 부서는 `preview: true`, `nav: []`(동작 화면이 없으면 비움), `fut: [...]`로 둔다. 첫 화면은 `firstPage(d)`(동작 화면이 없으면 첫 미리보기)이고, 주소 정규식은 `DEPT_KEYS`로 만들어 새 부서를 더해도 고칠 곳이 없다. 새 부서를 더할 때 같이 고칠 것: `AV`(아바타 글자), `.av-<부서>` CSS, `NAV_IC`, **`BOM_ROOT`**(그 부서가 BOM의 어디를 보는지 한 줄. 뿌리 원칙 DEC-18. 없으면 진입 화면의 가지 목록에 `undefined`가 나온다. 같은 내용을 docs/03 0.1에도 적는다). `GS_PH`는 없으면 기본 문구가 붙는다. 진입 화면의 가지 목록(부서 선택)과 부서 전환 메뉴는 `preview` 표시로 동작 부서 → 미리보기 부서 순서로 저절로 나뉜다. `FUT_DEPT`에는 화면이 전혀 없는 참여 부서(영업)만 남았다.
 
 확장 판에서 더한 공통 장치(위치는 2장 명령으로 찾는다):
 
@@ -100,7 +101,7 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 | 맞추기 | `reuse0(m)` = 재사용인데 재고 0. `FILTERS`·`LADDER`에 `l-reuse0`, 견적 필요 목록(`rfqItems`)에 재구매 행 |
 | 설명·미리보기 | 확장 판의 `TIPS`·`FUT` 추가분은 `S.rnd = {` 바로 앞의 `Object.assign(TIPS, …)`·`Object.assign(FUT, …)` 블록에 모았다 |
 
-검증: 목업을 고친 뒤 스크립트 부분을 뽑아 `node --check`로 문법을 보고, Edge 헤드리스(`msedge --headless=new --dump-dom`)로 오류 수집용 스크립트를 넣은 사본을 열어 모든 `#부서/화면`을 돌려 본다(2026-11-23 확장 판에서 67개 점검·오류 0). 헤드리스 Edge의 창 폭은 약 492px보다 좁아지지 않으므로 390px 확인은 사람이 `checker.html`로 한다.
+검증: 목업을 고친 뒤 스크립트 부분을 뽑아 `node --check`로 문법을 보고, Edge 헤드리스(`msedge --headless=new --dump-dom`)로 오류 수집용 스크립트를 넣은 사본을 열어 모든 `#부서/화면`을 돌려 본다(2026-11-23 확장 판에서 67개 점검·오류 0. 2026-11-24 뿌리 판에서는 부서별 화면 47개와 진입 화면을 순회해 오류 0, 설명 풍선 키 누락 0, 부서 클릭·키보드 1~3 진입 확인). 헤드리스 Edge의 창 폭은 약 492px보다 좁아지지 않으므로 390px 확인은 사람이 `checker.html`로 한다.
 
 ## 6. 지킬 것
 
@@ -108,8 +109,9 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 - 연구소 화면에는 단가·거래처 조건을 보이지 않는다(docs/03 7장 공개 범위 [제안]). 단가 열은 권한 표시(`비공개`)로 둔다.
 - 디자인은 `DA_UI_hallmark/02_app_screens.md`와 `01_foundation.md`를 따른다. 기준 판은 hallmark 이전에 만들어 검사기에서 FAIL 2·WARN 5가 나온 기록이 있다(`DA_UI_hallmark/CHANGELOG.md`). 새 판에서는 엑셀형 표에 `data-sheet` 표시를 하고 `#A0A0A0` 글자를 쓰지 않는다.
 - 1440·768·390 폭에서 깨지지 않게 한다. 빈 상태·사용 불가 상태를 만든다.
+- **뿌리 원칙(사용자 지시 2026-11-24, DEC-18)**: 진입 화면 첫머리의 "시작도 뿌리도 BOM이다"와 뿌리·줄기·가지 지도를 지운 채 다른 구성으로 바꾸지 않는다. 새 화면·부서·기능을 넣을 때는 BOM의 무엇을 읽고 무엇을 돌려주는지 한 줄을 먼저 적는다(docs/04 1.1, 부서는 `BOM_ROOT`). 한 줄로 적을 수 없는 화면은 넣지 않고 docs/11 미결로 올린다. 새 미리보기 화면은 `FUT_BOM`에 항목을 더하고 docs/13 12장 표에도 같은 줄을 적는다(없으면 띠가 나오지 않는다).
 - 고친 뒤 `DA_UI_hallmark/04_checklist.md`로 점검하고 보고한다. 브라우저 검사는 사람이 `checker.html`로 한다.
 
 ## 7. 시연 흐름
 
-진입 화면에서 부서를 고른다. 연구소 `rnd/import`에서 E-BOM을 가져와 변환·검토하고 생산관리로 보내면, 생산관리 `pm/inbox`에 구조 확정 요청이 들어오고, 자재/구매 `mp/purchase`에 매칭 검토·흡수 제안·신규 품목·견적 필요 목록이 생긴다. 부서 간 알림은 `S.notes`와 상단 종 모양 단추로 오간다. 상단의 시연 초기화 단추가 처음 상태로 되돌린다.
+진입 화면은 먼저 "시작도 뿌리도 BOM이다"와 뿌리·줄기·가지 지도를 보여 주고, 그 안의 가지 목록에서 부서를 고른다. 연구소 `rnd/import`에서 E-BOM을 가져와 변환·검토하고 생산관리로 보내면, 생산관리 `pm/inbox`에 구조 확정 요청이 들어오고, 자재/구매 `mp/purchase`에 매칭 검토·흡수 제안·신규 품목·견적 필요 목록이 생긴다. 부서 간 알림은 `S.notes`와 상단 종 모양 단추로 오간다. 상단의 시연 초기화 단추가 처음 상태로 되돌린다.

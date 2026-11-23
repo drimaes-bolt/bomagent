@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#F4F5F7">
-<title>다봄(DaBOM) · 기획회의 시연 목업 (확장 판)</title>
+<title>다봄(DaBOM) · 기획회의 시연 목업 (뿌리 판)</title>
 <!-- 글꼴: Pretendard(인터넷 연결 시). 연결이 없으면 시스템 글꼴로 표시된다. 시트(그리드)는 엑셀과 같은 맑은 고딕. -->
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -290,23 +290,58 @@ select.inp{padding-right:26px}
 .land h2{font-size:16px;font-weight:600;color:var(--ink)}
 .land h2 + .mini{margin-top:2px}
 .depts{margin-top:10px;border-top:1px solid var(--edge)}
-.drow{display:grid;grid-template-columns:150px minmax(0,1fr) 128px;gap:20px;align-items:center;width:100%;padding:16px 4px 16px 0;border-bottom:1px solid var(--edge);text-align:left;transition:background-color .12s}
-.drow:hover{background:var(--raised)}
-.drow .nm{font-size:16px;font-weight:600;color:var(--ink)}
-.drow .role{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
-.drow .what{font-size:14px;color:var(--ink-2);line-height:1.55}
-.drow .what b{color:var(--ink);font-weight:600}
-.drow .now{display:block;margin-top:6px;font-size:13px;color:var(--ink)}
-.drow .now i{font-style:normal;color:var(--ink-3)}
-.drow .go{justify-self:end;display:flex;align-items:center;gap:10px}
-.drow kbd{font:12px var(--font);color:var(--ink-3);border:1px solid var(--edge);border-radius:4px;padding:0 5px;line-height:18px}
-.drow .btn{pointer-events:none}
-.drow:hover .btn-q{background:var(--frame)}
-.fut-depts{margin-top:18px}
-.fut-depts .fl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 24px;margin-top:6px}
-.fdep{display:flex;align-items:baseline;gap:8px;padding:6px 0;text-align:left;font-size:13px;color:var(--ink-3);border-bottom:1px solid var(--rule)}
-.fdep b{color:var(--ink-2);font-weight:600}
-.fdep:hover b{color:var(--ink)}
+/* 뿌리 원칙(DEC-18): 진입 화면의 BOM 지도. 뿌리(BOM) → 줄기(처음 만든 기능) → 가지(부서) */
+.land-head.rt{margin-bottom:20px}
+.land-head h1.rt-h{font-size:24px;line-height:1.3}
+.land-head p.rt-lead{margin-top:8px;max-width:112ch}
+.rt-h .rt-navy{color:var(--navy)}
+.land-head p.rt-lead b{color:var(--ink);font-weight:600}
+.rt-nm{border-bottom:1px dotted var(--control)}
+.rt-map{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid var(--edge);border-radius:12px}
+.rt-stem{display:flex;flex-direction:column;min-width:0}
+.rt-sec{position:relative;min-width:0;padding:18px 22px 20px}
+.rt-stem .rt-sec + .rt-sec{border-top:1px solid var(--edge)}
+.rt-stem + .rt-sec{border-left:1px solid var(--edge)}
+.rt-stem .rt-sec + .rt-sec::before,.rt-stem + .rt-sec::before{content:"";position:absolute;z-index:1;width:12px;height:12px;background:var(--sheet);border-top:1px solid var(--edge);border-right:1px solid var(--edge)}
+.rt-stem .rt-sec + .rt-sec::before{left:28px;top:-7px;transform:rotate(135deg)}
+.rt-stem + .rt-sec::before{left:-7px;top:50%;margin-top:-6px;transform:rotate(45deg)}
+.rt-sec h2 .rt-sub{margin-left:6px;font-size:13px;font-weight:400;color:var(--ink-2)}
+.rt-sec h2{font-size:16px;font-weight:600;color:var(--ink)}
+.rt-sec h2.rt-bom{display:block;margin-top:2px;padding:14px 16px;border-radius:8px;background:var(--navy);color:#fff}
+.rt-bom b{display:block;font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.01em}
+.rt-bom span{display:block;margin-top:4px;font-size:13px;font-weight:400;line-height:1.5;color:#DCE8F3}
+.rt-eq{margin-top:12px}
+.rt-eq .r{display:grid;grid-template-columns:16px 78px minmax(0,1fr);gap:6px;padding:8px 0;border-top:1px solid var(--rule);font-size:13px;line-height:1.5}
+.rt-eq .r:first-child{border-top:0}
+.rt-eq .op{color:var(--ink-3);text-align:center}
+.rt-eq b{color:var(--ink);font-weight:600}
+.rt-eq .r > span:last-child{color:var(--ink-2)}
+.rt-trunk{margin-top:8px}
+.rt-trunk li{position:relative;display:grid;grid-template-columns:112px minmax(0,1fr);gap:8px;padding:8px 0 8px 18px;border-top:1px solid var(--rule);font-size:13px;line-height:1.5}
+.rt-trunk li:first-child{border-top:0}
+.rt-trunk li::before{content:"";position:absolute;left:2px;top:14px;width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.rt-trunk b{color:var(--ink);font-weight:600}
+.rt-trunk code{margin-left:6px;font:12px var(--font);color:var(--ink-3)}
+.rt-trunk li > span:last-child{color:var(--ink-2)}
+.rt-brs{margin-top:8px;border-top:1px solid var(--edge)}
+.rt-br{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:baseline;width:100%;padding:10px 6px 10px 0;border-bottom:1px solid var(--rule);text-align:left;transition:background-color .12s}
+.rt-br:hover{background:var(--raised)}
+.rt-br .nm{font-size:15px;font-weight:600;color:var(--ink)}
+.rt-br .nm small{margin-left:8px;font-size:12px;font-weight:400;color:var(--ink-3)}
+.rt-br .tg{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-3);white-space:nowrap}
+.rt-br kbd{font:12px var(--font);color:var(--ink-3);border:1px solid var(--edge);border-radius:4px;padding:0 5px;line-height:18px}
+.rt-br .bm{grid-column:1 / -1;font-size:13px;color:var(--ink-2);line-height:1.5}
+.rt-br .now{grid-column:1 / -1;font-size:12px;color:var(--ink);line-height:1.5}
+.rt-br .now i{font-style:normal;color:var(--ink-3)}
+.rt-br.pv .nm{color:var(--ink-2)}
+.rt-br.pv .bm{color:var(--ink-3)}
+.rt-next{margin-top:12px;padding:10px 12px;border:1px dashed var(--control);border-radius:8px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.rt-next b{color:var(--ink);font-weight:600}
+.rt-rules-h{margin-top:24px}
+.rt-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:8px 0 28px;border:1px solid var(--edge);border-radius:8px}
+.rt-rule{padding:12px 16px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.rt-rule + .rt-rule{border-left:1px solid var(--edge)}
+.rt-rule b{display:block;font-size:14px;color:var(--ink)}
 .journey{border:1px solid var(--edge);border-radius:8px;overflow:hidden;margin-top:10px}
 .jr{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:10px 14px;border-top:1px solid var(--rule);font-size:13px;line-height:1.5}
 .jr:first-child{border-top:0}
@@ -643,6 +678,13 @@ select.inp{padding-right:26px}
 .fut-page .paper{padding:16px 18px}
 .fut-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:var(--frame);color:var(--ink-2);font-size:13px;margin-bottom:16px}
 .fut-banner svg{color:var(--ink-3)}
+.fut-bom{display:grid;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr) 150px;gap:12px;align-items:start;margin-bottom:16px;padding:12px 16px;border:1px solid var(--edge);border-radius:8px;background:var(--sheet)}
+.fut-bom .k{display:block;font-size:12px;color:var(--ink-3)}
+.fut-bom .v{display:block;margin-top:2px;font-size:13px;line-height:1.55;color:var(--ink)}
+.fut-bom .ar{padding-top:18px;color:var(--ink-3);text-align:center}
+.fut-bom .lay{display:block;font-size:12px;color:var(--ink-3);line-height:1.5}
+.fut-bom .lay b{display:block;font-size:13px;color:var(--navy)}
+.fut-bom.out .lay b{color:var(--ink-2)}
 .fut-mock{opacity:.55;filter:grayscale(.3);pointer-events:none}
 
 /* 부품 DB: 분류 필터(체크 상자) + 표. 쇼핑몰처럼 분류를 고르면 그 분류의 속성 필터가 열린다 */
@@ -683,8 +725,6 @@ select.inp{padding-right:26px}
 .av-acc{background:var(--b50);color:var(--b700)}
 .av-qa{background:var(--e100);color:var(--e800)}
 .av-mdm{background:var(--hover);color:var(--ink-2)}
-.fdep.go b{color:var(--ink)}
-.fdep .ph{margin-left:auto}
 @media (max-width:1100px){
   .pdb{grid-template-columns:minmax(0,1fr)}
   .facets{position:static;max-height:none;display:none;border:1px solid var(--edge);border-radius:8px;padding:12px}
@@ -712,6 +752,11 @@ select.inp{padding-right:26px}
   .sidep{position:static;max-height:none}
   .land-grid{grid-template-columns:minmax(0,1fr)}
   .land-sheet{padding:24px}
+  .rt-map{grid-template-columns:minmax(0,1fr)}
+  .rt-stem + .rt-sec{border-left:0;border-top:1px solid var(--edge)}
+  .rt-stem + .rt-sec::before{left:28px;top:-7px;margin-top:0;transform:rotate(135deg)}
+  .rt-rules{grid-template-columns:minmax(0,1fr)}
+  .rt-rule + .rt-rule{border-left:0;border-top:1px solid var(--edge)}
   .tl .sb,.tl .lb{white-space:normal}
 }
 /* 폰: 프레임이 사라지고 시트가 화면이 된다 */
@@ -726,12 +771,16 @@ select.inp{padding-right:26px}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .pcards{grid-template-columns:repeat(2,minmax(0,1fr))}
   .conv,.split,.split3{grid-template-columns:minmax(0,1fr)}
+  .fut-bom{grid-template-columns:minmax(0,1fr)}
+  .fut-bom .ar{display:none}
   .land-top .demo,.land-top .sw{display:none}
   .land-sheet{margin:0;border:0;border-radius:0;padding:20px 16px}
   .land-head{flex-direction:column;align-items:flex-start;gap:12px}
-  .drow{grid-template-columns:minmax(0,1fr);gap:8px;padding:14px 0}
-  .drow .go{justify-self:start}
-  .fut-depts .fl{grid-template-columns:minmax(0,1fr)}
+  .rt-sec{padding:16px}
+  .land-head h1.rt-h{font-size:20px}
+  .rt-br{grid-template-columns:minmax(0,1fr);gap:2px}
+  .rt-br .nm small{display:block;margin:0}
+  .rt-trunk li{grid-template-columns:minmax(0,1fr);gap:0}
   .tl{grid-template-columns:repeat(7,minmax(0,1fr))}
   .tl .sb{display:none}
   .tl .lb{font-size:12px;font-weight:600}
@@ -765,7 +814,13 @@ select.inp{padding-right:26px}
 </head>
 <body>
 <!--
-  다봄(DaBOM) 기획회의 시연 목업 · 확장 판(2026-11-23) · 프론트 전용 단일 파일
+  다봄(DaBOM) 기획회의 시연 목업 · 뿌리 판(2026-11-24) · 프론트 전용 단일 파일
+  · 확장 판(2026-11-23)을 복사해 진입 화면과 미리보기 화면의 머리를 고쳤다. 동작 화면과 데이터는 확장 판과 같다. 바뀐 것:
+    미리보기 화면 33개에는 "BOM에서 읽는 것 → BOM에 돌려주는 것" 띠를 더했다(FUT_BOM, docs/13 12장).
+    진입 화면 첫머리에 "시작도 뿌리도 BOM이다"를 둔다. 뿌리(BOM = E-BOM + SCM 정보 → M-BOM) → 줄기(처음 만든 여섯 기능)
+    → 가지(부서별 기능) 지도 안에 부서 선택을 넣고, 부서마다 BOM의 어디를 보는지 한 줄씩 적었다. 가지를 더하는 규칙 세 가지를 붙였다.
+    근거 docs/01 1.6, docs/03 0.1, docs/04 1.1, DEC-18 [제안].
+  · 이하 확장 판 설명(2026-11-23) · 프론트 전용 단일 파일
   · taste-skill 판(2026-10-21)을 복사해 고쳤다. 바뀐 것:
     재고 = 루트 Inventory.xlsx(2026-11-23 수량 조정본) 1,048품목 그대로. 단가는 실제 재고 품목에 한해 [가상] 단가로 바꿨다.
     사용 이력 품목 356(재고 0) = 루트 PartHistory.xlsx. 거래처 카탈로그는 [가상] 예시(실제 자료 확보 전).
@@ -1726,11 +1781,218 @@ function pageHead(title, desc, refs, right) {
   const tip = refs ? ` data-tip="#" data-tt="${esc(String(title).replace(/<[^>]+>/g, ''))}" data-tw="관련 기능·질의 · ${esc(refs)}" data-tr="docs/03 · docs/04"` : '';
   return `<div class="pg-head"><div class="l"><h1 class="h1"${tip}>${title}</h1>${desc ? `<p class="desc">${desc}</p>` : ''}</div>${right ? `<div class="row wrap">${right}</div>` : ''}</div>`;
 }
+// 뿌리 원칙(DEC-18): 미리보기 화면마다 BOM의 무엇을 읽고 무엇을 돌려주는지. docs/13 12장과 같은 내용이다.
+const FUT_BOM = {
+   "f-risk": {
+    "l": "줄기",
+    "id": "MAT-13",
+    "rd": "E-BOM 행과 맞추기 결과(재고·사용 이력·단종·공급처)",
+    "rt": "출도 전에 고칠 위험 행과 대안"
+   },
+   "f-ecompare": {
+    "l": "줄기",
+    "id": "IMP-08 TRK-02",
+    "rd": "이전 개정과 새 개정의 E-BOM 행",
+    "rt": "바뀐 행 목록과 M-BOM 반영 초안"
+   },
+   "f-impact": {
+    "l": "줄기",
+    "id": "TRK-04",
+    "rd": "where-used(이 부품을 쓰는 제품·모델·개정)",
+    "rt": "영향받는 모델·재고·발주 목록"
+   },
+   "f-pool": {
+    "l": "받침",
+    "id": "MDM-02",
+    "rd": "맞추기가 순위 3에서 조회하는 후보 풀",
+    "rt": "채택한 후보가 신규 품목이 되어 다음 E-BOM 행에 쓰인다"
+   },
+   "f-fw": {
+    "l": "줄기",
+    "id": "TRK-03",
+    "rd": "프로그래밍 품목 행의 펌웨어 개정",
+    "rt": "개정 기록·효력·구 펌웨어 재고 처분"
+   },
+   "f-pkg": {
+    "l": "줄기",
+    "id": "TRK-03 CFM-02",
+    "rd": "변경이 걸린 BOM 행·사유·변경 층·적용 시장",
+    "rt": "승인된 변경 패키지와 다음 M-BOM 개정"
+   },
+   "f-effect": {
+    "l": "줄기",
+    "id": "TRK-04",
+    "rd": "M-BOM 개정 사이에 바뀐 행과 구 부품 재고",
+    "rt": "효력 시점과 재고 처분 결정"
+   },
+   "f-ecnack": {
+    "l": "줄기",
+    "id": "TRK-08",
+    "rd": "승인된 변경 패키지",
+    "rt": "부서별 받음·조치 완료 기록"
+   },
+   "f-erpcheck": {
+    "l": "줄기",
+    "id": "CFM-04",
+    "rd": "확정된 M-BOM의 자품번별 값",
+    "rt": "ERP 등록값과의 일치·불일치 대조 결과"
+   },
+   "f-ctb": {
+    "l": "줄기",
+    "id": "BLD-04 MAT-04",
+    "rd": "M-BOM 필요수량(LOSS 포함)과 재고·입고 예정",
+    "rt": "부족 품목과 메워지는 날(읽기 전용)"
+   },
+   "f-pcn": {
+    "l": "가지",
+    "id": "ALR-01~04",
+    "rd": "통보문의 MPN과 BOM where-used",
+    "rt": "영향 모델·개정·재고와 변경 패키지 초안"
+   },
+   "f-price": {
+    "l": "가지",
+    "id": "CST-05",
+    "rd": "M-BOM 행의 수량·단가와 승인 대체",
+    "rt": "모델별 연간 영향 금액"
+   },
+   "f-avl": {
+    "l": "줄기",
+    "id": "MAT-08",
+    "rd": "M-BOM 행의 기본 MPN",
+    "rt": "승인 대체 MPN(L2 전환 후보)"
+   },
+   "f-kitting": {
+    "l": "가지",
+    "id": "PRD-05",
+    "rd": "작업지시 수량과 M-BOM 필요수량",
+    "rt": "불출 목록(릴 단위). 출고 처리는 ERP"
+   },
+   "f-po": {
+    "l": "밖",
+    "id": "범위 밖",
+    "rd": "견적이 필요한 품목 목록(맞추기 결과)",
+    "rt": "목록까지만. 발주 발행·견적 발송은 ERP와 구매 업무의 일"
+   },
+   "f-cpl": {
+    "l": "가지",
+    "id": "PRD-01",
+    "rd": "확정 M-BOM의 참조부호·수량·실장 구분",
+    "rt": "좌표 파일과의 대조 결과(BOM에만·좌표에만)"
+   },
+   "f-feeder": {
+    "l": "가지",
+    "id": "PRD-02",
+    "rd": "확정 M-BOM의 부품 포장·실장 면과 모델 간 공용 부품",
+    "rt": "피더 목록 초안과 공용 부품"
+   },
+   "f-route": {
+    "l": "가지",
+    "id": "PRD-03",
+    "rd": "M-BOM의 실장 구분과 부품 유형",
+    "rt": "LOSS 기준. 필요수량 계산(BLD-04)의 입력으로 돌아간다"
+   },
+   "f-line": {
+    "l": "가지",
+    "id": "PRD-04",
+    "rd": "효력이 정해진 변경 패키지",
+    "rt": "라인 조치 체크 목록과 완료 상태"
+   },
+   "f-trend": {
+    "l": "가지",
+    "id": "CST-02",
+    "rd": "M-BOM 개정별 행의 수량과 단가",
+    "rt": "개정별 자재비 합계와 변경 사유"
+   },
+   "f-chgcost": {
+    "l": "가지",
+    "id": "CST-03",
+    "rd": "변경 패키지의 영향 행과 재고 처분",
+    "rt": "대당·연간 원가 영향과 처분 비용"
+   },
+   "f-eo": {
+    "l": "가지",
+    "id": "CST-04",
+    "rd": "where-used와 앞으로의 소요",
+    "rt": "과잉·불용 재고 목록과 금액"
+   },
+   "f-quote": {
+    "l": "가지",
+    "id": "CST-06",
+    "rd": "E-BOM 맞추기 결과(재고 단가·사용 이력 단가·견적 필요 행)",
+    "rt": "개략 자재비(예산 견적용)"
+   },
+   "f-iqc": {
+    "l": "가지",
+    "id": "QLT-01",
+    "rd": "M-BOM의 신규 품목·신규 거래처·변경 품목과 입고 예정",
+    "rt": "수입검사 대상 목록. 검사 기록은 하지 않는다"
+   },
+   "f-fai": {
+    "l": "가지",
+    "id": "QLT-02",
+    "rd": "M-BOM 개정 사이에 바뀐 행",
+    "rt": "초도품 확인 목록(바뀐 행만)"
+   },
+   "f-cert": {
+    "l": "줄기",
+    "id": "TRK-05",
+    "rd": "인증 개정(Certified_Revision)과 현재 개정의 차이",
+    "rt": "재시험 판단 요청 경고"
+   },
+   "f-rohs": {
+    "l": "가지",
+    "id": "QLT-03",
+    "rd": "M-BOM의 부품 행",
+    "rt": "성분 선언서 보유 현황(제품 단위). 물질 계산은 하지 않는다"
+   },
+   "f-dev": {
+    "l": "줄기",
+    "id": "TRK-07",
+    "rd": "편차·특채가 걸린 BOM 행",
+    "rt": "만료일·수량 한도 관리, 만료 시 원래 사양으로 복귀"
+   },
+   "f-rules": {
+    "l": "줄기",
+    "id": "COD-01",
+    "rd": "M-BOM 자품번을 정하는 채번 규칙",
+    "rt": "발번·형식 검사의 기준이 되는 규칙 버전"
+   },
+   "f-dict": {
+    "l": "받침",
+    "id": "MDM-03",
+    "rd": "E-BOM 표기를 읽을 때 쓰는 사전",
+    "rt": "표기 → 정규 제조사·패키지 이름"
+   },
+   "f-hist": {
+    "l": "받침",
+    "id": "MDM-09",
+    "rd": "BOM 이력(어느 모델에 썼나)과 구매 이력",
+    "rt": "사용 이력 품목의 상태(재구매 가능·확인 필요·사용 중지)"
+   },
+   "f-audit": {
+    "l": "줄기",
+    "id": "COD-06",
+    "rd": "ERP 품목 마스터와 M-BOM 자품번",
+    "rt": "형식·중복·해독 정합 검사 결과"
+   },
+   "f-perm": {
+    "l": "받침",
+    "id": "MDM-05 MDM-06",
+    "rd": "BOM 행의 단가·거래처 조건 필드",
+    "rt": "역할별 공개 범위와 감사 로그"
+   }
+  };
 function futurePage(el, n) {
   const f = FUT[n.id] || {};
+  const fb = FUT_BOM[n.id];
+  const bomBand = fb ? `<div class="fut-bom${fb.l === '밖' ? ' out' : ''}" data-tip="fut.bom">
+      <div><span class="k">BOM에서 읽는 것</span><span class="v">${esc(fb.rd)}</span></div><span class="ar" aria-hidden="true">→</span>
+      <div><span class="k">BOM에 돌려주는 것</span><span class="v">${esc(fb.rt)}</span></div>
+      <span class="lay"><b>${fb.l === '밖' ? 'BOM 밖의 실행' : `BOM 뿌리 · ${esc(fb.l)}`}</b>${esc(fb.id)}</span></div>` : '';
   el.classList.add('fut-page');
   el.innerHTML = `${pageHead(`${esc(n.label)}<span class="ph">${esc(n.ph)}</span>`, f.what || '', `${DEPT[S.dept].name} · 다음 단계 미리보기`)}
     <div class="fut-banner">${ic('info', 'style="width:16px;height:16px;flex:0 0 auto"')}<span>이번 시연 범위 밖이다. 아래는 기획 의도를 보여 주는 옅은 목업이고 버튼은 동작하지 않는다.</span></div>
+    ${bomBand}
     <div class="split3">
       <div class="paper"><h3 class="ct">왜 필요한가</h3><div class="dark mt4" style="font-size:13px;line-height:1.65">${f.why || ''}</div></div>
       <div class="paper"><h3 class="ct">왜 지금이 아닌가</h3><div class="dark mt4" style="font-size:13px;line-height:1.65">${f.later || ''}</div></div>
@@ -1825,12 +2087,37 @@ function journeyHTML() {
     <div class="jr out" data-tip="land.j.out"><span class="k">M-BOM<small>사람이 확정</small></span><span class="v">자품번 <code>${esc(m.c[9])}</code> · 정미 ${esc(m.c[13])} · 필요 ${esc(m.c[15])}<span class="s">연구소 검토 → 생산관리 구조 확정 때 함께 확정</span></span></div>
   </div>`;
 }
+// 뿌리 원칙(DEC-18): 부서마다 BOM의 어디를 보는지. docs/03 0.1과 같은 내용이다.
+const BOM_ROOT = {
+  rnd: 'E-BOM을 올려 M-BOM 초안과 그 근거를 받는다',
+  pm: 'M-BOM 구조를 확정하고 개정·효력·소요량을 본다',
+  mp: 'BOM 행마다 재고·거래처를 보고 제조사를 고른다',
+  pe: '확정 M-BOM을 좌표·LOSS·불출 목록과 맞춘다',
+  acc: 'M-BOM 행의 수량 × 단가로 모델별 자재비를 본다',
+  qa: '바뀐 BOM 행에서 수입검사·초도품 대상을 뽑는다',
+  mdm: 'BOM이 맞춰 보는 품목·거래처 기준정보를 관리한다',
+  sales: '고객 지정 부품과 적용 시장을 BOM에 표시한다',
+};
+// 줄기: 처음 만든 여섯 기능(docs/02 1장, 모듈 코드 docs/04)
+const TRUNK = [
+  ['가져오기', 'IMP', 'E-BOM 원문을 보존하고 행을 해석한다'],
+  ['맞추기', 'MAT', '사내 품목·재고·거래처를 먼저 쓴다'],
+  ['만들기', 'BLD', '제품 → 반제품 → 부품 구조와 수량'],
+  ['품번', 'COD', '기존 ERP 코드를 재사용하고 없을 때만 발번'],
+  ['확정', 'CFM', '사람이 확인·승인하고 기준선·ERP 등록'],
+  ['추적', 'TRK', '변경 패키지로 양산 종료까지 관리'],
+];
 function renderLanding() {
-  const rows = [
-    ['rnd', '1', 'E-BOM 엑셀을 올리면 원문을 둔 채 표로 풀고, 사내 품목·재고에 맞춘 <b>M-BOM 초안</b>을 받는다. 근거를 보고 고친 뒤 생산관리로 보낸다.'],
-    ['pm', '2', '관리 중인 제품의 <b>최신 M-BOM과 개정 이력</b>을 본다. 연구소가 보낸 초안은 구조를 확정하고 제품·반제품 품번을 넣는다.'],
-    ['mp', '3', '재고·입고 계획·거래처를 보고, 다봄이 정렬한 후보 가운데 <b>제조사와 신규 품목 등록</b>을 고르고 승인한다.'],
-  ];
+  const liveKeys = DEPT_KEYS.filter(k => !DEPT[k].preview), prevKeys = DEPT_KEYS.filter(k => DEPT[k].preview);
+  const row = (k, key) => {
+    const d = DEPT[k], live = !d.preview;
+    return `<button class="rt-br${live ? '' : ' pv'}" data-act="go" data-dept="${k}" data-tip="dept.${k}">
+        <span class="nm">${d.name}<small>${esc(d.role)}</small></span>
+        <span class="tg">${d.nav.length ? `동작 ${d.nav.length} · ` : ''}미리보기 ${d.fut.length}${key ? `<kbd>${key}</kbd>` : ''}</span>
+        <span class="bm">${esc(BOM_ROOT[k])}</span>
+        ${live ? `<span class="now">${landingNow(k)}</span>` : ''}
+      </button>`;
+  };
   $('#app').innerHTML = `<div class="land">
     <header class="land-top">
       <div class="brand">${MARK}<span><span class="nm" style="display:block">다봄</span><span class="sb" style="display:block">BOM 변환·추적</span></span></div>
@@ -1839,28 +2126,45 @@ function renderLanding() {
       <label class="sw ${S.tips ? 'on' : ''}" data-act="tips" data-tip="top.tips" tabindex="0"><i></i>설명 풍선</label>
     </header>
     <main class="land-sheet">
-      <div class="land-head"><div class="l">
-        <h1 class="h1" data-tip="land.hero">부서 선택</h1>
-        <p>다봄은 연구소의 E-BOM을 사내 재고·거래처·기존 품목에 맞춘 M-BOM으로 바꾸고, 양산이 끝날 때까지 변경을 추적한다. 시연이라 인증 없이 부서를 고른다.</p>
+      <div class="land-head rt"><div class="l">
+        <h1 class="h1 rt-h" data-tip="land.hero">시작도 뿌리도 <span class="rt-navy">BOM</span>이다</h1>
+        <p class="rt-lead"><span class="rt-nm" data-tip="land.name"><b>다봄(DaBOM)</b>, 약칭 BOM Agent</span>은 여러 부서의 업무로 넓어지지만, 모든 기능은 하나의 일에서 나온다. <b>회로설계 엔지니어가 쓴 E-BOM에 재고 리스트 같은 SCM 정보를 합쳐 양산용 M-BOM으로 자동 변환하고, 양산이 끝날 때까지 관리하는 일</b>이다. 이름의 ‘봄’이 BOM이다: 다(모두) + 봄(BOM).</p>
       </div></div>
+      <section class="rt-map" aria-label="BOM에서 뻗는 다봄: 뿌리, 줄기, 가지">
+        <div class="rt-stem">
+          <div class="rt-sec" data-tip="land.root">
+            <h2 class="rt-bom"><b>뿌리 · BOM</b><span>시작이자 근원. 모든 부서가 같은 BOM을 본다.</span></h2>
+            <div class="rt-eq">
+              <div class="r"><span class="op"></span><b>E-BOM</b><span>회로설계 엔지니어가 쓴 설계 BOM</span></div>
+              <div class="r"><span class="op">+</span><b>SCM 정보</b><span>재고 리스트 · 거래처 · 구매 이력</span></div>
+              <div class="r"><span class="op">→</span><b>M-BOM</b><span>양산 BOM. 개정과 변경을 양산 종료까지 관리</span></div>
+            </div>
+          </div>
+          <div class="rt-sec" data-tip="land.trunk">
+            <h2>줄기 · 처음 만든 기능 <span class="rt-sub">E-BOM → M-BOM 변환과 추적</span></h2>
+            <ol class="rt-trunk">${TRUNK.map(([n, c, d]) => `<li><span><b>${n}</b><code>${c}</code></span><span>${d}</span></li>`).join('')}</ol>
+          </div>
+        </div>
+        <div class="rt-sec">
+          <div data-tip="land.branch"><h2 id="l-dept">가지 · 들어갈 부서 <span class="rt-sub">부서별 기능</span></h2><div class="mini">키보드 1·2·3으로도 들어간다</div></div>
+          <div class="rt-brs">${liveKeys.map((k, i) => row(k, i + 1)).join('')}${prevKeys.map(k => row(k)).join('')}${FUT_DEPT.map(f => `<button class="rt-br pv" data-act="futdept" data-id="${f.id}" data-tip="${f.tip}">
+              <span class="nm">${f.name}</span><span class="tg">${f.ph}</span><span class="bm">${esc(BOM_ROOT[f.id])}</span></button>`).join('')}</div>
+          <div class="rt-next" data-tip="land.next"><b>다음에 뻗을 곳 [제안]</b> 외부 통보 영향 확인(ALR, 3단계) · 견적용 자재비(CST-06, 2단계) · 불출 목록(PRD-05, 3단계 검토). 모두 BOM에서 읽고 BOM 옆에 목록으로 돌려준다.</div>
+        </div>
+      </section>
+      <h2 class="rt-rules-h" data-tip="land.rules">가지를 더하는 규칙 <span class="mini">DEC-18 [제안]</span></h2>
+      <div class="rt-rules">
+        <div class="rt-rule"><b>BOM에서 읽고 BOM에 돌려준다</b>새 기능은 BOM의 무엇을 읽고 무엇을 돌려주는지 한 줄로 적는다. 적을 수 없으면 범위 밖 후보다.</div>
+        <div class="rt-rule"><b>데이터는 하나, 화면은 부서별</b>같은 BOM을 부서 권한에 맞춰 본다. 부서마다 따로 BOM을 만들지 않는다.</div>
+        <div class="rt-rule"><b>다봄은 목록·계산까지, 실행은 다른 시스템</b>수입검사·불출·발주는 BOM에서 대상 목록을 뽑는 데까지만 한다.</div>
+      </div>
       <div class="land-grid">
-        <section aria-labelledby="l-dept">
-          <h2 id="l-dept">들어갈 부서</h2><div class="mini">키보드 1·2·3으로도 들어간다</div>
-          <div class="depts">${rows.map(([k, key, what]) => { const d = DEPT[k]; return `<button class="drow" data-act="go" data-dept="${k}" data-tip="dept.${k}">
-              <span><span class="nm">${d.name}</span><span class="role">${d.role}</span></span>
-              <span class="what">${what}<span class="now">${landingNow(k)}</span></span>
-              <span class="go"><kbd>${key}</kbd><span class="btn btn-q sm">들어가기</span></span>
-            </button>`; }).join('')}</div>
-          <div class="inv-open" data-tip="land.inv"><div class="t"><b>재고 목록은 E-BOM 없이도 바로 본다</b>Inventory.xlsx ${fmt(INV_STOCK.length)}품목(2026-11-23 수량 조정본) · 사용 이력 품목 ${fmt(INV_HIST.length)} · 분류(ERP 대분류) 체크 상자로 거른다.</div>
-            <button class="btn btn-2 sm" data-act="go" data-dept="rnd" data-page="search">${ic('search')}연구소 화면으로 열기</button><button class="btn btn-q sm" data-act="go" data-dept="mp" data-page="stock">자재/구매 화면으로 열기</button></div>
-          <div class="fut-depts"><h2 data-tip="land.legend.fut" style="font-size:14px;color:var(--ink-2)">화면 기획 부서 (미리보기)</h2>
-            <div class="fl">${DEPT_KEYS.filter(k => DEPT[k].preview).map(k => { const d = DEPT[k]; return `<button class="fdep go" data-act="go" data-dept="${k}" data-tip="dept.${k}"><b>${d.name}</b><span>${esc(d.whoSub)}</span><span class="ph">${d.nav.length ? `동작 ${d.nav.length} · ` : ''}미리보기 ${d.fut.length}</span></button>`; }).join('')}
-            ${FUT_DEPT.map(f => `<button class="fdep" data-act="futdept" data-id="${f.id}" data-tip="${f.tip}"><b>${f.name}</b><span>${f.ph} · ${f.tx}</span></button>`).join('')}</div></div>
-        </section>
         <section aria-labelledby="l-row">
           <h2 id="l-row" data-tip="land.journey">한 행이 M-BOM이 되기까지</h2><div class="mini">SS_SKPRT E-BOM의 실제 행 하나를 다봄 변환 결과로 따라간다</div>
           ${journeyHTML()}
-          <h2 class="mt20" data-tip="land.demo">시연 순서</h2>
+        </section>
+        <section aria-labelledby="l-demo">
+          <h2 id="l-demo" data-tip="land.demo">시연 순서</h2>
           <ol class="demo-steps">
             <li><b>연구소</b> E-BOM 가져오기에서 이 HTML과 같은 폴더의 SS_SKPRT_EBOM.xlsx를 고른다</li>
             <li>해독된 E-BOM을 확인하고 <b>M-BOM 변환</b>을 누른다</li>
@@ -1870,13 +2174,15 @@ function renderLanding() {
             <li><b>자재/구매</b> 구매 관리에서 흡수 제안과 신규 품목 등록 요청을 처리한다</li>
             <li>재고 현황에서 분류 필터와 <b>사용 이력 품목(재고 0)</b>, 거래처 카탈로그를 본다</li>
           </ol>
+          <div class="inv-open" data-tip="land.inv"><div class="t"><b>재고 목록은 E-BOM 없이도 바로 본다</b>Inventory.xlsx ${fmt(INV_STOCK.length)}품목(2026-11-23 수량 조정본) · 사용 이력 품목 ${fmt(INV_HIST.length)} · 분류(ERP 대분류) 체크 상자로 거른다.</div>
+            <button class="btn btn-2 sm" data-act="go" data-dept="rnd" data-page="search">${ic('search')}연구소 화면으로 열기</button><button class="btn btn-q sm" data-act="go" data-dept="mp" data-page="stock">자재/구매 화면으로 열기</button></div>
         </section>
       </div>
       <p class="land-note">이 화면은 기획 의도를 보여 주는 프론트 목업이다. 서버·모델 호출·저장이 없고, 변환 결과는 SS_SKPRT_MBOM.xlsx(= KK16 M-BOM 1차, [가상])를 그대로 보여 준다. 제품·반제품 품번은 생산관리가 구조 확정 때 넣을 때까지 비워 둔다(DEC-04).
         재고 품목과 수량은 루트 Inventory.xlsx(2026-11-23 수량 조정본, 테스트용 더미)를 그대로 넣었고, 단가는 2025 기말 실제 품목에 한해 [가상] 단가로 바꿨다. 사용 이력 품목은 PartHistory.xlsx와 같다. 거래처 카탈로그는 실제 자료 확보 전의 [가상] 예시다.
         할당, 입고 계획, 거래처 유형·조건은 품번으로 만든 [가상] 값이다. KK13~KK15의 M-BOM 개정과 회신·일정은 [가상] 예시이고, E51K는 ERP 추출 전달본(19열)이다.
         기획 전체(기능·화면·결정·미결)는 같은 폴더의 <a href="DaBOM_plan_board_20261123.html">기획 현황판</a>에서 한눈에 본다.
-        근거 문서: <a href="../README.md">README</a> · <a href="../docs/14_부서기능_확장검토.md">docs/14 부서 기능 확장 검토</a> · <a href="../docs/02_업무흐름.md">docs/02 업무 흐름</a> · <a href="../docs/03_부서별_활용.md">docs/03 부서별 활용</a> · <a href="../docs/04_기능_범위.md">docs/04 기능 범위</a> · <a href="../docs/07_변경관리_추적.md">docs/07 변경관리</a> · <a href="../docs/11_결정_미결_목록.md">docs/11 결정·미결</a></p>
+        근거 문서: <a href="../README.md">README</a> · <a href="../docs/01_프로젝트_정의.md">docs/01 프로젝트 정의(1.6 뿌리 원칙)</a> · <a href="../docs/14_부서기능_확장검토.md">docs/14 부서 기능 확장 검토</a> · <a href="../docs/02_업무흐름.md">docs/02 업무 흐름</a> · <a href="../docs/03_부서별_활용.md">docs/03 부서별 활용</a> · <a href="../docs/04_기능_범위.md">docs/04 기능 범위</a> · <a href="../docs/07_변경관리_추적.md">docs/07 변경관리</a> · <a href="../docs/11_결정_미결_목록.md">docs/11 결정·미결</a></p>
     </main>
   </div>`;
 }
@@ -1928,7 +2234,14 @@ const TIPS = {
   'nav.future': { t: '향후 단계 메뉴', w: '1단계(초안) 범위 밖이지만 전 부서가 BOM으로 양산 전 과정을 관리하려면 필요해질 기능이다.', h: '누르면 기능 설명과 옅은 미리보기가 열린다. 버튼은 동작하지 않는다.', r: 'docs/04 2·3장, docs/10' },
 
   /* 진입 화면 */
-  'land.hero': { t: '다봄 한 줄 정의', w: '연구소 E-BOM을 사내 기준정보(품목·재고·거래처·후보 부품)에 맞춰 M-BOM으로 바꾸고, 양산이 끝날 때까지 변경을 추적한다.', h: '"다봄"은 다(모두) + 봄(BOM). 모든 부서가 같은 BOM을 보고, 원문부터 변경 이력까지 다 보인다는 뜻이다.', r: 'docs/01 1장 · DEC-01 [제안]' },
+  'land.hero': { t: '시작도 뿌리도 BOM이다', w: '다봄은 여러 부서의 업무로 넓어지지만, 모든 기능은 하나의 일에서 나온다. 회로설계 엔지니어의 E-BOM에 재고 같은 SCM 정보를 합쳐 M-BOM으로 자동 변환하고 양산 종료까지 관리하는 일이다.', h: '"다봄"은 다(모두) + 봄(BOM). 연구소·생산관리·자재/구매·회계가 같은 BOM을 보고, 원문부터 변경 이력까지 다 보인다는 뜻이다. 기능이 아무리 늘어도 뿌리는 BOM이다.', r: 'docs/01 1.3·1.6 · DEC-01·DEC-18 [제안]' },
+  'land.name': { t: '이름: 다봄 · BOM Agent', w: '공식 표기는 "다봄(DaBOM) · 전사 BOM 변환·추적 시스템"이다. "BOM Agent"는 같은 대상을 가리키는 약칭이다.', h: '두 이름이 같이 가진 낱말이 BOM이다. 문서와 화면에서는 "다봄"을 먼저 쓴다. 에이전트라는 낱말이 "시스템이 알아서 확정한다"는 기대를 만들지 않게 하려는 것이다.', r: 'docs/01 1장 · DEC-01 보충(2026-11-24)' },
+  'land.root': { t: '뿌리 · BOM', w: 'E-BOM(설계) + SCM 정보(재고 리스트·거래처·구매 이력) → M-BOM(양산). 이 변환과 양산 종료까지의 관리가 다봄이 시작된 곳이다.', h: '원문 E-BOM은 지우지 않고, M-BOM은 산출물이 아니라 상태로 개정을 쌓는다. 모든 부서 기능이 이 BOM을 읽고 BOM에 돌려준다.', r: 'docs/01 1.6 · 설계 원칙 1·5·9 · DEC-18 [제안]' },
+  'land.trunk': { t: '줄기 · 처음 만든 기능', w: '가져오기 → 맞추기 → 만들기 → 품번 → 확정 → 추적. 뿌리에서 가장 먼저 자란 여섯 모듈이다.', h: '아래 시연은 이 줄기를 연구소 → 생산관리 → 자재/구매 순으로 따라간다. 1~2단계의 중심이다.', r: 'docs/02 1장 · docs/04 1.1', ph: '1~2단계' },
+  'land.branch': { t: '가지 · 부서별 기능', w: '부서마다 BOM의 다른 곳을 본다. 연구소는 E-BOM 행, 생산관리는 구조와 개정, 자재/구매는 행별 재고·거래처, 회계는 수량 × 단가다.', h: '동작 화면이 있는 부서(연구소·생산관리·자재/구매)는 바로 들어간다. 나머지는 화면 기획을 미리보기로 넣었다. 회계만 모델별 자재비 화면 하나가 동작한다.', r: 'docs/03 0.1 · docs/13' },
+  'land.next': { t: '다음에 뻗을 곳 [제안]', w: '이미 기획에 있는 기능 가운데 BOM에서 곧바로 뻗는 것이다. 외부 통보 영향 확인은 통보문의 MPN으로 where-used를 거꾸로 찾는다.', h: '새 업무가 생기면 먼저 BOM에서 읽는 것과 돌려주는 것을 한 줄로 적어 본다. 적을 수 없으면 범위 밖 후보로 미결에 올린다.', r: 'docs/10 1장 · docs/04 1.1', ph: '2~3단계' },
+  'fut.bom': { t: '이 화면은 BOM의 어디에서 뻗었나', w: '시작도 뿌리도 BOM이다. 미리보기 화면도 BOM의 무엇을 읽고 무엇을 BOM에 돌려주는지 한 줄로 적을 수 있어야 기획에 넣는다.', h: '층은 줄기(처음 만든 E-BOM → M-BOM 변환·추적), 가지(부서별 확장), 받침(줄기가 맞춰 보는 기준정보)이다. 적을 수 없는 일은 범위 밖 후보로 미결에 올린다.', r: 'docs/04 1.1 · docs/13 12장 · DEC-18 [제안]' },
+  'land.rules': { t: '가지를 더하는 규칙', w: '부서 기능이 늘어도 시작과 뿌리가 BOM이라는 점이 흐려지지 않게 하는 세 가지 약속이다.', h: '① 새 기능은 BOM에서 읽는 것·돌려주는 것을 적는다 ② 데이터는 하나, 화면은 부서별 ③ 목록·계산까지 하고 실행은 ERP·MES 같은 다른 시스템에 맡긴다.', r: 'docs/01 1.6 · docs/04 1.1 · DEC-18 [제안]' },
   'land.fig': { t: '하나의 BOM, 여러 부서의 화면', w: '지금은 같은 시트를 부서마다 다르게 읽어 E-BOM과 M-BOM이 따로 논다.', h: '다봄은 원문·변환·확정·추적을 한 곳에 두고 부서별 권한으로 보여 준다. 점선은 이번 시연에서 뺀 참여 부서다.', r: 'docs/01 2.1, docs/03 7장' },
   'land.legend.tip': { t: '설명 풍선', w: '주요 버튼·표 머리글·상태 표시에 마우스를 올리면 이 풍선이 나온다.', h: '"왜 있나"와 "실무에서 어떻게 쓰나"를 짧게 적었다. 근거 문서 위치도 함께 적었다.' },
   'land.legend.fut': { t: '다음 단계 = 옅은 글자', w: '1단계 최소 기능 밖이지만 기획에서 자리를 잡아 둔 화면·부서·버튼이다.', h: '단계 표시는 docs/04의 기능 목록을 따른다. 2단계: 확정·추적, 3단계: 알림·원가 영향. 누르면 설명만 나온다.' },
@@ -2288,7 +2601,7 @@ Object.assign(TIPS, {
   'dept.qa': { t: '품질(참여)', w: '검사는 다봄에서 하지 않는다. 다봄은 새로 들어오거나 바뀐 품목을 알기 때문에 검사·확인 대상 목록을 BOM에서 뽑아 준다.', h: '수입검사 대상, 초도품 확인 목록, 인증 구성 경고, 성분 규제 현황.', r: 'docs/03 5장 · docs/14', ph: '참여 부서' },
   'dept.mdm': { t: '기준정보 담당', w: '채번 규칙, 사전, 사용 이력 판정 규칙, 권한과 감사 로그를 관리한다.', h: '규칙에 빈칸이 있으면 가장 가까운 값으로 메우지 않고 개정 요청으로 올린다.', r: 'docs/04 MDM · docs/08', ph: '관리자 화면' },
   'land.legend.fut': { t: '화면 기획 부서', w: '생산기술·회계·품질·기준정보는 화면 기획을 미리보기로 넣었다. 회계의 모델별 자재비만 동작한다.', h: '눌러서 들어가면 부서별 미리보기 화면의 목적·이유·준비물·옅은 예시 표가 나온다.', r: 'docs/13 · docs/14' },
-  'land.inv': { t: '재고 목록 바로 보기', w: '재고 목록은 E-BOM과 상관없이 열 수 있어야 한다. 부품을 고르기 전에 사내에 무엇이 있는지 먼저 본다.', h: '연구소 화면은 단가를 가리고, 자재/구매 화면은 단가·금액까지 보인다.', id: 'MAT-12 · D-8', r: 'DEC-17 [제안]' },
+  'land.inv': { t: '재고 목록 바로 보기', w: '재고 목록은 E-BOM과 상관없이 열 수 있어야 한다. 부품을 고르기 전에 사내에 무엇이 있는지 먼저 본다.', h: '연구소 화면은 단가를 가리고, 자재/구매 화면은 단가·금액까지 보인다. E-BOM을 쓰기 전에 BOM이 맞춰 볼 사내 품목을 먼저 보는 입구이기도 하다.', id: 'MAT-12 · D-8', r: 'DEC-17 [제안]' },
   'rnd.invfirst': { t: 'E-BOM 전에 재고부터', w: '설계자가 부품을 고르기 전에 사내 재고와 사용 이력 품목을 보면 신규 등록이 줄어든다.', h: '분류 바로가기를 누르면 사내 재고·부품 찾기가 그 분류로 걸러진 채 열린다.', id: 'MAT-12 · D-8', ph: '1단계' },
   'rnd.ladder': { t: '맞추기 결과', w: '사내 것을 먼저 쓰는 순서(지정 부품 → 동일 MPN 기존 품목 → 동등 품목 → 후보 풀 → 거래처 카탈로그 → 외부 후보 → 신규 발번)로 부품 행이 어디서 맞춰졌는지 센다.', h: '기존 품목은 재고 보유와 재고 0(사용 이력)을 나눠 센다. 칸이나 범례를 누르면 그 행만 보인다.', id: 'MAT-01~05·10·11', r: 'docs/02 3장 · DEC-13 [제안]' },
   'rnd.ld.l-reuse': { t: '재사용 · 재고 보유', w: 'E-BOM 부품의 MPN이 사내 품목과 같고 그 품목의 재고가 있다.', h: '기존 ERP 코드를 그대로 쓰고 재고를 먼저 쓴다. 사내 이력과 완전히 일치하는 행은 A2부터 자동 확정 대상이다.', id: 'MAT-02 · COD-02' },

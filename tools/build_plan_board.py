@@ -90,6 +90,16 @@ def main():
 
     modules = [{'code': clean(c[0]), 'name': clean(c[1]), 'purpose': clean(c[2]), 'users': clean(c[3]), 'stage': clean(c[4])}
                for c in table_rows(d04, r'`(' + '|'.join(MODS) + r')`') if len(c) >= 5]   # 1장 모듈 표(5열)만. 3장 범위 표(2열)는 뺀다
+    # 뿌리 원칙(DEC-18): docs/04 1.1 BOM 뿌리 지도의 '층'(줄기·가지·받침)을 모듈에 붙인다. 첫 칸이 '이름 `코드`' 모양인 행만 읽는다
+    layers = {}
+    for line in d04.splitlines():
+        if line.startswith('|'):
+            c = cells(line)
+            m = re.fullmatch(r'.+ `(' + '|'.join(MODS) + r')`', c[0]) if c else None
+            if m and len(c) >= 5 and c[1] in ('줄기', '가지', '받침'):
+                layers[m.group(1)] = c[1]
+    for m in modules:
+        m['layer'] = layers.get(m['code'], '')
     mod_users = {m['code']: users_to_depts(m['users']) for m in modules}
 
     feats = []
