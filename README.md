@@ -148,3 +148,4 @@ Drimaes_BOM_Agent_Plan/
 | v0.1.6 | 2026-11-19 | git 저장소 생성, 태그 `v1.0`으로 이때까지의 내용 보존. `.kiro/` 삭제(내용은 CLAUDE.md와 스킬에 옮겨 둠). `briefing/index.html`을 기준 목업과 항상 같게 유지하는 규칙과 git 규칙을 CLAUDE.md 9장에 추가. `.gitignore`·`.gitattributes` 추가 |
 | v0.1.7 | 2026-11-23 | 부서 기능 확장: [docs/14](docs/14_부서기능_확장검토.md) 신설, docs/01~05·10~13 갱신(모듈 `PRD`·`QLT`, DEC-13~17, OI-22~25, DT-12~15). 시연 목업 확장 판(`DaBOM_expand_20261123.html`)을 기준 판으로 바꾸고 `index.html` 갱신. 루트 `Inventory.xlsx` 수량 조정, `PartHistory.xlsx` 추가. 기획 현황판(`briefing/DaBOM_plan_board_20261123.html`)과 `tools/` 추가. 맞추기 흐름 그림 갱신 |
 | v0.1.8 | 2026-11-23 | 원격 저장소 `drimaes-bolt/bomagent`(공개)를 연결하고 `main`을 이 폴더의 이력으로 교체. 기존 원격에는 README.md·index.html(이전 목업)과 커밋 5개가 있었고 보존하지 않았다. 규칙은 [CLAUDE.md 9.2](CLAUDE.md) |
+| v0.1.9 | 2026-11-23 | Vercel 배포가 404를 내던 문제를 고침. 루트에 `vercel.json`을 추가해 `briefing/` 폴더만 배포하도록 지정(`outputDirectory`). 목업은 `/`, 기획 현황판은 `/DaBOM_plan_board_20261123.html`로 열린다 |
