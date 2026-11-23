@@ -30,7 +30,7 @@
  ① 가져오기   파일 구조 해독 · 원문 보존 · 표기 분류와 사양 해석(모델)
       │
       ▼
- ② 맞추기     지정 부품 → 사내 기존 품목(동일·동등, 재고 보유 우선) → 후보 부품 풀 → 외부 후보
+ ② 맞추기     지정 부품 → 사내 기존 품목(동일·동등, 재고 보유 → 재고 0 사용 이력) → 후보 부품 풀 → 거래처 카탈로그 → 외부 후보
       │       품목마다 사내 거래처와 구매 조건을 붙인다
       ▼
  ③ 만들기     제품 → 반제품 → 부품 구조 · 수량과 LOSS · 베어 PCB·펌웨어·Set 조립 행 · ERP 양식
@@ -70,24 +70,28 @@
 | [docs/10 로드맵과 추진 체계](docs/10_로드맵_추진체계.md) | 0~4단계와 종료 조건, 추진 조직, 회의체, 위험, 변화관리 | 기획 |
 | [docs/11 결정·미결 목록](docs/11_결정_미결_목록.md) | 결정 기록, 미결 과제, 가정, 기존 문서 간 충돌 정리 | 전원 |
 | [docs/12 용어집](docs/12_용어집.md) | 용어 정의와 겹치기 쉬운 ID | 전원 |
-| [docs/13 화면 목록](docs/13_화면_목록.md) | 시연 목업의 부서별 화면(주소·답하는 질문·구성·기능 ID·단계·상태), 화면이 없는 부서, 기능 대비 화면 공백. 새 화면 기획의 출발점 | 기획·개발 |
+| [docs/13 화면 목록](docs/13_화면_목록.md) | 시연 목업의 부서별 화면(주소·답하는 질문·구성·기능 ID·단계·상태). 연구소·생산관리·자재/구매에 생산기술·회계·품질·기준정보 화면 기획을 더했다. 기능 대비 화면 공백. 새 화면 기획의 출발점 | 기획·개발 |
+| [docs/14 부서 기능 확장 검토](docs/14_부서기능_확장검토.md) | 2026-11-23 요청 9건의 판단과 처리: 재고 수량 조정 규칙, 사용 이력 품목·거래처 카탈로그의 적절성(조건부 적절), 맞추기 순서 개정, 부서별 기능 후보 18건 검토, 새 ID, 외부 출처 | 기획·개발 |
 | [references/00 참고자료 목록](references/00_참고자료_목록.md) | 사본 목록, 원본 위치, 자료 성격, 이 폴더에 없는 자료 | 전원 |
 | [briefing/DaBOM_20261020.html](briefing/DaBOM_20261020.html) | 기획회의 시연용 화면 목업. 부서 선택 → 연구소(E-BOM 가져오기·M-BOM 변환·수정·전송), 생산관리(제품 BOM·개정 이력·구조 확정·소요량), 자재/구매(재고·입고·구매·거래처). 프론트 전용 단일 파일, 값은 [가상]. 다른 PC에서는 이 HTML과 루트의 `SS_SKPRT_EBOM.xlsx`를 한 폴더에 두고 연구소 화면의 Import로 고른다 | 기획·현업 |
-| [briefing/DaBOM_taste_skill_20261021.html](briefing/DaBOM_taste_skill_20261021.html) | **현재 기준 시연 목업.** 동작과 데이터는 위 파일과 같고, 화면 구성만 taste-skill(v2.1.4)의 앱 화면 규칙으로 다시 정했다(회색 틀 + 흰 시트, 맞추기 결과 막대, BOM 단계 트랙, 화면 주소 `#rnd/import` 등). 색·글꼴은 디자인 키트(R08) 유지. 화면 목록은 [docs/13](docs/13_화면_목록.md) | 기획·현업 |
-| [briefing/index.html](briefing/index.html) | 현재 기준 시연 목업(위 파일)의 사본. 기준 판과 항상 같게 유지한다. 새 판을 만들거나 기준 판을 고치면 함께 갱신한다([CLAUDE.md 9.1](CLAUDE.md)) | 기획·현업 |
+| [briefing/DaBOM_taste_skill_20261021.html](briefing/DaBOM_taste_skill_20261021.html) | 이전 기준 시연 목업. 동작과 데이터는 위 파일과 같고, 화면 구성만 taste-skill(v2.1.4)의 앱 화면 규칙으로 다시 정했다(회색 틀 + 흰 시트, 맞추기 결과 막대, BOM 단계 트랙, 화면 주소 `#rnd/import` 등) | 기획·현업 |
+| [briefing/DaBOM_expand_20261123.html](briefing/DaBOM_expand_20261123.html) | **현재 기준 시연 목업(확장 판).** taste-skill 판에 더해: 재고 = 루트 `Inventory.xlsx` 1,048품목(단가만 [가상]), 사용 이력 품목 356(재고 0), 분류(ERP 대분류) 체크 상자 필터, E-BOM 없이 재고 열람, 거래처 카탈로그(예시), 맞추기 막대의 "재사용 · 재고 0" 칸, 생산기술·회계·품질·기준정보 화면 기획. 화면 목록은 [docs/13](docs/13_화면_목록.md), 근거는 [docs/14](docs/14_부서기능_확장검토.md) | 기획·현업 |
+| [briefing/index.html](briefing/index.html) | 현재 기준 시연 목업(위 확장 판)의 사본. 기준 판과 항상 같게 유지한다. 새 판을 만들거나 기준 판을 고치면 함께 갱신한다([CLAUDE.md 9.1](CLAUDE.md)) | 기획·현업 |
+| [briefing/DaBOM_plan_board_20261123.html](briefing/DaBOM_plan_board_20261123.html) | **기획 현황판.** 기능 76개·화면 47개·질의·결정·미결·데이터 준비를 한 화면에서 본다: 단계별·모듈별 기능, 기능 목록(상태·단계·부서·화면 필터, 질의 연결), 부서 × 단계 표, 화면 지도(누르면 목업 그 화면이 열림), 결정·미결. docs/를 읽어 `tools/build_plan_board.py`가 만든다. 문서를 고친 뒤 `python tools/build_plan_board.py`로 다시 만든다. 파일 이름의 날짜는 화면 틀의 판 날짜이고, 생성 시각은 화면 안에 있다 | 기획·전원 |
+| [tools/](tools/) | `build_plan_board.py`(기획 현황판 생성, 표준 라이브러리만), `plan_board_template.html`(현황판 화면 틀) | 기획·AI |
 | [DA_UI_hallmark/00_READ_FIRST.md](DA_UI_hallmark/00_READ_FIRST.md) | 사내 웹 화면·웹 문서 디자인 규칙 DA UI hallmark v1.0. 위 taste-skill 판의 조합(키트 색·글꼴 + taste-skill 규칙)을 규칙으로 정리했고, 사내 키트(R08)보다 우선한다. 규칙 문서 5개, 시작 틀 3개(업무 화면·발표·문서), 브라우저 검사기 `checker.html`, 처음 쓰는 사람용 `GUIDE.html` | 기획·개발·전사 |
 | [CLAUDE.md](CLAUDE.md) | Claude Code 상시 작업 지침. 프로젝트 맥락, 역할 분담, 원칙, 작업 유형별 절차, 문서 작성 규칙(표기·ID 체계·변경 관리) | AI·문서 작성자 |
 | [.claude/skills/](.claude/skills/) | 작업별 스킬. `briefing-material`(설명자료 작성), `dabom-mockup`(시연 목업 구조와 수정 절차) | AI·문서 작성자 |
 
 ## 5. 읽는 순서
 
-- 기획팀: 이 문서 → 01 → 02 → 03 → 13 → 10 → 11
-- 개발팀: 이 문서 → 02 → 04 → 13 → 05 → 06 → 07 → 08 → 09 → 11
+- 기획팀: 이 문서 → 기획 현황판 → 01 → 02 → 03 → 13 → 14 → 10 → 11
+- 개발팀: 이 문서 → 02 → 04 → 13 → 14 → 05 → 06 → 07 → 08 → 09 → 11
 - 설명자료를 만들 때는 스킬 `briefing-material`을 따른다. 디자인은 `DA_UI_hallmark/`를 따른다.
 
 ## 6. 지금 상태와 다음 할 일
 
-현재 상태는 기획 초안이다. NC AI의 10/02 설계 자료 기준으로 협력사 모델은 튜닝 전이고, 데모는 범용 모델을 임시로 연결해 시연했다(R06·R07). 다봄 개발은 시작 전이다. 시연 목업에는 세 부서(연구소·생산관리·자재/구매)의 동작 화면 12개와 다음 단계 미리보기 화면 12개가 있고, 회계·품질·영업·기준정보 담당 화면은 없다([docs/13](docs/13_화면_목록.md)).
+현재 상태는 기획 초안이다. NC AI의 10/02 설계 자료 기준으로 협력사 모델은 튜닝 전이고, 데모는 범용 모델을 임시로 연결해 시연했다(R06·R07). 다봄 개발은 시작 전이다. 시연 목업(확장 판)에는 동작 화면 14개와 미리보기 화면 33개가 있다. 연구소·생산관리·자재/구매가 동작 부서이고, 생산기술·회계·품질·기준정보는 화면 기획을 미리보기로 넣었다(회계는 동작 화면 1개). 영업만 화면이 없다([docs/13](docs/13_화면_목록.md)). 2026-11-23 검토(사용 이력 품목, 거래처 카탈로그, 부서별 기능)는 [docs/14](docs/14_부서기능_확장검토.md)에 있다.
 
 0단계(준비)에서 할 일은 다음과 같다. 상세는 [docs/10](docs/10_로드맵_추진체계.md).
 
@@ -104,11 +108,14 @@ Drimaes_BOM_Agent_Plan/
 ├─ README.md                  이 문서
 ├─ CLAUDE.md                  Claude Code 상시 작업 지침 (맥락·원칙·작업 절차·작성 규칙)
 ├─ .claude/skills/            작업별 스킬: briefing-material(설명자료), dabom-mockup(시연 목업 수정)
-├─ docs/                      기획 본문 01~13
+├─ docs/                      기획 본문 01~14
 ├─ briefing/                  설명자료 산출 위치
-│  ├─ DaBOM_taste_skill_20261021.html   현재 기준 시연 목업
+│  ├─ DaBOM_expand_20261123.html        현재 기준 시연 목업(확장 판)
 │  ├─ index.html                        기준 목업의 사본 (항상 같게 유지)
-│  └─ DaBOM_20261020.html               이전 판 시연 목업
+│  ├─ DaBOM_plan_board_20261123.html    기획 현황판 (tools/build_plan_board.py가 만든다)
+│  ├─ DaBOM_taste_skill_20261021.html   이전 판 시연 목업
+│  └─ DaBOM_20261020.html               그 이전 판 시연 목업
+├─ tools/                     기획 현황판 생성 스크립트와 화면 틀
 ├─ DA_UI_hallmark/            사내 웹 디자인 규칙 v1.0 (규칙 md 5개, 시작 틀 3개, checker.html, GUIDE.html). 안의 파일은 배포 원본이라 직접 고치지 않는다
 ├─ references/                근거 자료 (사본은 수정 금지, 목록만 갱신)
 │  ├─ 00_참고자료_목록.md
@@ -116,7 +123,8 @@ Drimaes_BOM_Agent_Plan/
 │  └─ samples/                NC AI 전달본 데이터(가공·가상)와 학습용 시트 3종
 ├─ SS_SKPRT_EBOM.xlsx         시연 입력 E-BOM(KK16). 목업 연구소 화면의 Import로 고른다
 ├─ SS_SKPRT_MBOM.xlsx         시연 결과 M-BOM(KK16 M-BOM 1차, [가상]). 목업에 내장된 변환 결과의 원본
-├─ Inventory.xlsx             references/samples/2025년_기말재고현황_20251231.xlsx와 같은 파일
+├─ Inventory.xlsx             통합 재고(테스트용 더미). 원재료 1,048품목 = 2025 기말 실제 315 + 가상 733. 2026-11-23 수량 조정(작성기준 C절)
+├─ PartHistory.xlsx           사용 이력 품목 DB(재고 0이지만 쓴 적이 있는 356품목, [가상])
 ├─ .gitignore                 git에서 뺄 파일
 └─ .gitattributes             줄 끝 문자 변환 금지. 목업·엑셀을 바이트 그대로 보존
 ```
@@ -138,3 +146,4 @@ Drimaes_BOM_Agent_Plan/
 | v0.1.4 | 2026-10-21 | DA UI hallmark v1.0 추가(`DA_UI_hallmark/`, 배포본 `DA_UI_hallmark_v1.0.zip`). 설명자료 steering의 디자인 기준을 사내 키트(R08)에서 hallmark로 바꿈. references 목록의 R08·R11·R12 쓰임 갱신. 문서 지도·폴더 구조에 반영 |
 | v0.1.5 | 2026-11-19 | 작업 환경을 Kiro에서 Claude Code로 옮김. `.kiro/steering/` 규칙을 `CLAUDE.md`(상시 2개 합침)와 스킬 `briefing-material`로 옮기고, 목업 수정 스킬 `dabom-mockup`과 [docs/13 화면 목록](docs/13_화면_목록.md)을 새로 만듦. 폴더 구조를 실제와 맞춤(`taste-skill-main/`·zip 없음, `index.html`·루트 엑셀 3개 표시). 읽는 순서에 docs/13 추가 |
 | v0.1.6 | 2026-11-19 | git 저장소 생성, 태그 `v1.0`으로 이때까지의 내용 보존. `.kiro/` 삭제(내용은 CLAUDE.md와 스킬에 옮겨 둠). `briefing/index.html`을 기준 목업과 항상 같게 유지하는 규칙과 git 규칙을 CLAUDE.md 9장에 추가. `.gitignore`·`.gitattributes` 추가 |
+| v0.1.7 | 2026-11-23 | 부서 기능 확장: [docs/14](docs/14_부서기능_확장검토.md) 신설, docs/01~05·10~13 갱신(모듈 `PRD`·`QLT`, DEC-13~17, OI-22~25, DT-12~15). 시연 목업 확장 판(`DaBOM_expand_20261123.html`)을 기준 판으로 바꾸고 `index.html` 갱신. 루트 `Inventory.xlsx` 수량 조정, `PartHistory.xlsx` 추가. 기획 현황판(`briefing/DaBOM_plan_board_20261123.html`)과 `tools/` 추가. 맞추기 흐름 그림 갱신 |

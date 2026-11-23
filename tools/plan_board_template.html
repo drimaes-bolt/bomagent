@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko" data-hm-profile="app">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F4F5F7">
+<title>다봄 기획 현황판</title>
+<!-- 이 파일은 tools/build_plan_board.py 가 tools/plan_board_template.html 로 만든다. 직접 고치지 말고 문서(docs/)를 고친 뒤 다시 만든다. -->
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* DA UI hallmark v1.0 · app 프로필(10_template_app.html의 기준값과 공통 구역) */
+:root{
+  color-scheme: light;
+  --co-black:#000000; --co-dark:#555555; --co-mid:#A0A0A0; --co-light:#DEDEDE;
+  --co-mint:#7DEAD5;  --co-cyan:#1BBBCC; --co-blue:#4383AF; --co-navy:#06438C;
+  --navy:#06438C;
+  --b50:#E5F0F5; --b100:#C7DCE7; --b700:#052E62; --b800:#031F44;
+  --e100:#E5F8F2; --e800:#16735F;
+  --frame:#F4F5F7; --surface:#FFFFFF; --raised:#FAFAFA; --hover:#EEF0F3; --active:#E6E8EC;
+  --edge:#E3E5E9; --rule:#EEF0F3; --control:#CBD0D6; --control-strong:#868C93; --grid:#DEDEDE;
+  --ink:#111111; --ink-2:#555555; --ink-3:#6B6F76;
+  --float:0 10px 28px rgba(0,0,0,.08);
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  --r-tag:4px; --r-ctl:6px; --r-panel:8px; --r-sheet:16px;
+  --side-w:228px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--frame);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;word-break:keep-all;overflow-wrap:break-word;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+input,select{font:inherit;color:inherit}
+a{color:var(--navy);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+h1[tabindex="-1"]:focus{outline:none}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.mini{font-size:12px;color:var(--ink-3)}
+.row{display:flex;align-items:center;gap:8px}
+h1.t{font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.3;text-wrap:balance}
+.desc{margin-top:4px;font-size:14px;color:var(--ink-2);line-height:1.6;max-width:96ch}
+.desc b{color:var(--ink);font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--r-ctl);font-size:13px;font-weight:600;white-space:nowrap;border:1px solid transparent;text-decoration:none;transition:background-color .12s,border-color .12s}
+.btn-2{background:#fff;color:var(--ink);border-color:var(--control)}
+.btn-2:hover{background:var(--frame);border-color:#B9BFC7}
+.btn-t{color:var(--ink-2)}
+.btn-t:hover{background:var(--hover);color:var(--ink)}
+.btn.sm{height:28px;padding:0 10px}
+.tag{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:var(--r-tag);font-size:12px;font-weight:500;white-space:nowrap;flex:none;line-height:1;background:var(--hover);color:var(--ink-2);border:1px solid transparent}
+.tag.n{background:var(--b50);color:var(--b700)}
+.tag.e{background:var(--e100);color:var(--e800)}
+.tag.o{background:#fff;color:var(--navy);border-color:var(--navy)}
+.tag.f{background:none;padding:0;color:var(--ink-3);font-weight:400}
+.call{border-radius:var(--r-panel);padding:12px 14px;font-size:13px;line-height:1.6;color:var(--ink-2);background:var(--raised)}
+.call b{color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-panel);overflow:hidden}
+.kpi{background:#fff;padding:12px 16px;min-width:0}
+.kpi .l{font-size:13px;color:var(--ink-2)}
+.kpi .v{margin-top:2px;font-size:24px;font-weight:600;line-height:1.2;white-space:nowrap}
+.kpi .v small{font-size:13px;font-weight:400;color:var(--ink-3);margin-left:3px}
+.kpi .s{margin-top:2px;font-size:12px;color:var(--ink-3)}
+.inp{height:32px;border-radius:var(--r-ctl);border:1px solid var(--control-strong);background:#fff;padding:0 10px;font-size:13px;min-width:0;color:var(--ink)}
+.inp::placeholder{color:var(--ink-3)}
+.inp:focus{outline:2px solid rgba(6,67,140,.28);outline-offset:0;border-color:var(--navy)}
+.search{position:relative}
+.search .ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink-3);pointer-events:none}
+.search .inp{padding-left:32px;width:100%}
+.seg{display:inline-flex;background:var(--hover);border-radius:var(--r-panel);padding:2px;gap:2px;flex-wrap:wrap}
+.seg button{height:28px;padding:0 12px;border-radius:var(--r-ctl);font-size:13px;font-weight:500;color:var(--ink-2);border:1px solid transparent}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);border-color:var(--edge)}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);cursor:pointer}
+.chk input{width:15px;height:15px;margin:0;accent-color:var(--navy)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--edge);margin-bottom:12px;flex-wrap:wrap}
+.tabs [role="tab"]{position:relative;height:38px;padding:0 10px;font-size:14px;font-weight:500;color:var(--ink-2)}
+.tabs [role="tab"]:hover{color:var(--ink)}
+.tabs [role="tab"][aria-selected="true"]{color:var(--ink);font-weight:600}
+.tabs [role="tab"][aria-selected="true"]::after{content:"";position:absolute;left:2px;right:2px;bottom:-1px;height:2px;background:var(--navy)}
+.tabs .c{font-size:12px;color:var(--ink-3);margin-left:4px}
+.panel{background:#fff;border:1px solid var(--edge);border-radius:var(--r-panel);padding:14px 16px;min-width:0}
+.panel-h{display:flex;align-items:center;gap:8px;margin-bottom:10px;min-height:24px}
+.panel-h h2{flex:1;min-width:0;font-size:14px;font-weight:600}
+.kv{display:grid;grid-template-columns:84px minmax(0,1fr);gap:6px 12px;font-size:13px;line-height:1.5}
+.kv dt{color:var(--ink-3)}
+.kv dd{color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-weight:400;color:var(--ink-3);text-align:left;padding:0 12px 8px 0;font-size:12px;border-bottom:1px solid var(--edge);white-space:nowrap}
+.tbl td{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+.tbl th.r,.tbl td.r{text-align:right}
+.tbl td.id{color:var(--ink);white-space:nowrap;font-weight:600}
+.tbl td b{color:var(--ink);font-weight:600}
+.tbl td small{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
+.tbl tbody tr.pick{cursor:pointer;transition:background-color .12s}
+.tbl tbody tr.pick:hover{background:var(--raised)}
+.tbl tbody tr[aria-selected="true"]{background:var(--b50)}
+.tbl tbody tr[aria-selected="true"] td small{color:var(--ink-2)}
+.tbl-foot{margin-top:10px;font-size:13px;color:var(--ink-3)}
+.links{display:flex;flex-wrap:wrap;gap:4px 8px}
+.mlist{display:none}
+.mlist li{border-bottom:1px solid var(--rule)}
+.mlist button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;width:100%;min-height:56px;padding:10px 0;text-align:left}
+.mlist b{font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mlist small{grid-column:1/-1;font-size:13px;color:var(--ink-3)}
+.empty{padding:20px 16px;text-align:center;color:var(--ink-2);border:1px dashed var(--control);border-radius:var(--r-panel);font-size:13px;line-height:1.6}
+.empty b{display:block;color:var(--ink);font-size:14px;font-weight:600;margin-bottom:2px}
+.empty .btn{margin-top:10px}
+/* 차트: 시연 = 네이비, 미리보기 = 파랑, 화면 없음 = 회색. 값은 막대 옆 숫자와 표로도 준다 */
+.chart svg{display:block;width:100%;height:auto}
+.chart text{font-family:var(--font);font-size:12px;fill:var(--ink-3)}
+.chart text.val{fill:var(--ink-2)}
+.chart text.in{fill:#fff;font-weight:600}
+.chart text.ind{fill:var(--ink);font-weight:600}
+.chart .gl{stroke:var(--rule);stroke-width:1}
+.s-demo{fill:var(--navy);background:var(--navy)}
+.s-preview{fill:var(--co-blue);background:var(--co-blue)}
+.s-none{fill:var(--control);background:var(--control)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--ink-2);margin-bottom:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.hbars li{display:grid;grid-template-columns:150px minmax(0,1fr) 44px;gap:10px;align-items:center;padding:5px 0;font-size:13px;color:var(--ink-2)}
+.hbars li b{color:var(--ink);font-weight:600}
+.hbars .bar{display:flex;gap:2px;height:12px}
+.hbars .bar span{display:block;height:12px;border-radius:2px}
+.hbars .n{text-align:right;color:var(--ink);font-weight:600}
+details.tv{margin-top:8px;font-size:13px}
+details.tv summary{cursor:pointer;color:var(--ink-2);min-height:28px;display:flex;align-items:center}
+/* 부서 × 단계: 한 색 연한 → 진한 */
+.mx td.c{text-align:right;font-weight:600;cursor:pointer;border-radius:4px}
+.mx td.c:hover{outline:2px solid var(--navy);outline-offset:-2px}
+.mx td.z{color:var(--ink-3);font-weight:400;cursor:default;text-align:right}
+.mx td.z:hover{outline:none}
+.mx .q1{background:var(--b50);color:var(--b700)}
+.mx .q2{background:var(--b100);color:var(--b800)}
+.mx .q3{background:var(--navy);color:#fff}
+.mx td,.mx th{padding:8px 10px}
+/* 셸 */
+.app{display:grid;grid-template-columns:var(--side-w) minmax(0,1fr);grid-template-rows:48px minmax(0,1fr);height:100dvh}
+.top{grid-column:1/-1;display:grid;grid-template-columns:var(--side-w) minmax(0,1fr) auto;align-items:center;padding-right:12px;position:relative;z-index:30}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;padding-left:16px;text-decoration:none;color:inherit}
+.mark{width:26px;height:26px;border-radius:var(--r-ctl);background:var(--navy);display:grid;place-items:center;flex:none}
+.mark svg{width:16px;height:16px;display:block}
+.brand .nm{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.15;color:var(--ink)}
+.brand .sb{display:block;font-size:12px;color:var(--ink-3);line-height:1.2}
+.top .mid{display:flex;justify-content:center;min-width:0;padding:0 16px}
+.gsearch{position:relative;width:min(548px,100%)}
+.gsearch .inp{width:100%;padding-left:32px;padding-right:44px}
+.gsearch>.ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink-3);pointer-events:none}
+.gsearch kbd{position:absolute;right:8px;top:50%;transform:translateY(-50%);font:12px var(--font);color:var(--ink-2);background:var(--frame);border-radius:4px;padding:1px 6px}
+.top-r{display:flex;align-items:center;gap:8px;justify-self:end}
+.ibtn{width:32px;height:32px;border-radius:var(--r-ctl);display:grid;place-items:center;color:var(--ink-2)}
+.ibtn:hover{background:var(--active);color:var(--ink)}
+.menu-btn{display:none}
+.side{grid-column:1;grid-row:2;overflow-y:auto;padding:8px 10px 16px;display:flex;flex-direction:column}
+.nav-g{margin-bottom:14px}
+.nav-l{padding:0 10px;margin:4px 0;font-size:12px;color:var(--ink-3)}
+.nav-i{width:100%;display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:var(--r-ctl);color:var(--ink-2);font-size:14px;text-align:left;text-decoration:none;margin-bottom:2px;transition:background-color .12s}
+.nav-i .ic{color:var(--ink-3)}
+.nav-i:hover{background:var(--active);color:var(--ink)}
+.nav-i .lb{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-i .bd{font-size:12px;font-weight:600;min-width:20px;height:18px;padding:0 6px;border-radius:9px;background:var(--navy);color:#fff;display:inline-grid;place-items:center}
+.nav-i[aria-current="page"]{background:var(--active);color:var(--ink);font-weight:600}
+.nav-i[aria-current="page"] .ic{color:var(--ink)}
+.scope{margin:auto 8px 0;padding-top:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;font-size:12px;line-height:1.5}
+.scope dt{color:var(--ink-3)}
+.scope dd{color:var(--ink-2);overflow-wrap:anywhere}
+.main{grid-column:2;grid-row:2;margin:0 8px 8px 0;background:var(--surface);border:1px solid var(--edge);border-radius:var(--r-sheet);overflow:auto;min-width:0;position:relative}
+.page{padding:24px}
+.pg-head{display:flex;align-items:flex-end;gap:16px;margin-bottom:20px}
+.pg-head .l{flex:1;min-width:0}
+.pg-head .r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.stamp{font-size:12px;color:var(--ink-3);white-space:nowrap}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.with-rail{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rail{position:sticky;top:0}
+.dsec{margin-top:24px}
+.dsec:first-of-type{margin-top:0}
+.dsec h2{font-size:16px;font-weight:600;margin-bottom:8px;display:flex;align-items:baseline;gap:8px}
+#tip{position:fixed;z-index:1000;max-width:320px;pointer-events:none;background:#fff;border:1px solid var(--edge);border-radius:var(--r-panel);box-shadow:var(--float); /* hallmark-ignore: 떠 있는 요소 */
+  padding:8px 10px;font-size:13px;line-height:1.55;color:var(--ink-2);white-space:pre-line}
+@media (max-width:1280px){.grid2{grid-template-columns:minmax(0,1fr)}.with-rail{grid-template-columns:minmax(0,1fr)}.rail{position:static}}
+@media (max-width:1100px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .top{grid-template-columns:auto auto minmax(0,1fr) auto;padding-left:6px}
+  .brand{padding-left:2px}
+  .menu-btn{display:grid}
+  .side{display:none}
+  .app.nav-open .side{display:flex;position:fixed;left:0;right:0;top:48px;bottom:0;z-index:50;background:var(--frame);padding:8px 16px 24px}
+  .main{grid-column:1;margin:0 8px 8px}
+}
+@media (max-width:640px){
+  .top .mid,.brand .sb,.top-r .btn{display:none}
+  .main{margin:0;border:0;border-radius:0}
+  .page{padding:16px}
+  h1.t{font-size:20px}
+  .pg-head{flex-direction:column;align-items:stretch;gap:12px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tbl-wrap{display:none}
+  .mlist{display:block}
+  .hbars li{grid-template-columns:96px minmax(0,1fr) 36px}
+  .btn,.inp{min-height:40px}
+  .nav-i{height:44px}
+  .seg button{height:40px}
+  .mx-wrap{overflow-x:auto}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.side,.top{display:none!important}.app{display:block;height:auto}.main{margin:0;border:0;overflow:visible}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-home" viewBox="0 0 16 16"><path d="M2.5 7.5L8 3l5.5 4.5V13h-11z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 16 16"><path d="M5.5 4h8M5.5 8h8M5.5 12h8M2.5 4h.1M2.5 8h.1M2.5 12h.1"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 16 16"><rect x="2" y="2.5" width="12" height="11" rx="1"/><path d="M2 6.2h12M2 9.8h12M6.5 2.5v11"/></symbol>
+  <symbol id="i-screen" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="8.5" rx="1"/><path d="M6 13.5h4"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 16 16"><path d="M3.5 14V2.5M3.5 3h8l-1.5 3 1.5 3h-8"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="M10.4 10.4L14 14"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 16 16"><path d="M2.5 4h11M2.5 8h11M2.5 12h11"/></symbol>
+</svg>
+<div class="app" id="app">
+  <header class="top">
+    <button class="ibtn menu-btn" type="button" id="menu-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="side"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <a class="brand" href="#overview" aria-label="기획 현황판 처음 화면">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"><rect x="2.5" y="2" width="4.5" height="3.5" rx=".8"/><rect x="9" y="6.75" width="4.5" height="3" rx=".8"/><rect x="9" y="11.25" width="4.5" height="3" rx=".8"/><path d="M4.75 5.5v7.25H9M4.75 8.25H9" stroke-linecap="round"/></svg></span>
+      <span><span class="nm">다봄 기획 현황판</span><span class="sb" id="brand-sb"></span></span>
+    </a>
+    <div class="mid"><div class="gsearch" role="search"><label class="sr" for="gq">기능 찾기</label><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="inp" id="gq" type="search" placeholder="기능 ID·이름·설명 찾기 (예: MAT-10, 카탈로그)" autocomplete="off"><kbd aria-hidden="true">/</kbd></div></div>
+    <div class="top-r"><a class="btn btn-2 sm" id="mock-link" href="index.html" target="_blank" rel="noopener">시연 목업 열기</a></div>
+  </header>
+  <nav class="side" id="side" aria-label="주 메뉴">
+    <div class="nav-g">
+      <a class="nav-i" href="#overview" data-v="overview"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg><span class="lb">기획 현황</span></a>
+      <a class="nav-i" href="#features" data-v="features"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg><span class="lb">기능 목록</span></a>
+      <a class="nav-i" href="#matrix" data-v="matrix"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg><span class="lb">부서 × 단계</span></a>
+      <a class="nav-i" href="#screens" data-v="screens"><svg class="ic" aria-hidden="true"><use href="#i-screen"/></svg><span class="lb">화면 지도</span></a>
+      <a class="nav-i" href="#decisions" data-v="decisions"><svg class="ic" aria-hidden="true"><use href="#i-flag"/></svg><span class="lb">결정·미결</span><span class="bd" id="nav-oi" aria-label="미결 건수"></span></a>
+    </div>
+    <dl class="scope" id="scope"></dl>
+  </nav>
+  <main class="main" id="main">
+    <section class="view page" data-hm-view="overview" id="v-overview" aria-labelledby="h-overview">
+      <div class="pg-head"><div class="l"><h1 class="t" id="h-overview" tabindex="-1">기획 현황</h1><p class="desc" id="ov-find"></p></div><div class="r"><span class="stamp" id="ov-stamp"></span></div></div>
+      <div class="stack">
+        <div class="kpis" id="ov-kpis"></div>
+        <div class="grid2">
+          <section class="panel" aria-labelledby="h-stage"><div class="panel-h"><h2 id="h-stage">단계별 기능</h2><span class="mini">docs/04 단계 열</span></div>
+            <div class="legend" id="lg1"></div><figure class="chart" id="ch-stage"></figure>
+            <details class="tv"><summary>표로 보기</summary><table class="tbl" id="tb-stage"></table></details></section>
+          <section class="panel" aria-labelledby="h-mod"><div class="panel-h"><h2 id="h-mod">모듈별 기능</h2><span class="mini">누르면 기능 목록</span></div>
+            <div class="legend" id="lg2"></div><ul class="hbars" id="ch-mod"></ul></section>
+        </div>
+        <div class="grid2">
+          <section class="panel" aria-labelledby="h-new"><div class="panel-h"><h2 id="h-new">최근 추가·변경한 기능</h2><a class="btn btn-t sm" href="#features/new">전체 보기</a></div><div id="ov-new"></div></section>
+          <section class="panel" aria-labelledby="h-docs"><div class="panel-h"><h2 id="h-docs">문서 현황</h2><span class="mini">각 문서 변경 이력의 마지막 행</span></div><div id="ov-docs"></div></section>
+        </div>
+      </div>
+    </section>
+
+    <section class="view page" data-hm-view="features" id="v-features" aria-labelledby="h-features" hidden>
+      <div class="pg-head"><div class="l"><h1 class="t" id="h-features" tabindex="-1">기능 목록</h1><p class="desc" id="ft-find"></p></div></div>
+      <div class="with-rail">
+        <div class="stack">
+          <div class="toolbar">
+            <div class="seg" role="group" aria-label="화면 상태로 거르기" id="ft-st"></div>
+            <label class="sr" for="ft-mod">모듈</label><select class="inp" id="ft-mod"></select>
+            <label class="sr" for="ft-stage">단계</label><select class="inp" id="ft-stage"></select>
+            <label class="sr" for="ft-dept">부서</label><select class="inp" id="ft-dept"></select>
+            <label class="chk"><input type="checkbox" id="ft-new">최근 추가·변경만</label>
+            <button class="btn btn-t sm" type="button" id="ft-clear">필터 지우기</button>
+          </div>
+          <div class="tbl-wrap"><table class="tbl" aria-label="기능 목록"><thead><tr><th scope="col">ID</th><th scope="col">기능</th><th scope="col">단계</th><th scope="col">부서</th><th scope="col">화면</th><th scope="col">상태</th></tr></thead><tbody id="ft-body"></tbody></table></div>
+          <ul class="mlist" id="ft-mlist" aria-label="기능 목록"></ul>
+          <div id="ft-empty" hidden></div>
+          <p class="tbl-foot" id="ft-foot"></p>
+        </div>
+        <aside class="stack rail" id="ft-side" aria-label="기능 상세"></aside>
+      </div>
+    </section>
+
+    <section class="view page" data-hm-view="matrix" id="v-matrix" aria-labelledby="h-matrix" hidden>
+      <div class="pg-head"><div class="l"><h1 class="t" id="h-matrix" tabindex="-1">부서 × 단계</h1><p class="desc" id="mx-find"></p></div></div>
+      <div class="stack">
+        <div class="mx-wrap"><table class="tbl mx" id="mx" aria-label="부서별 단계별 기능 수"></table></div>
+        <p class="mini">한 기능이 여러 부서에 걸리면 부서마다 센다. 부서는 그 기능을 보여 주는 화면의 부서와 docs/03 질의의 부서이고, 둘 다 없으면 docs/04 모듈의 주 사용자다. 칸을 누르면 그 기능만 보인다.</p>
+        <section class="panel" aria-labelledby="h-dscr"><div class="panel-h"><h2 id="h-dscr">부서별 화면과 질의</h2></div><div id="mx-scr"></div></section>
+      </div>
+    </section>
+
+    <section class="view page" data-hm-view="screens" id="v-screens" aria-labelledby="h-screens" hidden>
+      <div class="pg-head"><div class="l"><h1 class="t" id="h-screens" tabindex="-1">화면 지도</h1><p class="desc" id="sc-find"></p></div><div class="r"><div class="seg" role="group" aria-label="상태로 거르기" id="sc-st"></div></div></div>
+      <div id="sc-body"></div>
+    </section>
+
+    <section class="view page" data-hm-view="decisions" id="v-decisions" aria-labelledby="h-decisions" hidden>
+      <div class="pg-head"><div class="l"><h1 class="t" id="h-decisions" tabindex="-1">결정·미결</h1><p class="desc" id="dc-find"></p></div></div>
+      <div class="tabs" role="tablist" aria-label="결정·미결 보기" id="dc-tabs"></div>
+      <div class="tbl-wrap" id="dc-body"></div>
+      <ul class="mlist" id="dc-mlist"></ul>
+    </section>
+  </main>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+<script>
+(function () {
+'use strict';
+const D = /*__PLAN_DATA__*/;
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = n => Number(n).toLocaleString('ko-KR');
+const DN = Object.fromEntries(D.depts.map(d => [d.k, d.name]));
+const ST = { demo: ['시연', 'e'], preview: ['미리보기', 'n'], none: ['화면 없음', ''] };
+const SK = [['1', '1단계'], ['2', '2단계'], ['3', '3단계'], ['4', '4단계'], ['other', '범위 밖·미정']];
+const skOf = f => (['1', '2', '3', '4'].includes(f.sk) ? f.sk : 'other');
+const tag = st => `<span class="tag ${ST[st][1]}">${ST[st][0]}</span>`;
+const mock = addr => `${D.mockup}#${addr}`;
+const scrLink = a => `<a href="${mock(a)}" target="_blank" rel="noopener">${esc(a)}</a>`;
+const F = D.features, S = { view: 'overview', ft: { st: 'all', mod: '', stage: '', dept: '', isNew: false, q: '' }, sel: null, sc: 'all', dc: 'oi' };
+const MOD = Object.fromEntries(D.modules.map(m => [m.code, m]));
+const latestDate = D.decisions.map(d => d.date).filter(x => /^\d{4}-/.test(x)).sort().pop() || '';
+
+/* ------------------------------------------------------------ 개요 */
+function counts(list) { const c = { demo: 0, preview: 0, none: 0 }; list.forEach(f => { c[f.status]++; }); return c; }
+function legend(el) { $(el).innerHTML = ['demo', 'preview', 'none'].map(k => `<span><i class="s-${k}"></i>${ST[k][0]}</span>`).join(''); }
+function renderOverview() {
+  const c = counts(F), scr = D.screens, sd = scr.filter(s => s.status.startsWith('시연')).length;
+  const early = D.issues.filter(o => /0단계|즉시|0~1/.test(o.when)).length;
+  const prop = D.decisions.filter(d => d.status.startsWith('제안')).length;
+  const nw = F.filter(f => f.isNew);
+  $('#ov-find').innerHTML = `기능 <b>${F.length}개</b> 중 ${c.demo}개는 시연 목업에서 동작하고, ${c.preview}개는 미리보기 화면만 있고, <b>${c.none}개</b>는 아직 화면이 없다. 미결 ${D.issues.length}건 중 <b>${early}건</b>은 0단계까지 정해야 한다.`;
+  $('#ov-stamp').textContent = `${D.generated} 생성`;
+  $('#ov-kpis').innerHTML = [
+    ['기능', F.length, '개', `모듈 ${D.modules.length}개 · 최근 추가·변경 ${nw.length}`],
+    ['화면', scr.length, '개', `동작 ${sd} · 미리보기 ${scr.length - sd}`],
+    ['미결', D.issues.length, '건', `0단계까지 ${early}건`],
+    ['결정', D.decisions.length, '건', `제안 ${prop} · 그 밖 ${D.decisions.length - prop}`],
+  ].map(([l, v, u, s]) => `<div class="kpi"><p class="l">${l}</p><p class="v">${fmt(v)}<small>${u}</small></p><p class="s">${s}</p></div>`).join('');
+  legend('#lg1'); legend('#lg2');
+  // 단계별 쌓은 막대
+  const groups = SK.map(([k, lb]) => { const l = F.filter(f => skOf(f) === k); return { k, lb, c: counts(l), n: l.length }; });
+  const W = 520, H = 230, pl = 8, pr = 8, pt = 22, pb = 26, max = Math.max(4, ...groups.map(g => g.n)), top = Math.ceil(max / 10) * 10;
+  const bw = (W - pl - pr) / groups.length, y = v => pt + (H - pt - pb) * (1 - v / top);
+  let g = '';
+  [0, top / 2, top].forEach(v => { g += `<line class="gl" x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}"/>`; });
+  groups.forEach((gr, i) => {
+    const x = pl + i * bw + bw * 0.2, w = bw * 0.6; let acc = 0;
+    ['demo', 'preview', 'none'].forEach(k => {
+      const n = gr.c[k]; if (!n) return;
+      const y1 = y(acc + n), h = y(acc) - y(acc + n) - (acc ? 2 : 0);
+      g += `<rect class="s-${k}" x="${x}" y="${y1}" width="${w}" height="${Math.max(1, h)}" rx="2" data-tip="${esc(gr.lb)} · ${ST[k][0]} ${n}개"/>`;
+      if (h >= 16) g += `<text class="${k === 'demo' ? 'in' : 'ind'}" x="${x + w / 2}" y="${y1 + h / 2 + 4}" text-anchor="middle" pointer-events="none">${n}</text>`;
+      acc += n;
+    });
+    g += `<text class="val" x="${x + w / 2}" y="${y(gr.n) - 6}" text-anchor="middle">${gr.n}</text>`;
+    g += `<text x="${x + w / 2}" y="${H - 8}" text-anchor="middle">${esc(gr.lb)}</text>`;
+  });
+  $('#ch-stage').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="단계별 기능 수. ${groups.map(gr => `${gr.lb} ${gr.n}개(시연 ${gr.c.demo}, 미리보기 ${gr.c.preview}, 화면 없음 ${gr.c.none})`).join(', ')}">${g}</svg>`;
+  $('#tb-stage').innerHTML = `<thead><tr><th scope="col">단계</th><th class="r" scope="col">시연</th><th class="r" scope="col">미리보기</th><th class="r" scope="col">화면 없음</th><th class="r" scope="col">합계</th></tr></thead><tbody>${groups.map(gr => `<tr><td>${gr.lb}</td><td class="r">${gr.c.demo}</td><td class="r">${gr.c.preview}</td><td class="r">${gr.c.none}</td><td class="r"><b>${gr.n}</b></td></tr>`).join('')}</tbody>`;
+  // 모듈별 가로 막대
+  const mods = D.modules.map(m => { const l = F.filter(f => f.mod === m.code); return { m, c: counts(l), n: l.length }; });
+  const mm = Math.max(...mods.map(x => x.n), 1);
+  $('#ch-mod').innerHTML = mods.map(x => `<li><a href="#features/mod-${x.m.code}" style="color:inherit;text-decoration:none" title="${esc(x.m.purpose)}"><b>${x.m.code}</b> ${esc(x.m.name)}</a>
+    <span class="bar" role="img" aria-label="${x.m.code} 시연 ${x.c.demo}, 미리보기 ${x.c.preview}, 화면 없음 ${x.c.none}">${['demo', 'preview', 'none'].filter(k => x.c[k]).map(k => `<span class="s-${k}" style="width:${x.c[k] / mm * 100}%" data-tip="${x.m.code} · ${ST[k][0]} ${x.c[k]}개"></span>`).join('')}</span><span class="n">${x.n}</span></li>`).join('');
+  // 최근 추가·변경
+  $('#ov-new').innerHTML = nw.length ? `<table class="tbl"><thead><tr><th scope="col">ID</th><th scope="col">기능</th><th scope="col">단계</th><th scope="col">상태</th></tr></thead><tbody>${nw.slice(0, 8).map(f => `<tr class="pick" data-f="${f.id}"><td class="id">${f.id}</td><td>${esc(f.name)}</td><td>${esc(f.stage)}</td><td>${tag(f.status)}</td></tr>`).join('')}</tbody></table><p class="tbl-foot">${nw.length}개 중 ${Math.min(8, nw.length)}개 · 근거에 docs/14나 DEC-13~17이 적힌 기능과 모듈 PRD·QLT</p>`
+    : '<div class="empty"><b>최근 추가·변경한 기능이 없다</b></div>';
+  $('#ov-docs').innerHTML = `<table class="tbl"><thead><tr><th scope="col">문서</th><th scope="col">버전</th><th scope="col">일자</th></tr></thead><tbody>${D.docs.map(d => `<tr><td><b>${esc(d.title)}</b><small>${esc(d.file)}${d.last ? ' · ' + esc(d.last.slice(0, 60)) + (d.last.length > 60 ? '…' : '') : ''}</small></td><td>${esc(d.ver)}</td><td style="white-space:nowrap">${esc(d.date)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+/* ------------------------------------------------------------ 기능 목록 */
+function ftRows() {
+  const f = S.ft, q = f.q.trim().toLowerCase();
+  return F.filter(x => (f.st === 'all' || x.status === f.st) && (!f.mod || x.mod === f.mod) && (!f.stage || skOf(x) === f.stage) && (!f.dept || x.depts.includes(f.dept)) && (!f.isNew || x.isNew)
+    && (!q || `${x.id} ${x.name} ${x.desc} ${x.basis}`.toLowerCase().includes(q)));
+}
+function renderFeatures() {
+  const f = S.ft, all = F, rows = ftRows(), c = counts(all);
+  $('#ft-st').innerHTML = [['all', `전체 ${all.length}`], ['demo', `시연 ${c.demo}`], ['preview', `미리보기 ${c.preview}`], ['none', `화면 없음 ${c.none}`]].map(([k, lb]) => `<button type="button" data-st="${k}" aria-pressed="${f.st === k}">${lb}</button>`).join('');
+  $('#ft-mod').innerHTML = `<option value="">모듈 전체</option>${D.modules.map(m => `<option value="${m.code}" ${f.mod === m.code ? 'selected' : ''}>${m.code} ${esc(m.name)}</option>`).join('')}`;
+  $('#ft-stage').innerHTML = `<option value="">단계 전체</option>${SK.map(([k, lb]) => `<option value="${k}" ${f.stage === k ? 'selected' : ''}>${lb}</option>`).join('')}`;
+  $('#ft-dept').innerHTML = `<option value="">부서 전체</option>${D.depts.map(d => `<option value="${d.k}" ${f.dept === d.k ? 'selected' : ''}>${d.name}</option>`).join('')}`;
+  $('#ft-new').checked = f.isNew;
+  $('#ft-find').innerHTML = `${all.length}개 중 <b>${rows.length}개</b>를 보인다. 행을 누르면 설명·근거·질의·화면이 오른쪽에 나온다.`;
+  $('#ft-body').innerHTML = rows.map(x => `<tr class="pick" data-f="${x.id}" aria-selected="${x.id === S.sel}"><td class="id">${x.id}${x.isNew ? '<small>최근</small>' : ''}</td><td><b>${esc(x.name)}</b><small>${esc(x.desc)}</small></td><td>${esc(x.stage)}</td><td>${x.depts.map(k => DN[k]).join(', ')}</td><td><span class="links">${x.screens.map(scrLink).join('') || '<span class="mini">–</span>'}</span></td><td>${tag(x.status)}</td></tr>`).join('');
+  $('#ft-mlist').innerHTML = rows.map(x => `<li><button type="button" data-f="${x.id}"><b>${x.id} ${esc(x.name)}</b>${tag(x.status)}<small>${esc(x.stage)}단계 · ${x.depts.map(k => DN[k]).join(', ')} · ${x.screens.join(', ') || '화면 없음'}</small></button></li>`).join('');
+  const em = $('#ft-empty'); em.hidden = rows.length > 0;
+  em.innerHTML = '<div class="empty"><b>조건에 맞는 기능이 없다</b>필터나 찾는 말을 바꿔 본다.<br><button class="btn btn-2 sm" type="button" data-clear>필터 지우기</button></div>';
+  $('.tbl-wrap', $('#v-features')).hidden = !rows.length;
+  $('#ft-foot').textContent = `${all.length}개 중 ${rows.length}개`;
+  renderSide();
+}
+function renderSide() {
+  const x = F.find(f => f.id === S.sel), el = $('#ft-side');
+  if (!x) { el.innerHTML = '<section class="panel"><div class="panel-h"><h2>보는 법</h2></div><p style="font-size:13px;color:var(--ink-2);line-height:1.6">상태는 그 기능을 보여 주는 화면으로 정한다. <b>시연</b>은 목업에서 동작, <b>미리보기</b>는 설명과 옅은 표만 있는 화면, <b>화면 없음</b>은 docs/13에 연결된 화면이 없는 기능이다. 화면 주소를 누르면 시연 목업(index.html)이 그 화면으로 열린다.</p></section>'; return; }
+  const m = MOD[x.mod] || {}, qs = D.queries.filter(q => q.feats.includes(x.id));
+  el.innerHTML = `<section class="panel" aria-label="${x.id} 상세"><div class="panel-h"><h2>${x.id} ${esc(x.name)}</h2>${tag(x.status)}</div>
+    <dl class="kv"><dt>설명</dt><dd>${esc(x.desc)}</dd><dt>모듈</dt><dd>${x.mod} ${esc(m.name || '')}</dd><dt>단계</dt><dd>${esc(x.stage)}</dd><dt>근거</dt><dd>${esc(x.basis || '–')}</dd><dt>부서</dt><dd>${x.depts.map(k => DN[k]).join(', ') || '–'}</dd><dt>화면</dt><dd><span class="links">${x.screens.map(scrLink).join('') || '–'}</span></dd></dl></section>
+    ${qs.length ? `<section class="panel"><div class="panel-h"><h2>이 기능을 쓰는 질의</h2><span class="mini">docs/03</span></div>${qs.map(q => `<p style="font-size:13px;color:var(--ink-2);line-height:1.55;padding:6px 0;border-top:1px solid var(--rule)"><b style="color:var(--ink)">${q.id}</b> ${esc(DN[q.dept])} · ${esc(q.sit)}<br>${esc(q.ex)}</p>`).join('')}</section>` : ''}`;
+}
+
+/* ------------------------------------------------------------ 부서 × 단계 */
+function renderMatrix() {
+  const cell = (dk, sk) => F.filter(f => f.depts.includes(dk) && (!sk || skOf(f) === sk));
+  const rowsD = D.depts.map(d => ({ d, n: cell(d.k).length, by: SK.map(([k]) => cell(d.k, k).length) }));
+  const mx = Math.max(1, ...rowsD.flatMap(r => r.by));
+  const q = n => !n ? 'z' : n / mx > 0.66 ? 'c q3' : n / mx > 0.33 ? 'c q2' : 'c q1';
+  const top = rowsD.slice().sort((a, b) => b.n - a.n)[0];
+  $('#mx-find').innerHTML = `기능을 가장 많이 받는 부서는 <b>${esc(top.d.name)}</b>(${top.n}개)이다. 진한 칸일수록 그 부서·단계에 기능이 몰려 있다.`;
+  $('#mx').innerHTML = `<thead><tr><th scope="col">부서</th>${SK.map(([, lb]) => `<th class="r" scope="col">${lb}</th>`).join('')}<th class="r" scope="col">합계</th></tr></thead><tbody>${rowsD.map(r => `<tr><th scope="row" style="color:var(--ink);font-weight:600;font-size:13px">${esc(r.d.name)}</th>${r.by.map((n, i) => `<td class="${q(n)}" ${n ? `data-mx="${r.d.k}|${SK[i][0]}" tabindex="0" role="button" aria-label="${esc(r.d.name)} ${SK[i][1]} 기능 ${n}개 보기"` : ''}>${n}</td>`).join('')}<td class="r"><b>${r.n}</b></td></tr>`).join('')}</tbody>`;
+  const scr = k => D.screens.filter(s => s.dept === k), qn = k => D.queries.filter(x => x.dept === k).length;
+  $('#mx-scr').innerHTML = `<table class="tbl"><thead><tr><th scope="col">부서</th><th class="r" scope="col">동작 화면</th><th class="r" scope="col">미리보기 화면</th><th class="r" scope="col">질의</th></tr></thead><tbody>${D.depts.map(d => { const s = scr(d.k), dm = s.filter(x => x.status.startsWith('시연')).length; return `<tr><td><b>${esc(d.name)}</b></td><td class="r">${dm}</td><td class="r">${s.length - dm}</td><td class="r">${qn(d.k)}</td></tr>`; }).join('')}</tbody></table>`;
+}
+
+/* ------------------------------------------------------------ 화면 지도 */
+function renderScreens() {
+  const all = D.screens, dm = all.filter(s => s.status.startsWith('시연')).length, none = F.filter(f => f.status === 'none').length;
+  $('#sc-find').innerHTML = `화면 ${all.length}개 중 동작 ${dm}개, 미리보기 ${all.length - dm}개. 화면이 없는 기능은 ${none}개다. 주소를 누르면 시연 목업이 그 화면으로 열린다.`;
+  $('#sc-st').innerHTML = [['all', '전체'], ['demo', '동작'], ['preview', '미리보기']].map(([k, lb]) => `<button type="button" data-sc="${k}" aria-pressed="${S.sc === k}">${lb}</button>`).join('');
+  const keep = s => S.sc === 'all' || (S.sc === 'demo') === s.status.startsWith('시연');
+  $('#sc-body').innerHTML = D.depts.map(d => {
+    const l = all.filter(s => s.dept === d.k && keep(s));
+    if (!all.some(s => s.dept === d.k)) return `<section class="dsec"><h2>${esc(d.name)} <span class="mini">화면 없음</span></h2><p class="mini">docs/13 9장 · 화면이 없는 부서</p></section>`;
+    return `<section class="dsec"><h2>${esc(d.name)} <span class="mini">${l.length}개</span></h2>${l.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th scope="col">주소</th><th scope="col">화면</th><th scope="col">답하는 질문</th><th scope="col">기능·질의</th><th scope="col">단계</th><th scope="col">상태</th></tr></thead><tbody>${l.map(s => `<tr><td class="id">${scrLink(s.addr)}</td><td><b>${esc(s.name)}</b></td><td>${esc(s.q)}</td><td><small style="margin:0">${esc(s.refs)}</small></td><td>${esc(s.stage)}</td><td>${tag(s.status.startsWith('시연') ? 'demo' : 'preview')}</td></tr>`).join('')}</tbody></table></div>
+      <ul class="mlist">${l.map(s => `<li><a href="${mock(s.addr)}" target="_blank" rel="noopener" style="display:block;padding:10px 0;text-decoration:none;color:inherit"><b>${esc(s.name)}</b> ${tag(s.status.startsWith('시연') ? 'demo' : 'preview')}<small style="display:block;font-size:13px;color:var(--ink-3)">${esc(s.addr)} · ${esc(s.q)}</small></a></li>`).join('')}</ul>` : '<p class="mini">이 조건의 화면이 없다.</p>'}</section>`;
+  }).join('');
+}
+
+/* ------------------------------------------------------------ 결정·미결 */
+const DC = {
+  oi: ['미결', () => D.issues, ['ID', '내용', '왜 필요한가', '담당', '필요 시점'], o => [o.id, o.text, o.why, o.owner, o.when]],
+  dec: ['결정', () => D.decisions, ['ID', '결정', '상태', '일자', '근거'], o => [o.id, o.text, o.status, o.date, o.basis]],
+  dt: ['데이터 준비', () => D.datatasks, ['ID', '데이터', '지금 상태', '준비 방법', '담당', '단계'], o => [o.id, o.data, o.now, o.how, o.owner, o.stage]],
+  as: ['가정', () => D.assumptions, ['ID', '가정', '근거'], o => [o.id, o.text, o.basis]],
+};
+function renderDecisions() {
+  const early = D.issues.filter(o => /0단계|즉시|0~1/.test(o.when)).length;
+  const nd = D.decisions.filter(d => d.date === latestDate).length;
+  $('#dc-find').innerHTML = `미결 <b>${D.issues.length}건</b> 중 ${early}건은 0단계까지 정해야 한다. 결정 ${D.decisions.length}건 중 ${nd}건은 ${esc(latestDate)}에 더했다. 모두 docs/11·05에서 읽었다.`;
+  $('#dc-tabs').innerHTML = Object.entries(DC).map(([k, v]) => `<button role="tab" type="button" data-dc="${k}" aria-selected="${S.dc === k}">${v[0]}<span class="c">${v[1]().length}</span></button>`).join('');
+  const [, get, head, row] = DC[S.dc], list = get();
+  $('#dc-body').innerHTML = `<table class="tbl" aria-label="${DC[S.dc][0]}"><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${list.map(o => { const r = row(o); return `<tr>${r.map((v, i) => i === 0 ? `<td class="id">${esc(v)}</td>` : i === 1 ? `<td><b>${esc(v)}</b></td>` : `<td>${esc(v)}</td>`).join('')}</tr>`; }).join('')}</tbody></table>`;
+  $('#dc-mlist').innerHTML = list.map(o => { const r = row(o); return `<li><button type="button"><b>${esc(r[0])} ${esc(r[1])}</b><small>${esc(r.slice(2).join(' · '))}</small></button></li>`; }).join('');
+}
+
+/* ------------------------------------------------------------ 화면 전환 */
+const VIEWS = ['overview', 'features', 'matrix', 'screens', 'decisions'];
+function show(v, arg, focus) {
+  if (!VIEWS.includes(v)) v = 'overview';
+  if (v === 'features' && arg) {
+    S.ft = { st: 'all', mod: '', stage: '', dept: '', isNew: false, q: '' };
+    if (arg === 'new') S.ft.isNew = true;
+    else if (arg.startsWith('mod-')) S.ft.mod = arg.slice(4);
+    else if (arg.startsWith('mx-')) { const [dk, sk] = arg.slice(3).split('.'); S.ft.dept = dk; S.ft.stage = sk; }
+    else if (F.some(f => f.id === arg)) { S.sel = arg; }
+  }
+  S.view = v;
+  $$('.view').forEach(s => { s.hidden = s.dataset.hmView !== v; });
+  $$('.nav-i[data-v]').forEach(a => { if (a.dataset.v === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  ({ overview: renderOverview, features: renderFeatures, matrix: renderMatrix, screens: renderScreens, decisions: renderDecisions })[v]();
+  const h = $('#v-' + v + ' h1'); document.title = (h ? h.textContent + ' · ' : '') + '다봄 기획 현황판';
+  $('#main').scrollTop = 0;
+  $('#app').classList.remove('nav-open'); $('#menu-btn').setAttribute('aria-expanded', 'false');
+  if (focus && h) h.focus({ preventScroll: true });
+}
+function route(focus) { const [v, arg] = decodeURIComponent(location.hash.slice(1)).split('/'); show(v || 'overview', arg, focus); }
+window.hmShow = function (v) { if (location.hash.slice(1) !== v) location.hash = v; else route(false); };
+window.addEventListener('hashchange', () => route(true));
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('a')) return;
+  const fr = t.closest('[data-f]');
+  if (fr) { S.sel = fr.dataset.f; if (S.view !== 'features') location.hash = 'features/' + fr.dataset.f; else renderFeatures(); return; }
+  const st = t.closest('[data-st]'); if (st) { S.ft.st = st.dataset.st; renderFeatures(); return; }
+  if (t.closest('#ft-clear') || t.closest('[data-clear]')) { S.ft = { st: 'all', mod: '', stage: '', dept: '', isNew: false, q: '' }; $('#gq').value = ''; renderFeatures(); return; }
+  const mx = t.closest('[data-mx]'); if (mx) { const [dk, sk] = mx.dataset.mx.split('|'); location.hash = `features/mx-${dk}.${sk}`; return; }
+  const sc = t.closest('[data-sc]'); if (sc) { S.sc = sc.dataset.sc; renderScreens(); return; }
+  const dc = t.closest('[data-dc]'); if (dc) { S.dc = dc.dataset.dc; renderDecisions(); return; }
+  if (t.closest('#menu-btn')) { const o = $('#app').classList.toggle('nav-open'); $('#menu-btn').setAttribute('aria-expanded', o); }
+});
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-mx]')) { e.preventDefault(); e.target.click(); }
+  if (e.key === '/' && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); $('#gq').focus(); }
+  if (e.key === 'Escape') $('#app').classList.remove('nav-open');
+});
+['#ft-mod', '#ft-stage', '#ft-dept'].forEach(id => $(id).addEventListener('change', e => { S.ft[{ '#ft-mod': 'mod', '#ft-stage': 'stage', '#ft-dept': 'dept' }[id]] = e.target.value; renderFeatures(); }));
+$('#ft-new').addEventListener('change', e => { S.ft.isNew = e.target.checked; renderFeatures(); });
+$('#gq').addEventListener('input', e => { S.ft.q = e.target.value; if (S.view !== 'features') location.hash = 'features'; else renderFeatures(); });
+document.addEventListener('mouseover', e => {
+  const el = e.target.closest('[data-tip]'), tip = $('#tip');
+  if (!el) { tip.hidden = true; return; }
+  tip.textContent = el.dataset.tip; tip.hidden = false;
+  const r = el.getBoundingClientRect();
+  tip.style.left = Math.min(innerWidth - tip.offsetWidth - 8, Math.max(8, r.left)) + 'px';
+  tip.style.top = (r.bottom + 8 + tip.offsetHeight > innerHeight ? r.top - tip.offsetHeight - 8 : r.bottom + 8) + 'px';
+});
+
+$('#brand-sb').textContent = `docs에서 생성 · ${D.generated.slice(0, 10)}`;
+$('#nav-oi').textContent = D.issues.length;
+$('#scope').innerHTML = `<dt>원천</dt><dd>docs/03·04·05·11·13, 각 문서 변경 이력</dd><dt>생성</dt><dd>${esc(D.generated)}</dd><dt>다시 만들기</dt><dd>python tools/build_plan_board.py</dd><dt>목업</dt><dd>같은 폴더 index.html</dd>`;
+route(false);
+})();
+</script>
+</body>
+</html>
