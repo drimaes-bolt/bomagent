@@ -25,6 +25,10 @@ _fp = os.path.join(SP, 'final_rows.json')
 rows = json.load(io.open(_fp, encoding='utf-8')) if os.path.exists(_fp) else json.load(gzip.open(_fp + '.gz', 'rt', encoding='utf-8'))
 docs_note = json.load(io.open(os.path.join(SP, 'final_docs.json'), encoding='utf-8'))
 man = {r['file']: r for r in csv.DictReader(io.open(os.path.join(ROOT, 'manifest.csv'), encoding='utf-8-sig'))}
+_ex = os.path.join(SP, 'extras_docs.json')   # PDF가 아닌 출처(공식 내보내기·오픈 데이터·웹): 제목·기준일·쪽 수
+if os.path.exists(_ex):
+    for _d in json.load(io.open(_ex, encoding='utf-8')):
+        man[_d['file']] = {'title': _d['title'], 'doc_date': _d.get('doc_date', ''), 'pages': str(_d.get('pages', 0)), 'caveat': _d.get('policy', '')}
 
 # ---- R09 표: 제조사 속성(국가·생산 위치·사업분야·순위)
 r09 = {}

@@ -1,0 +1,6 @@
+{
+  "name": "dabom-avl-collect",
+  "private": true,
+  "description": "제조사 공식 내보내기·데이터 피드를 브라우저(Chrome)로 받는 스크립트. 사용법은 README.md",
+  "dependencies": { "puppeteer-core": "^23.11.1" }
+}

@@ -85,12 +85,13 @@
 | [docs/12 용어집](docs/12_용어집.md) | 용어 정의와 겹치기 쉬운 ID | 전원 |
 | [docs/13 화면 목록](docs/13_화면_목록.md) | 시연 목업의 부서별 화면(주소·답하는 질문·구성·기능 ID·단계·상태). 연구소·생산관리·자재/구매에 생산기술·회계·품질·기준정보 화면 기획을 더했다. 기능 대비 화면 공백. 새 화면 기획의 출발점 | 기획·개발 |
 | [docs/14 부서 기능 확장 검토](docs/14_부서기능_확장검토.md) | 2026-11-23 요청 9건의 판단과 처리: 재고 수량 조정 규칙, 사용 이력 품목·거래처 카탈로그의 적절성(조건부 적절), 맞추기 순서 개정, 부서별 기능 후보 18건 검토, 새 ID, 외부 출처 | 기획·개발 |
+| [docs/15 AVL 수집경로 조사](docs/15_AVL_수집경로_조사.md) | 비어 있는 제조사×분류 26쌍(+일부 5쌍)을 웹에서 자동으로 채울 수 있는지 17개 제조사별로 조사: 공식 API·내보내기·공개 PDF·약관·`robots.txt`·이 PC 접속 여부, 조합별 추천 경로와 착수 순서. 9~10장에 같은 날 오후 수집 실행 결과(제품 행 52,154 → 130,835)와 약관 확인 항목. OI-26~28 | 기획·개발 |
 | [references/00 참고자료 목록](references/00_참고자료_목록.md) | 사본 목록, 원본 위치, 자료 성격, 이 폴더에 없는 자료. 2.1절에 R13 제조사 가이드 PDF | 전원 |
-| [AVL_DB/](AVL_DB/README.md) | **AVL과 공급 제품 DB(엑셀).** `AVL_List.xlsx`(부품 카테고리 11개의 AVL 제조사 35곳)와 `AVL_Parts_<도메인>.xlsx` 11개(개별 제품 단위 제품 행 52,154, 도메인 안에서는 제조사 모두 같은 표 양식, 사양 열은 도메인마다 다름). 원문 PDF 대조 수준을 행마다 표시. 목업이 같은 데이터를 쓴다. 변환 스크립트는 `tools/avl_db/`, 원천은 `_source/`(gzip·zip) | 기획·개발 |
+| [AVL_DB/](AVL_DB/README.md) | **AVL과 공급 제품 DB(엑셀).** `AVL_List.xlsx`(부품 카테고리 11개의 AVL 제조사 35곳)와 `AVL_Parts_<도메인>.xlsx` 11개(개별 제품 단위 제품 행 52,154, 도메인 안에서는 제조사 모두 같은 표 양식, 사양 열은 도메인마다 다름). 원문 PDF 대조 수준을 행마다 표시. 목업이 같은 데이터를 쓴다. 변환 스크립트는 `tools/avl_db/`, 원천은 `_source/`(gzip·zip). 2차 확장분의 원천 데이터·엑셀(행 130,835)은 `_private/`에 두고 git에서 뺀다(DEC-20) | 기획·개발 |
 | [references/R13_Vendor_Guides/](references/R13_Vendor_Guides/README.md) | 제조사 Selection Guide·Catalog PDF 65개(고유 55). `<도메인>/<제조사>/` 트리, 수집 목록 `manifest.csv`, 61쌍 커버리지 `coverage.csv`. 시연의 AVL·공급 제품군 DB 원천. PDF는 git에서 뺐다 | 기획·개발 |
 | [briefing/DaBOM_20261020.html](briefing/DaBOM_20261020.html) | 기획회의 시연용 화면 목업. 부서 선택 → 연구소(E-BOM 가져오기·M-BOM 변환·수정·전송), 생산관리(제품 BOM·개정 이력·구조 확정·소요량), 자재/구매(재고·입고·구매·거래처). 프론트 전용 단일 파일, 값은 [가상]. 다른 PC에서는 이 HTML과 루트의 `SS_SKPRT_EBOM.xlsx`를 한 폴더에 두고 연구소 화면의 Import로 고른다 | 기획·현업 |
 | [briefing/DaBOM_taste_skill_20261021.html](briefing/DaBOM_taste_skill_20261021.html) | 그 이전 기준 시연 목업. 동작과 데이터는 위 파일과 같고, 화면 구성만 taste-skill(v2.1.4)의 앱 화면 규칙으로 다시 정했다(회색 틀 + 흰 시트, 맞추기 결과 막대, BOM 단계 트랙, 화면 주소 `#rnd/import` 등) | 기획·현업 |
-| [briefing/DaBOM_avl_20261127.html](briefing/DaBOM_avl_20261127.html) | **현재 기준 시연 목업(AVL 판).** 뿌리 판에 AVL·공급 제품을 더했다: 기준정보 `#mdm/avl`(AVL·공급 제품군, 동작 화면)과, 거래처 카탈로그 `#mp/catalog`·연구소 `#rnd/search`의 카탈로그 탭이 같은 제품 표를 보인다. 부품 카테고리 11개·제조사 22곳(AVL 35곳, 카테고리별 합)의 Selection Guide에서 뽑은 개별 제품 52,154행을 `DATA.avl`에 넣었다(HTML 약 6MB). 분류·제조사는 전부 필터에 나오고 분류를 고르면 크기·패키지 등 메뉴가 분류별로 바뀌며, 열로 정렬하고 저항·커패시터·인덕터는 사양(값·크기·전압·허용오차)으로 찾을 수 있다. 제품에는 ERP 코드가 없다. 근거 DEC-19, [AVL_DB](AVL_DB/README.md) | 기획·현업 |
+| [briefing/DaBOM_avl_20261127.html](briefing/DaBOM_avl_20261127.html) | **현재 기준 시연 목업(AVL 판).** 뿌리 판에 AVL·공급 제품을 더했다: 기준정보 `#mdm/avl`(AVL·공급 제품군, 동작 화면)과, 거래처 카탈로그 `#mp/catalog`·연구소 `#rnd/search`의 카탈로그 탭이 같은 제품 표를 보인다. 부품 카테고리 11개·제조사 22곳(AVL 35곳, 카테고리별 합)의 Selection Guide에서 뽑은 개별 제품 130,835행(PDF 52,587 + 제조사 공식 내보내기·오픈 데이터·웹 78,248)을 `DATA.avl`에 넣었다(HTML 약 16MB, 제조사 28곳). 분류·제조사는 전부 필터에 나오고 분류를 고르면 크기·패키지 등 메뉴가 분류별로 바뀌며, 열로 정렬하고 저항·커패시터·인덕터는 사양(값·크기·전압·허용오차)으로 찾을 수 있다. 제품에는 ERP 코드가 없다. 근거 DEC-19, [AVL_DB](AVL_DB/README.md) | 기획·현업 |
 | [briefing/DaBOM_root_20261124.html](briefing/DaBOM_root_20261124.html) | 이전 기준 시연 목업(뿌리 판). 확장 판에서 진입 화면과 미리보기 화면의 머리를 고쳤다. 첫머리에 "시작도 뿌리도 BOM이다"와 이름의 뜻을 두고, 뿌리(BOM = E-BOM + SCM 정보 → M-BOM) → 줄기(처음 만든 여섯 기능) → 가지(부서) 지도 안에서 부서를 고른다. 부서마다 BOM의 어디를 보는지 한 줄, 가지를 더하는 규칙 3개, 다음에 뻗을 곳 [제안]을 붙였다. 미리보기 화면 33개에는 "BOM에서 읽는 것 → 돌려주는 것" 띠를 더했다([docs/13 12장](docs/13_화면_목록.md)). 동작 화면과 데이터는 확장 판과 같다. 근거 [docs/01 1.6](docs/01_프로젝트_정의.md), DEC-18 | 기획·현업 |
 | [briefing/DaBOM_expand_20261123.html](briefing/DaBOM_expand_20261123.html) | 이전 기준 시연 목업(확장 판). taste-skill 판에 더해: 재고 = 루트 `Inventory.xlsx` 1,048품목(단가만 [가상]), 사용 이력 품목 356(재고 0), 분류(ERP 대분류) 체크 상자 필터, E-BOM 없이 재고 열람, 거래처 카탈로그(예시), 맞추기 막대의 "재사용 · 재고 0" 칸, 생산기술·회계·품질·기준정보 화면 기획. 화면 목록은 [docs/13](docs/13_화면_목록.md), 근거는 [docs/14](docs/14_부서기능_확장검토.md) | 기획·현업 |
 | [briefing/index.html](briefing/index.html) | 현재 기준 시연 목업(위 AVL 판)의 사본. 기준 판과 항상 같게 유지한다. 새 판을 만들거나 기준 판을 고치면 함께 갱신한다([CLAUDE.md 9.1](CLAUDE.md)) | 기획·현업 |
@@ -125,7 +126,7 @@ Drimaes_BOM_Agent_Plan/
 ├─ README.md                  이 문서
 ├─ CLAUDE.md                  Claude Code 상시 작업 지침 (맥락·원칙·작업 절차·작성 규칙)
 ├─ .claude/skills/            작업별 스킬: briefing-material(설명자료), dabom-mockup(시연 목업 수정)
-├─ docs/                      기획 본문 01~14
+├─ docs/                      기획 본문 01~15
 ├─ briefing/                  설명자료 산출 위치
 │  ├─ DaBOM_avl_20261127.html           현재 기준 시연 목업(AVL 판)
 │  ├─ index.html                        기준 목업의 사본 (항상 같게 유지)
@@ -134,8 +135,8 @@ Drimaes_BOM_Agent_Plan/
 │  ├─ DaBOM_plan_board_20261123.html    기획 현황판 (tools/build_plan_board.py가 만든다)
 │  ├─ DaBOM_taste_skill_20261021.html   그 이전 판 시연 목업
 │  └─ DaBOM_20261020.html               처음 판 시연 목업
-├─ tools/                     기획 현황판 생성 스크립트와 화면 틀(`build_plan_board.py`), AVL DB 변환 스크립트(`avl_db/`)
-├─ AVL_DB/                    AVL·공급 제품 엑셀 12개와 원천 데이터(`_source/`). 목업 `DATA.avl`의 원본
+├─ tools/                     기획 현황판 생성 스크립트와 화면 틀(`build_plan_board.py`), AVL DB 변환 스크립트(`avl_db/`, 공식 내보내기 수집은 `avl_db/collect/`)
+├─ AVL_DB/                    AVL·공급 제품 엑셀 12개와 원천 데이터(`_source/`). 목업 `DATA.avl`의 원본. `_private/`는 비공개 백데이터(git 제외)
 ├─ DA_UI_hallmark/            사내 웹 디자인 규칙 v1.0 (규칙 md 5개, 시작 틀 3개, checker.html, GUIDE.html). 안의 파일은 배포 원본이라 직접 고치지 않는다
 ├─ references/                근거 자료 (사본은 수정 금지, 목록만 갱신)
 │  ├─ 00_참고자료_목록.md
@@ -176,3 +177,5 @@ Drimaes_BOM_Agent_Plan/
 | v0.1.13 | 2026-11-27 | AVL과 공급 제품 DB(DEC-19): 제조사 PDF(R13)에서 제품 행 4,922개를 뽑아 `AVL_DB/`에 엑셀 12개로 정리(AVL 35곳, 도메인별 같은 표 양식, ERP 코드 없음, 행마다 원문 대조 수준). 시연 목업 AVL 판(`DaBOM_avl_20261127.html`)에 기준정보 `mdm/avl`과 연구소 검색 AVL 탭 추가, `index.html` 갱신. docs/04 MDM-10·MAT-14, docs/05 DT-16, docs/13 `mdm/avl`. 변환 스크립트는 `tools/avl_db/` |
 | v0.1.14 | 2026-11-27 | AVL·공급 제품 DB를 개별 제품 단위로 확대(사용자 요청): 제품 행 4,922 → 52,154(부품번호 17,081 · 사양 조합 33,542 · 계열 1,531, 확인 필요 227). 개별 열거가 없는 문서 18건은 계열 행만 두고 범위를 풀어 제품을 만들지 않음. 목업 AVL 판의 거래처 카탈로그(`mp/catalog`, `rnd/search`)를 [가상] 예시 16계열에서 이 제품 표로 교체, 분류 11개·제조사 22곳 전부 필터, 분류별 크기·패키지 메뉴, 정렬, 1,000행씩 더 보기. `AVL_DB/_source`는 gzip·zip으로 압축, `tools/avl_db`에 2차 추출 지침 추가, `index.html` 갱신. docs/04·05·11·12·13·14 갱신 |
 | v0.1.15 | 2026-11-27 | 카탈로그 제품 표의 "1,000행 더 보기"를 쪽 이동(페이지네이션)으로 교체(사용자 요청): 쪽당 25·50·100·200행(기본 50), 표 위·아래 이전/다음과 쪽 번호·번호 입력. 시연 목업 AVL 판을 고치고 `index.html` 갱신. docs/13 v0.7, `dabom-mockup` 스킬 |
+| v0.1.16 | 2026-11-27 | AVL 제품 데이터 수집 경로 조사([docs/15](docs/15_AVL_수집경로_조사.md) 신설): 빈 26쌍·일부 5쌍을 17개 제조사별로 조사(공식 API·내보내기·공개 PDF, 약관·`robots.txt`, 접속 여부)하고 조합별 추천 경로·착수 순서를 정리. 스크레이핑은 약관·`robots.txt`상 막히는 곳이 많아 공식 경로를 권고. docs/05 DT-17, docs/11 OI-26~28 추가. 수집 코드는 만들지 않음 |
+| v0.1.17 | 2026-11-27 | AVL 수집 실행(사용자 결정 DEC-20: 백데이터 비공개, 표에 넣은 행만 공개): ST 오픈 데이터·onsemi 선택기 Export·삼성전기 MLCC List Download·TE 데이터 피드·MediaTek·Power Integrations 웹·새 공개 PDF 4건으로 제품 행 52,154 → 130,835, 제조사 22 → 28곳. 원천·엑셀은 `AVL_DB/_private/`(git 제외). 시연 목업 AVL 판 데이터 갱신(HTML 약 16MB), 쪽 이동·정렬은 표만 다시 그림, `index.html` 갱신. docs/15 9~10장, docs/05 DT-17, docs/11 DEC-20. 같은 날 사용자 요청으로 커밋·푸시(API로 받는 TI·Murata 데이터는 수집 뒤 다시 커밋) |

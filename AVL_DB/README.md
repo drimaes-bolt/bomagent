@@ -2,6 +2,8 @@
 
 > 2026-11-27 작성. 부품 카테고리별 AVL(Approved Vendor List)과, AVL 제조사가 Selection Guide에서 공급 가능하다고 밝힌 제품을 엑셀로 정리했다. 추후 대체품 추천의 백데이터이고 시연 목업(`briefing/index.html`)이 같은 데이터를 쓴다. 출처 PDF는 [R13](../references/R13_Vendor_Guides/README.md), 결정은 DEC-19(docs/11)다. **제품에는 ERP 코드를 붙이지 않았다.** ERP 코드는 연구소가 설계에 부품을 적용할 때 사내 기존 품목을 먼저 찾고 없을 때 처음 채번한다(docs/08).
 
+> **2026-11-27 2차 확장(비공개)**: 제조사 공식 내보내기·오픈 데이터·웹에서 모은 제품 행을 더해 합계가 130,835행(제조사 28곳)이 되었다. 이 확장분의 원천 데이터와 엑셀은 `AVL_DB/_private/`에 두고 git에 올리지 않는다(DEC-20). 아래 표와 `AVL_Parts_*.xlsx`는 제조사 PDF에서 뽑은 52,154행(1차)이다. 수집 경로와 결과는 [docs/15](../docs/15_AVL_수집경로_조사.md), 스크립트는 [tools/avl_db/collect/](../tools/avl_db/collect/README.md)다.
+
 ## 파일
 
 | 파일 | 내용 |

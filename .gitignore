@@ -20,3 +20,6 @@ __pycache__/
 # AVL DB 작업 중 생기는 캐시
 AVL_DB/_source/txt_cache/
 AVL_DB/_source/rows_checked.json
+
+# AVL 백데이터(비공개): 공식 내보내기·오픈 데이터·사이트 표에서 모은 원천 데이터. 데모에 넣는 부분만 index.html로 공개한다(2026-11-27 사용자 결정)
+AVL_DB/_private/
