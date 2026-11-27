@@ -29,4 +29,16 @@ python extract_te.py <Connectors_excel.zip> <extras>/te_connectors.json     # in
 python merge_extras.py <final_rows.json.gz> <final_docs.json> <새 PDF 폴더|-> <extras> <출력 폴더>
 ```
 
+```bash
+python derive_walsin_pn.py <final_rows.json.gz> <출력 final_rows.json.gz> --docs <final_docs.json.gz> <출력 final_docs.json> --report 보고서.txt
+```
+
+```bash
+python derive_rohm_panasonic_pn.py <final_rows.json.gz> <출력 final_rows.json.gz> --docs <final_docs.json.gz> <출력 final_docs.json> --report 보고서.txt
+```
+
+`derive_rohm_panasonic_pn.py`는 같은 방식으로 ROHM 제너(PDF 34쪽 Product No. Explanation, 22·23쪽 머리글의 등급·테이핑 코드)와 Panasonic OS-CON SMD(PDF 37쪽)의 형명을 조립한다. Walsin 처리 결과를 입력으로 받는다. 범위로만 인쇄된 행·형명 규칙이 없는 문서의 행은 건드리지 않고 사유를 비고 앞에 적는다.
+
+`derive_walsin_pn.py`는 Walsin 카탈로그에서 형명 없이 풀었던 사양 조합 칸에 문서의 주문 코드(How To Order) 규칙으로 부품번호를 조립해 채운다(DEC-21, 원문 대조 `주문 코드 조합`). 허용오차가 여럿인 칸은 허용오차마다 한 행, 문서의 코드표에 없는 값(예: 1825 크기 코드)은 만들지 않고 비고에 사유를 적는다. 규칙·근거·검증은 [docs/15](../../../docs/15_AVL_수집경로_조사.md) 11장이다.
+
 `merge_extras.py`의 출력 폴더에 `avl_schema.py`를 복사해 두고 `build_data_avl.py`·`build_xlsx.py`를 그 폴더로 실행한다(두 스크립트는 같은 폴더의 `extras_docs.json`을 읽어 PDF가 아닌 출처의 제목·기준일을 쓴다).

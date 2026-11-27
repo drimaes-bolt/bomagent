@@ -11,7 +11,7 @@ description: 다봄 시연 목업(briefing/DaBOM_avl_20261127.html 등 단일 HT
 
 | 파일 | 성격 |
 |---|---|
-| `briefing/DaBOM_avl_20261127.html` | **현재 기준 판(AVL 판).** 뿌리 판을 복사해 `DATA.avl`(AVL 제조사와 개별 제품 130,835행, HTML 약 16MB)과 기준정보 동작 화면 `mdm/avl`을 더했다. 거래처 카탈로그 `mp/catalog`(카탈로그 제품 탭)와 연구소 검색 `rnd/search`(거래처 카탈로그 탭)도 같은 제품 표(`avlBrowser`)를 쓴다. 옛 [가상] `DATA.catalog`는 없앴다. 코드는 3장 아래 "AVL 판에서 더한 장치"에 정리했다. 근거 DEC-19, MDM-10, MAT-14 |
+| `briefing/DaBOM_avl_20261127.html` | **현재 기준 판(AVL 판).** 뿌리 판을 복사해 `DATA.avl`(AVL 제조사와 개별 제품 194,089행, HTML 약 22MB, gzip 2.8MB)과 기준정보 동작 화면 `mdm/avl`을 더했다. 거래처 카탈로그 `mp/catalog`(카탈로그 제품 탭)와 연구소 검색 `rnd/search`(거래처 카탈로그 탭)도 같은 제품 표(`avlBrowser`)를 쓴다. 옛 [가상] `DATA.catalog`는 없앴다. 코드는 3장 아래 "AVL 판에서 더한 장치"에 정리했다. 근거 DEC-19, MDM-10, MAT-14 |
 | `briefing/DaBOM_root_20261124.html` | 이전 기준 판(뿌리 판). 진입 화면에 "시작도 뿌리도 BOM이다"와 뿌리·줄기·가지 지도(`BOM_ROOT`·`TRUNK`·`renderLanding`), 미리보기 화면의 `FUT_BOM` 띠. 근거 DEC-18. 고치지 않는다 |
 | `briefing/DaBOM_expand_20261123.html` | 그 이전 판(확장 판). taste-skill 판을 복사해 재고(Inventory.xlsx)·사용 이력·분류 필터·거래처 카탈로그·미리보기 부서(생산기술·회계·품질·기준정보)를 더했다. 근거 docs/14. 고치지 않는다 |
 | `briefing/index.html` | **현재 기준 판의 사본.** 기준 판과 항상 바이트 단위로 같게 유지한다(아래 판 관리). 2026-11-02 생성, 2026-11-23 확장 판으로, 2026-11-24 뿌리 판으로, 2026-11-27 AVL 판으로 교체 |
@@ -106,13 +106,13 @@ AVL 판에서 더한 장치(`AVL` 앞부분 위치는 2장 명령으로 찾는�
 
 | 장치 | 내용 |
 |---|---|
-| `AVL` · `AVL_ITEMS` | `DATA.avl`을 읽을 때 문자열 사전(`S`)을 풀어 행 배열로 만든다. `AVL_ITEMS` = `{ c(분류), ci, v(제조사), r(행) }` 전체 52,154개. `AVL_OFF = 9`는 행에서 사양이 시작하는 칸 |
+| `AVL` · `AVL_ITEMS` | `DATA.avl`을 읽을 때 문자열 사전(`S`)을 풀어 행 배열로 만든다. `AVL_ITEMS` = `{ c(분류), ci, v(제조사), r(행) }` 전체 194,089개. `AVL_OFF = 9`는 행에서 사양이 시작하는 칸 |
 | `AVL_FAC` | 분류마다 다른 필터 메뉴 정의 `[사양 열 키, 머리글, 'size'면 숫자 순서]`. 첫 항목이 크기·패키지. 새 분류 열을 더하면 여기도 고친다 |
 | `PDB_FACETS.avl` · `avlExtra` | 분류(11) → 제조사(전부) → `AVL_FAC`의 메뉴. 분류를 정확히 하나 골랐을 때만 그 분류의 메뉴와 사양 폼이 나온다(`when`). `AVL_FORMS`(저항·커패시터·인덕터 사양 폼)는 `avlTest`로 범위 표기·크기·전압·허용오차를 비교하고 읽지 못한 칸은 건너뛴 개수를 알린다 |
 | `AVL_STD` · `avlSizeTok` | `0402~2512`처럼 범위로 적힌 칩 크기를 표준 크기로 풀어 필터·사양 폼에만 쓴다(표에는 원문 표기). 인치 코드가 기본이고 `m`을 붙이면 메트릭 |
 | `avlBrowser(host)` · `avlGrid` | 제품 표 화면 한 벌. 정렬 선택 `#avlb-sk`(SI 접두어·숫자 인식 `avlSortVal`), 쪽 이동(페이지네이션): `AVLB.page`·`AVLB.ps`(쪽당 행 수, `AVL_PS = [25, 50, 100, 200]`, 기본 50), 표 위 `avlPager(total, true)`(이전·쪽 번호·다음·쪽 번호 입력 `#avlb-pj`), 정렬 줄의 `#avlb-ps`, 표 아래 `avlPager(total, false)`(`#avlb-more2`). 필터·낱말·사양 조건 `sig`가 바뀌거나 정렬을 바꾸면 1쪽으로 돌아간다. 640px 이하에서는 쪽 번호를 숨기고 단추를 40px로 키운다. `mdm.avl`·`mp.catalog`·`rnd.search`가 같이 쓴다. 행 상세 `avlDetail` |
 | `avlDocs` · `avlMakerRows` · `AVL_MK` | 제조사 문서 목록(같은 PDF를 여러 분류에 둔 것은 한 문서)과 라인카드 제조사 이름을 `AVL` 제조사로 잇는 대응표 |
-| 성능(13만 행) | `avlGrid`가 받은 행을 `AVLB.rows`에 보관해 쪽 이동·정렬·방향·쪽당 행 수는 필터 계산 없이 표만 다시 그린다(0.05초 안쪽). 분류·제조사 체크는 필터 개수를 다시 세므로 0.3~0.5초. 낱말 입력은 목록이 2만 개를 넘으면 150ms 대기(`pdbMount`) |
+| 성능(19만 행) | `avlGrid`가 받은 행을 `AVLB.rows`에 보관해 쪽 이동·정렬·방향·쪽당 행 수는 필터 계산 없이 표만 다시 그린다(0.05초 안쪽). 분류·제조사 체크는 필터 개수를 다시 세므로 0.15~0.25초. 낱말 입력은 목록이 2만 개를 넘으면 150ms 대기(`pdbMount`). 필터 판정은 `pdbBase`(분류 조건 `extra`·낱말, 필터 항목마다 반복하지 않고 `facetsHTML`에서 한 번만)와 `pdbSel`(고른 필터만, `pdbActive`)로 나눴고, `avlText`는 대문자로 한 번만 만들어 `text.up`으로 표시한다. 19만 행에서 이 둘이 없으면 필터 한 번에 0.8~1.1초, 낱말 입력에 1.3초 걸렸다(2026-11-28 측정) |
 | `PAGES['mdm.avl']` | 탭 AVL 목록(`AVLP.tab = 'list'`) · 공급 제품(`'items'`). 목록 행을 누르면 그 제조사의 제품으로 간다 |
 
 검증: 목업을 고친 뒤 스크립트 부분을 뽑아 `node --check`로 문법을 보고, Chrome 헤드리스(`"C:/Program Files/Google/Chrome/Application/chrome.exe" --headless --dump-dom --virtual-time-budget=…`. 2026-11-27에 Edge 헤드리스가 출력을 내지 않아 Chrome으로 바꿈)로 오류 수집용 스크립트를 넣은 사본을 열어 모든 `#부서/화면`을 돌려 본다(2026-11-23 확장 판에서 67개 점검·오류 0. 2026-11-24 뿌리 판에서는 부서별 화면 47개와 진입 화면을 순회해 오류 0. 2026-11-27 AVL 판은 화면 48개(`mdm/avl` 포함) 순회 오류 0, 분류 11개·제조사 22개 필터 표시, 분류 선택 시 분류별 메뉴 전환(저항: 크기·유형·허용오차·정격전력, MOSFET: 패키지·극성·Vds 등), 정렬·더 보기, 사양 폼(저항 10k·0603·허용오차 1%, 커패시터 100n·16V·X7R) 동작을 확인, 설명 풍선 키 누락 0). hallmark 점검은 FAIL 0·WARN 1(기존 로딩 스피너). 헤드리스 Edge의 창 폭은 약 492px보다 좁아지지 않으므로 390px 확인은 사람이 `checker.html`로 한다.

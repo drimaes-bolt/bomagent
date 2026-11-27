@@ -64,7 +64,7 @@ Drimaes_BOM_Agent_Plan/
 ├─ docs/                기획 본문 01~15. 결정·미결은 11, 용어는 12, 화면 목록은 13, 2026-11-23 부서 기능 확장 검토는 14, AVL 제품 데이터 수집 경로 조사는 15
 ├─ briefing/            설명자료·시연 목업·기획 현황판 산출 위치. index.html은 현재 기준 목업과 항상 같다(9.1)
 ├─ tools/               기획 현황판 생성 스크립트(build_plan_board.py)와 화면 틀(plan_board_template.html), AVL DB 변환 스크립트(avl_db/)
-├─ AVL_DB/              AVL·공급 제품 엑셀 12개(AVL_List.xlsx, AVL_Parts_<도메인>.xlsx, 개별 제품 단위 52,154행)와 원천 데이터(_source/, gzip·zip). _private/는 2차 확장분(130,835행)의 비공개 백데이터(git 제외, 9.4). 목업 DATA.avl의 원본이고 거래처 카탈로그 화면의 제품 표다. 제품에는 ERP 코드를 붙이지 않는다(DEC-19)
+├─ AVL_DB/              AVL·공급 제품 엑셀 12개(AVL_List.xlsx, AVL_Parts_<도메인>.xlsx, 개별 제품 단위 52,154행)와 원천 데이터(_source/, gzip·zip). _private/는 2차 확장분(194,089행, Walsin 주문 코드 조립분 포함)의 비공개 백데이터(git 제외, 9.4). 목업 DATA.avl의 원본이고 거래처 카탈로그 화면의 제품 표다. 제품에는 ERP 코드를 붙이지 않는다(DEC-19)
 ├─ DA_UI_hallmark/      사내 웹 디자인 규칙 v1.0. 배포 원본이라 고치지 않는다
 ├─ references/          근거 자료 사본(R01~R12), 제조사 가이드 PDF(R13, PDF는 git 제외)와 samples/. 들인 뒤에는 고치지 않는다
 ├─ SS_SKPRT_EBOM.xlsx   시연용 E-BOM 입력(KK16). 목업 연구소 화면에서 고르는 파일
