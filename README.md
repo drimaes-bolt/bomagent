@@ -85,12 +85,15 @@
 | [docs/12 용어집](docs/12_용어집.md) | 용어 정의와 겹치기 쉬운 ID | 전원 |
 | [docs/13 화면 목록](docs/13_화면_목록.md) | 시연 목업의 부서별 화면(주소·답하는 질문·구성·기능 ID·단계·상태). 연구소·생산관리·자재/구매에 생산기술·회계·품질·기준정보 화면 기획을 더했다. 기능 대비 화면 공백. 새 화면 기획의 출발점 | 기획·개발 |
 | [docs/14 부서 기능 확장 검토](docs/14_부서기능_확장검토.md) | 2026-11-23 요청 9건의 판단과 처리: 재고 수량 조정 규칙, 사용 이력 품목·거래처 카탈로그의 적절성(조건부 적절), 맞추기 순서 개정, 부서별 기능 후보 18건 검토, 새 ID, 외부 출처 | 기획·개발 |
-| [references/00 참고자료 목록](references/00_참고자료_목록.md) | 사본 목록, 원본 위치, 자료 성격, 이 폴더에 없는 자료 | 전원 |
+| [references/00 참고자료 목록](references/00_참고자료_목록.md) | 사본 목록, 원본 위치, 자료 성격, 이 폴더에 없는 자료. 2.1절에 R13 제조사 가이드 PDF | 전원 |
+| [AVL_DB/](AVL_DB/README.md) | **AVL과 공급 제품 DB(엑셀).** `AVL_List.xlsx`(부품 카테고리 11개의 AVL 제조사 35곳)와 `AVL_Parts_<도메인>.xlsx` 11개(제품 행 4,922, 도메인 안에서는 제조사 모두 같은 표 양식, 사양 열은 도메인마다 다름). 원문 PDF 대조 수준을 행마다 표시. 목업이 같은 데이터를 쓴다. 변환 스크립트는 `tools/avl_db/` | 기획·개발 |
+| [references/R13_Vendor_Guides/](references/R13_Vendor_Guides/README.md) | 제조사 Selection Guide·Catalog PDF 65개(고유 55). `<도메인>/<제조사>/` 트리, 수집 목록 `manifest.csv`, 61쌍 커버리지 `coverage.csv`. 시연의 AVL·공급 제품군 DB 원천. PDF는 git에서 뺐다 | 기획·개발 |
 | [briefing/DaBOM_20261020.html](briefing/DaBOM_20261020.html) | 기획회의 시연용 화면 목업. 부서 선택 → 연구소(E-BOM 가져오기·M-BOM 변환·수정·전송), 생산관리(제품 BOM·개정 이력·구조 확정·소요량), 자재/구매(재고·입고·구매·거래처). 프론트 전용 단일 파일, 값은 [가상]. 다른 PC에서는 이 HTML과 루트의 `SS_SKPRT_EBOM.xlsx`를 한 폴더에 두고 연구소 화면의 Import로 고른다 | 기획·현업 |
 | [briefing/DaBOM_taste_skill_20261021.html](briefing/DaBOM_taste_skill_20261021.html) | 그 이전 기준 시연 목업. 동작과 데이터는 위 파일과 같고, 화면 구성만 taste-skill(v2.1.4)의 앱 화면 규칙으로 다시 정했다(회색 틀 + 흰 시트, 맞추기 결과 막대, BOM 단계 트랙, 화면 주소 `#rnd/import` 등) | 기획·현업 |
-| [briefing/DaBOM_root_20261124.html](briefing/DaBOM_root_20261124.html) | **현재 기준 시연 목업(뿌리 판).** 확장 판에서 진입 화면과 미리보기 화면의 머리를 고쳤다. 첫머리에 "시작도 뿌리도 BOM이다"와 이름의 뜻을 두고, 뿌리(BOM = E-BOM + SCM 정보 → M-BOM) → 줄기(처음 만든 여섯 기능) → 가지(부서) 지도 안에서 부서를 고른다. 부서마다 BOM의 어디를 보는지 한 줄, 가지를 더하는 규칙 3개, 다음에 뻗을 곳 [제안]을 붙였다. 미리보기 화면 33개에는 "BOM에서 읽는 것 → 돌려주는 것" 띠를 더했다([docs/13 12장](docs/13_화면_목록.md)). 동작 화면과 데이터는 확장 판과 같다. 근거 [docs/01 1.6](docs/01_프로젝트_정의.md), DEC-18 | 기획·현업 |
+| [briefing/DaBOM_avl_20261127.html](briefing/DaBOM_avl_20261127.html) | **현재 기준 시연 목업(AVL 판).** 뿌리 판에 AVL·공급 제품을 더했다: 기준정보 `#mdm/avl`(AVL·공급 제품군, 동작 화면)과 연구소 `#rnd/search`의 "AVL 공급 제품" 탭. 부품 카테고리 11개의 AVL 제조사 35곳(카테고리별 합)과 제조사 Selection Guide에서 뽑은 공급 제품 4,922행을 `DATA.avl`에 넣었고, 저항·커패시터·인덕터는 사양(값·크기·전압·허용오차)으로 찾을 수 있다. 제품에는 ERP 코드가 없다. 근거 DEC-19, [AVL_DB](AVL_DB/README.md) | 기획·현업 |
+| [briefing/DaBOM_root_20261124.html](briefing/DaBOM_root_20261124.html) | 이전 기준 시연 목업(뿌리 판). 확장 판에서 진입 화면과 미리보기 화면의 머리를 고쳤다. 첫머리에 "시작도 뿌리도 BOM이다"와 이름의 뜻을 두고, 뿌리(BOM = E-BOM + SCM 정보 → M-BOM) → 줄기(처음 만든 여섯 기능) → 가지(부서) 지도 안에서 부서를 고른다. 부서마다 BOM의 어디를 보는지 한 줄, 가지를 더하는 규칙 3개, 다음에 뻗을 곳 [제안]을 붙였다. 미리보기 화면 33개에는 "BOM에서 읽는 것 → 돌려주는 것" 띠를 더했다([docs/13 12장](docs/13_화면_목록.md)). 동작 화면과 데이터는 확장 판과 같다. 근거 [docs/01 1.6](docs/01_프로젝트_정의.md), DEC-18 | 기획·현업 |
 | [briefing/DaBOM_expand_20261123.html](briefing/DaBOM_expand_20261123.html) | 이전 기준 시연 목업(확장 판). taste-skill 판에 더해: 재고 = 루트 `Inventory.xlsx` 1,048품목(단가만 [가상]), 사용 이력 품목 356(재고 0), 분류(ERP 대분류) 체크 상자 필터, E-BOM 없이 재고 열람, 거래처 카탈로그(예시), 맞추기 막대의 "재사용 · 재고 0" 칸, 생산기술·회계·품질·기준정보 화면 기획. 화면 목록은 [docs/13](docs/13_화면_목록.md), 근거는 [docs/14](docs/14_부서기능_확장검토.md) | 기획·현업 |
-| [briefing/index.html](briefing/index.html) | 현재 기준 시연 목업(위 뿌리 판)의 사본. 기준 판과 항상 같게 유지한다. 새 판을 만들거나 기준 판을 고치면 함께 갱신한다([CLAUDE.md 9.1](CLAUDE.md)) | 기획·현업 |
+| [briefing/index.html](briefing/index.html) | 현재 기준 시연 목업(위 AVL 판)의 사본. 기준 판과 항상 같게 유지한다. 새 판을 만들거나 기준 판을 고치면 함께 갱신한다([CLAUDE.md 9.1](CLAUDE.md)) | 기획·현업 |
 | [briefing/DaBOM_plan_board_20261123.html](briefing/DaBOM_plan_board_20261123.html) | **기획 현황판.** 기능 76개·화면 47개·질의·결정·미결·데이터 준비를 한 화면에서 본다: 단계별·모듈별 기능, 기능 목록(상태·단계·부서·화면 필터, 질의 연결), 부서 × 단계 표, 화면 지도(누르면 목업 그 화면이 열림), 결정·미결. docs/를 읽어 `tools/build_plan_board.py`가 만든다. 문서를 고친 뒤 `python tools/build_plan_board.py`로 다시 만든다. 파일 이름의 날짜는 화면 틀의 판 날짜이고, 생성 시각은 화면 안에 있다 | 기획·전원 |
 | [tools/](tools/) | `build_plan_board.py`(기획 현황판 생성, 표준 라이브러리만), `plan_board_template.html`(현황판 화면 틀) | 기획·AI |
 | [DA_UI_hallmark/00_READ_FIRST.md](DA_UI_hallmark/00_READ_FIRST.md) | 사내 웹 화면·웹 문서 디자인 규칙 DA UI hallmark v1.0. 위 taste-skill 판의 조합(키트 색·글꼴 + taste-skill 규칙)을 규칙으로 정리했고, 사내 키트(R08)보다 우선한다. 규칙 문서 5개, 시작 틀 3개(업무 화면·발표·문서), 브라우저 검사기 `checker.html`, 처음 쓰는 사람용 `GUIDE.html` | 기획·개발·전사 |
@@ -105,7 +108,7 @@
 
 ## 6. 지금 상태와 다음 할 일
 
-현재 상태는 기획 초안이다. NC AI의 10/02 설계 자료 기준으로 협력사 모델은 튜닝 전이고, 데모는 범용 모델을 임시로 연결해 시연했다(R06·R07). 다봄 개발은 시작 전이다. 시연 목업(뿌리 판)에는 동작 화면 14개와 미리보기 화면 33개가 있다. 진입 화면은 뿌리 원칙(시작도 뿌리도 BOM)을 먼저 보여 준다. 연구소·생산관리·자재/구매가 동작 부서이고, 생산기술·회계·품질·기준정보는 화면 기획을 미리보기로 넣었다(회계는 동작 화면 1개). 영업만 화면이 없다([docs/13](docs/13_화면_목록.md)). 2026-11-23 검토(사용 이력 품목, 거래처 카탈로그, 부서별 기능)는 [docs/14](docs/14_부서기능_확장검토.md)에 있다.
+현재 상태는 기획 초안이다. NC AI의 10/02 설계 자료 기준으로 협력사 모델은 튜닝 전이고, 데모는 범용 모델을 임시로 연결해 시연했다(R06·R07). 다봄 개발은 시작 전이다. 시연 목업(AVL 판)에는 동작 화면 15개와 미리보기 화면 33개가 있다. 진입 화면은 뿌리 원칙(시작도 뿌리도 BOM)을 먼저 보여 준다. 연구소·생산관리·자재/구매가 동작 부서이고, 생산기술·회계·품질·기준정보는 화면 기획을 미리보기로 넣었다(회계는 동작 화면 1개). 영업만 화면이 없다([docs/13](docs/13_화면_목록.md)). 2026-11-23 검토(사용 이력 품목, 거래처 카탈로그, 부서별 기능)는 [docs/14](docs/14_부서기능_확장검토.md)에 있다.
 
 0단계(준비)에서 할 일은 다음과 같다. 상세는 [docs/10](docs/10_로드맵_추진체계.md).
 
@@ -124,17 +127,20 @@ Drimaes_BOM_Agent_Plan/
 ├─ .claude/skills/            작업별 스킬: briefing-material(설명자료), dabom-mockup(시연 목업 수정)
 ├─ docs/                      기획 본문 01~14
 ├─ briefing/                  설명자료 산출 위치
-│  ├─ DaBOM_root_20261124.html          현재 기준 시연 목업(뿌리 판)
+│  ├─ DaBOM_avl_20261127.html           현재 기준 시연 목업(AVL 판)
 │  ├─ index.html                        기준 목업의 사본 (항상 같게 유지)
-│  ├─ DaBOM_expand_20261123.html        이전 기준 시연 목업(확장 판)
+│  ├─ DaBOM_root_20261124.html          이전 기준 시연 목업(뿌리 판)
+│  ├─ DaBOM_expand_20261123.html        그 이전 시연 목업(확장 판)
 │  ├─ DaBOM_plan_board_20261123.html    기획 현황판 (tools/build_plan_board.py가 만든다)
 │  ├─ DaBOM_taste_skill_20261021.html   그 이전 판 시연 목업
 │  └─ DaBOM_20261020.html               처음 판 시연 목업
-├─ tools/                     기획 현황판 생성 스크립트와 화면 틀
+├─ tools/                     기획 현황판 생성 스크립트와 화면 틀(`build_plan_board.py`), AVL DB 변환 스크립트(`avl_db/`)
+├─ AVL_DB/                    AVL·공급 제품 엑셀 12개와 원천 데이터(`_source/`). 목업 `DATA.avl`의 원본
 ├─ DA_UI_hallmark/            사내 웹 디자인 규칙 v1.0 (규칙 md 5개, 시작 틀 3개, checker.html, GUIDE.html). 안의 파일은 배포 원본이라 직접 고치지 않는다
 ├─ references/                근거 자료 (사본은 수정 금지, 목록만 갱신)
 │  ├─ 00_참고자료_목록.md
 │  ├─ R01~R12                 회의록, 지향점, 양사 제안, M-BOM 시나리오, ERP 채번, NC AI 설계·데모, 디자인 키트 등
+│  ├─ R13_Vendor_Guides/      제조사 Selection Guide·Catalog PDF(`도메인/제조사/`), manifest.csv, coverage.csv. PDF는 .gitignore
 │  └─ samples/                NC AI 전달본 데이터(가공·가상)와 학습용 시트 3종
 ├─ SS_SKPRT_EBOM.xlsx         시연 입력 E-BOM(KK16). 목업 연구소 화면의 Import로 고른다
 ├─ SS_SKPRT_MBOM.xlsx         시연 결과 M-BOM(KK16 M-BOM 1차, [가상]). 목업에 내장된 변환 결과의 원본
@@ -166,3 +172,5 @@ Drimaes_BOM_Agent_Plan/
 | v0.1.9 | 2026-11-23 | Vercel 배포가 404를 내던 문제를 고침. 루트에 `vercel.json`을 추가해 `briefing/` 폴더만 배포하도록 지정(`outputDirectory`). 목업은 `/`, 기획 현황판은 `/DaBOM_plan_board_20261123.html`로 열린다 |
 | v0.1.10 | 2026-11-24 | 뿌리 원칙(DEC-18) 반영: 사용자 지시 "시작도 뿌리도 BOM이다". README 머리와 0장 신설, 이름 표에 약칭 'BOM Agent'와 이름의 뜻 보충. docs/01(1.6 신설)·02·03(0.1)·04(1.1 BOM 뿌리 지도)·10·11·12·14와 CLAUDE.md·스킬에 반영. 시연 목업 뿌리 판(`DaBOM_root_20261124.html`)을 만들고 진입 화면을 뿌리·줄기·가지 지도 구성으로 바꿈, `index.html` 갱신. 기획 현황판 머리에 뿌리 원칙 표시 |
 | v0.1.11 | 2026-11-24 | 뿌리 원칙을 미리보기 화면까지 확장: 시연 목업 뿌리 판의 미리보기 화면 33개에 "BOM에서 읽는 것 → BOM에 돌려주는 것" 띠(`FUT_BOM`)를 더함. 같은 내용을 [docs/13](docs/13_화면_목록.md) 12장 표로 기록(v0.4). 기획 현황판 다시 생성, `index.html` 갱신 |
+| v0.1.12 | 2026-11-27 | 제조사 가이드 PDF 수집(R13): 도메인 11 × 제조사 61쌍 중 35쌍에서 PDF 65개(고유 55)를 `references/R13_Vendor_Guides/<도메인>/<제조사>/`에 저장하고 `manifest.csv`·`coverage.csv`·README로 기록. 제조사 저작물이라 PDF는 `.gitignore`로 git에서 뺌. 시연의 AVL·공급 제품군 DB 원천(docs/05 `DT-12`) |
+| v0.1.13 | 2026-11-27 | AVL과 공급 제품 DB(DEC-19): 제조사 PDF(R13)에서 제품 행 4,922개를 뽑아 `AVL_DB/`에 엑셀 12개로 정리(AVL 35곳, 도메인별 같은 표 양식, ERP 코드 없음, 행마다 원문 대조 수준). 시연 목업 AVL 판(`DaBOM_avl_20261127.html`)에 기준정보 `mdm/avl`과 연구소 검색 AVL 탭 추가, `index.html` 갱신. docs/04 MDM-10·MAT-14, docs/05 DT-16, docs/13 `mdm/avl`. 변환 스크립트는 `tools/avl_db/` |

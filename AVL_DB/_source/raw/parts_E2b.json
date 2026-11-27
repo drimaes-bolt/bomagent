@@ -1,0 +1,4934 @@
+{
+ "agent": "E2b",
+ "domain": "Capacitor",
+ "docs": [
+  {
+   "file": "Capacitor/TDK/TDK_PowerQuality_Solutions_Product_Profile_2025-09.pdf",
+   "rows": 6,
+   "note": "152쪽 중 PFC(역률 개선) 커패시터 6개 계열만 행으로 정리(PhaseCap Energy Plus Resin·Gas, PhiCap Extra Heavy Duty, DeltaCap, PhiCap, PoleCap, 8~9쪽 개요표 + 각 계열 첫 쪽). 정격은 kvar·VAC이며 정전용량(µF)은 주문코드 표에만 있어 capacitance는 비움(kvar는 features). 주문코드·형명 표(20~23, 28~31, 37~38, 41~44, 48~52, 57쪽)는 행으로 풀지 않음. 리액터·역률 컨트롤러·접촉기·사이리스터 모듈·능동 고조파 필터·SVG(PQSine·PQvar)는 커패시터가 아니라 제외. MLCC·알루미늄·필름 카탈로그는 이 문서에 없음."
+  },
+  {
+   "file": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "rows": 46,
+   "note": "4쪽 브로슈어(Vishay 세라믹 커패시터 Focus Products). 2~3쪽의 시리즈 표를 계열 행으로 정리(표지·4쪽 설명은 제외). 안전/HV 디스크·리드형 MLCC·SMD MLCC·군용/RF/HV SMD를 모두 포함. 안전·HV 디스크는 type을 '기타'로 적음. AEC-Q200은 문서가 시리즈별로 명시한 것(SMDY1...A, AY1, AY2는 4쪽 설명, VJ...X1A/X2A, VJ...32)만 적고 나머지는 null. size_metric은 인쇄되지 않아 비움."
+  },
+  {
+   "file": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "rows": 75,
+   "note": "21쪽 중 커패시터 부분(13~21쪽: MLCC 특수 제품군, 탄탈 커패시터, 박막 커패시터 NC)만 사용. 저항(3~12쪽)과 인덕터(21쪽 하단 Magnetics 표)는 제외. 일부 행(CDR32~35, CDR37, DSCC 03028·03029, DSCC 05002)은 전압 칸이 병합 셀로 비어 있어 voltage를 null로 둠. VJ HiRel 두 행의 크기는 '0402 to 2225'처럼 범위로 인쇄."
+  },
+  {
+   "file": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "rows": 55,
+   "note": "7쪽 중 표지(1쪽)를 제외한 2~7쪽의 시리즈 55개(솔리드·웻·고에너지 웻 탄탈 스루홀). 케이스 크기(A, B, T1 등)는 specs에 맞는 키가 없어 행 note에 적음. 허용오차·온도·AEC 정보는 문서에 없음. type은 모두 '탄탈(칩/리드)'(웻 탄탈 포함)."
+  },
+  {
+   "file": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "rows": 31,
+   "note": "65쪽 중 시리즈 소개 첫 쪽(GENERAL ELECTRICAL DATA)에서 계열 행 20개와 FT series 부품번호 11개를 정리. 정전용량 매트릭스 쪽(크기×정전용량×전압)은 행으로 풀지 않음. PDF 쪽 = 인쇄 쪽 + 3. 시리즈 한 행에 유전체가 여럿이면 값이 다른 항목(capacitance·voltage·tolerance·temp)은 'NP0: …; X7R: …' 형식으로 유전체별로 적음. size_inch는 합집합이고 유전체별 크기 차이는 행 note에 적음. size_metric은 5쪽 'Inch(mm)' 대응표에 모든 크기가 있을 때만 채움(0505·1111은 대응값이 없어 null). 허용오차 문자 코드는 문서 범례대로 값으로 풀어 적음. 21~22쪽 RH(Microwave-High reliability)는 How to order에만 나오고 소개 쪽이 없어 제외."
+  },
+  {
+   "file": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "rows": 79,
+   "note": "30쪽 중 커패시터 부분만 사용: MLCC 빠른 제품 정보(3~4쪽, 계열 20행), 안전 규격 세라믹(10쪽 3행), 세라믹 디스크(12쪽 3행), 방사형 리드 MLCC(13쪽 3행), SMD 안전 세라믹(14쪽 부품번호 25행), Matsuo 탄탈(27쪽 9행), Nitsuko 필름(29쪽 16행). 제외: 칩 저항(5~7쪽), MOV(15쪽), 인덕터·RF 소자·안테나(16~25쪽), 마이크로퓨즈(27쪽 하단), NTC·배리스터(28쪽). Walsin MLCC 카탈로그와 같은 계열이 있으나 이 문서가 인쇄한 값(범위·크기가 약간 다름)을 그대로 적음. 값 표기는 MLCC 카탈로그와 같은 규칙('NP0: …; X7R: …')."
+  }
+ ],
+ "rows": [
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "SMDY1 Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "470pF~4.7nF",
+    "voltage": "X1 760VAC / Y1 500VAC / 1500VDC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "EMI suppression safety cap; SMD reflow solderable"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "SMDY1...A Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "470pF~4.7nF",
+    "voltage": "X1 760VAC / Y1 500VAC / 1500VDC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "aec": "AEC-Q200",
+    "features": "Automotive EMI suppression safety cap"
+   },
+   "note": "AEC-Q200 표기는 4쪽(온보드 차저 AC 라인 필터용 설명)과 1쪽 표지에 있음"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "SMDY1...S Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF~1.5nF",
+    "voltage": "X1 440VAC / Y1 300VAC / 1500VDC",
+    "dielectric": "U2J;Y5S;Y5U",
+    "tolerance": "±10%, ±20%",
+    "features": "EMI suppression safety capacitor"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "VY1 Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF~4.7nF",
+    "voltage": "X1 760VAC / Y1 500VAC / 1500VDC",
+    "dielectric": "U2J;Y5S;Y5U;Y5V",
+    "tolerance": "±10%, ±20%",
+    "features": "EMI suppression safety cap; includes mini size VY1...Y5V"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "VY1 Compact Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "470pF~4.7nF",
+    "voltage": "X1 760VAC / Y1 500VAC / 1500VDC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "Compact size, high pulse strength safety capacitor"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "VY2 Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF~10nF",
+    "voltage": "X1 440VAC / Y2 300VAC / 1000VDC",
+    "dielectric": "U2J;Y5S;Y5U;Y5V",
+    "tolerance": "±10%, ±20%",
+    "features": "EMI suppression safety cap; includes mini size VY2...Y5V"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "AY1 Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "15pF~4.7nF",
+    "voltage": "X1 760VAC / Y1 500VAC / 1500VDC",
+    "dielectric": "U2J;Y5S;Y5T;Y5U",
+    "tolerance": "±10%, ±20%",
+    "aec": "AEC-Q200",
+    "features": "Automotive grade EMI suppression safety cap"
+   },
+   "note": "AEC-Q200 표기는 4쪽 설명에 있음"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "AY2 Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF~10nF",
+    "voltage": "X1 440VAC / Y2 300VAC / 1000VDC",
+    "dielectric": "U2J;Y5S;Y5U;Y5V",
+    "tolerance": "±10%, ±20%",
+    "aec": "AEC-Q200",
+    "features": "EMI suppression safety cap for automotive"
+   },
+   "note": "AEC-Q200 표기는 4쪽 설명에 있음"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "WKP Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "33pF~4.7nF",
+    "voltage": "X1 760VAC / Y1 500VAC",
+    "dielectric": "U2J;Y5S;Y5T;Y5U",
+    "tolerance": "±10%, ±20%",
+    "features": "EMI suppression safety capacitor"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "WYO Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "1.0nF~12nF",
+    "voltage": "X1 440VAC / Y2 250VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "EMI suppression safety capacitor"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "440L Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF~20nF",
+    "voltage": "X1 760VAC / Y1 500VAC",
+    "dielectric": "C0G;U2J;P3K;R3L;X7R;Y5U",
+    "tolerance": "±10%, ±20%",
+    "features": "EMI suppression safety capacitor"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "715C Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~20nF",
+    "voltage": "10kVDC~50kVDC",
+    "dielectric": "N4700;Y5U",
+    "tolerance": "±20%, +80%/-20%",
+    "features": "HV disc, screw terminal; DF 0.2% (class 1) / 2.0% (class 2)"
+   },
+   "note": "Class 1, Class 2 겸용. 15kVDC~50kVDC 부품은 나사 단자"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "660R Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~10nF",
+    "voltage": "10kVDC~30kVDC",
+    "dielectric": "N4700;X7R;Z5U",
+    "tolerance": "±20%, +80%/-20%",
+    "features": "HV disc, axial leaded; DF 0.2% (class 1) / 2.0% (class 2)"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "HVCC Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~2.0nF",
+    "voltage": "10kVDC~20kVDC",
+    "dielectric": "Y6P",
+    "tolerance": "±10%, ±20%",
+    "features": "HV disc, radial leaded; DF <1.5%"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "HVCC Class 1 Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~1.0nF",
+    "voltage": "15kVDC",
+    "dielectric": "T3M",
+    "tolerance": "±10%",
+    "features": "HV disc, radial leaded; DF max 1.0% at 1kHz"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "615R Series",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~3.3nF",
+    "voltage": "10kVDC~20kVDC",
+    "dielectric": "T3M;X5F;Y5R;Y5U;Z5U",
+    "tolerance": "±20%, +80%/-20%",
+    "features": "HV disc, radial leaded; DF 0.2% (class 1) / 2.0% (class 2)"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "A…P Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "capacitance": "100pF~1.0µF",
+    "voltage": "50VDC~200VDC",
+    "dielectric": "C0G;X7R",
+    "tolerance": "±5%, ±10%, ±20%",
+    "features": "Automotive axial leaded MLCC; 160°C"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "K…G Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "capacitance": "100pF~1.0µF",
+    "voltage": "50VDC~200VDC",
+    "dielectric": "C0G;X7R",
+    "tolerance": "±5%, ±10%, ±20%",
+    "features": "Automotive radial leaded MLCC; 160°C"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "K…H Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "capacitance": "100pF~1.0µF",
+    "voltage": "50VDC~200VDC",
+    "dielectric": "C0G;X0U",
+    "tolerance": "±5%, ±10%, ±20%",
+    "features": "Automotive radial leaded MLCC; 175°C (200°C max. 500h)"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "MDSA Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "capacitance": "10pF~1.0µF",
+    "voltage": "50VDC~200VDC",
+    "dielectric": "C0G;X7R",
+    "tolerance": "±5%, ±10%, ±20%",
+    "features": "Automotive axial leaded MLCC"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "MDSK Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "capacitance": "10pF~1.0µF",
+    "voltage": "50VDC~200VDC",
+    "dielectric": "C0G;X7R",
+    "tolerance": "±5%, ±10%, ±20%",
+    "features": "Automotive radial leaded MLCC"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "VJ Commercial Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;1206;1210;1808;1812;1825;2220;2225;3640",
+    "capacitance": "1pF~6.8µF",
+    "voltage": "16V~1000V",
+    "dielectric": "C0G;X7R;X5R;Y5V",
+    "features": "Excellent ESD; wet build process; polymer (flexible) termination available"
+   },
+   "note": "C0G/X7R는 wet build·귀금속 전극, C0G/X5R/X7R/Y5V는 dry sheet·비금속 전극 공정"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "VJ….W1BC Basic Commodity",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0201;0402;0603;0805;1206;1210",
+    "capacitance": "0.5pF~100µF",
+    "voltage": "10V~100V",
+    "features": "High capacitance values; ultra small 0201 size"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "GA...31G, GA...34G Automotive Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;1206;1210;1812",
+    "capacitance": "1pF~1µF",
+    "voltage": "16V~3000V",
+    "dielectric": "C0G;X7R;X8R",
+    "features": "Ag/Pd termination for epoxy bonding; polymer termination available"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "GA…31G Automotive Extended Bending MLCC",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0603;0805;1206;1210",
+    "capacitance": "100pF~470nF",
+    "voltage": "16V~630V",
+    "dielectric": "C0G;X7R",
+    "features": "Flexible termination, typically more than 5 mm bending"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "GA…31M / GA…34G HiFREQ Automotive Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;0505;1111;1206",
+    "capacitance": "0.1pF~5.1nF",
+    "voltage": "25V~1500V",
+    "dielectric": "HIFREQ (D), C0G (NP0) TCC; Q >2000 at 1MHz",
+    "features": "Highest Q factor; Vishay Green"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "GA…EDG Automotive ESD MLCC",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0603;0805;1206",
+    "capacitance": "1nF~1µF",
+    "voltage": "25V~200V",
+    "dielectric": "C0G;X7R",
+    "features": "Excellent ESD performance; wet build process"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "VJ...X1A and VJ...X2A Automotive Safety Certified Capacitors",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "2008;2220",
+    "capacitance": "10pF~12nF",
+    "voltage": "250VAC",
+    "dielectric": "C0G;X7R",
+    "aec": "AEC-Q200",
+    "features": "VDE, CSA, cCSAus; X1/Y2 and X2 class; IEC 60384-14"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "VJ X8R",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;1206;1210",
+    "capacitance": "330pF~220nF",
+    "voltage": "25V~100V",
+    "dielectric": "X8R",
+    "temp": "up to +150°C",
+    "features": "High temperature dielectric, TCC ±15% up to +150°C"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "VJ BX Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0505;1111",
+    "capacitance": "510pF~100nF",
+    "voltage": "50V",
+    "dielectric": "BX",
+    "temp": "-55~+125°C",
+    "features": "Low ESR; TCC ±15%, -25% with 100% rated VDC"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "VJ...32 Lead Bearing Termination Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;1206;1210",
+    "capacitance": "1pF~1µF",
+    "voltage": "16V~630V",
+    "dielectric": "C0G;X7R",
+    "aec": "AEC-Q200",
+    "features": "Sn/Pb termination min. 4% Pb; tin whisker mitigation; low orbit satellite"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "Non-magnetic Series for IR Reflow Soldering",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;1206;1210;1808;1812;1825;2220;2225;3640;0505;1111;2525;3838",
+    "capacitance": "1pF~6.8nF",
+    "voltage": "6.3V~3000V",
+    "dielectric": "C0G;X5R;X7R",
+    "features": "Non-magnetic; copper barrier termination"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "Hi-Rel Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;1206;1210;1808;1812;1825;2220;2225;3640",
+    "capacitance": "1pF~6.8µF",
+    "voltage": "6.3V~600V",
+    "dielectric": "C0G;X5R;X7R",
+    "features": "MIL-PRF-55681 group testing (A only, full A and C); wet build"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "CDR",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805;1805;1808;1812;2225;1206;1210;1825;0603;0402",
+    "capacitance": "1pF~470nF",
+    "voltage": "6.3V~100V",
+    "dielectric": "BP;BR;BX",
+    "features": "MIL-PRF-55681; several failure rate options; CAGE 2770A"
+   },
+   "note": "CDR01(0805), CDR02(1805), CDR03(1808), CDR04(1812), CDR06(2225), CDR31(0805), CDR32(1206), CDR33(1210), CDR34(1812), CDR35(1825), CDR36(0603), CDR37(0402)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "DSCC 03028 / 03029 / 05006 / 05007",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;1206",
+    "capacitance": "1pF~470nF",
+    "voltage": "6.3V~200V",
+    "dielectric": "BP;BR;BX",
+    "features": "DSCC drawings; full group C; CAGE 2770A"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "DSCC 05001 / 05002 / 05003",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805",
+    "capacitance": "1pF~100pF",
+    "voltage": "50V~250V",
+    "dielectric": "High Q",
+    "features": "High Q for high frequency; full group C; CAGE 2770A"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "MIL-PRF-123",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805;1206;1210;1808;1812;1825;2225",
+    "capacitance": "1pF~470nF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "Space-level reliability per MIL-PRF-123; Ni barrier with Sn/Pb finish"
+   },
+   "note": "CKS51(0805), CKS55(1206), CKS52(1210), CKS53(1808), CKS56(1812), CKS57(1825), CKS54(2225)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "HiFREQ Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;0505;1111;2525;3838",
+    "capacitance": "0.1pF~12nF",
+    "voltage": "25V~7200V",
+    "dielectric": "Q >2000 at 1MHz",
+    "features": "Highest Q factor; Vishay Green available; Ni barrier / non-magnetic Cu barrier"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "Hi Temperature HT Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603;0805;0505;1111",
+    "capacitance": "0.1pF~3.3nF",
+    "voltage": "25V~500V",
+    "dielectric": "Q >2000 at 1MHz",
+    "temp": "up to +200°C",
+    "features": "Operating temperature up to 200°C"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "VJ....W1BC High Q",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402;0603",
+    "capacitance": "0.5pF~3.3nF",
+    "voltage": "16V~100V",
+    "dielectric": "Q >1000",
+    "features": "High Q; stable dielectric"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "VJ....W1BC Ultra High Q / Low ESR",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0201;0402;0603;0805",
+    "capacitance": "0.1pF~100pF",
+    "voltage": "10V~250V",
+    "dielectric": "Q >1400",
+    "features": "High Q; low ESR; 0201; BME electrode"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "HVArc Guard® Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805;1206;1210;1808;1812;2220;2225",
+    "capacitance": "10pF~270nF",
+    "voltage": "250V~2500V",
+    "dielectric": "C0G;X7R",
+    "features": "Prevents arcing over; polymer termination available for X7R"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "Open Mode Design Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805;1206;1210;1808;1812;1825;2220;2225",
+    "capacitance": "10pF~1.8µF",
+    "voltage": "16V~3000V",
+    "dielectric": "C0G;X7R",
+    "features": "Open mode design reduces short risk from bending crack; polymer termination"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "Safety-Certified Capacitors",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "2008;2220",
+    "capacitance": "10pF~12nF",
+    "voltage": "250VAC",
+    "dielectric": "C0G;X7R",
+    "features": "VDE, CSA, cCSAus; X1/Y2 and X2 class; IEC 60384-14"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "Source Energy Capacitor",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1812;1825;2225;3040;3640;4044",
+    "capacitance": "4.7nF~560nF",
+    "voltage": "1000V, 1500V",
+    "dielectric": "X7R",
+    "features": "Low electrostrictive ceramic for charge and discharge cycles"
+   },
+   "note": "유전체 칸에 'X7R (Y5P)'로 인쇄"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Ceramic_Capacitors_Brochure_MS6924-2610.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "HV High Voltage Series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1206;1210;1808;1812;1825;2220;2225;3040;3640;4044",
+    "capacitance": "10pF~560nF",
+    "voltage": "500V~8000V",
+    "dielectric": "C0G;X7R",
+    "features": "High reliability serial design; low electrostrictive ceramic"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "M123A10",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "capacitance": "1pF~18000pF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "MIL-PRF-123; space-level; NME construction"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "M123A11",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1210",
+    "capacitance": "300pF~100000pF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "MIL-PRF-123; space-level; NME construction"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "M123A12",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1808",
+    "capacitance": "300pF~100000pF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "MIL-PRF-123; space-level; NME construction"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "M123A13",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "2225",
+    "capacitance": "1100pF~470000pF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "MIL-PRF-123; space-level; NME construction"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "M123A21",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1206",
+    "capacitance": "1pF~39000pF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "MIL-PRF-123; space-level; NME construction"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "M123A22",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1812",
+    "capacitance": "1200pF~56000pF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "MIL-PRF-123; space-level; NME construction"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "M123A23",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1825",
+    "capacitance": "3600pF~470000pF",
+    "voltage": "50V~100V",
+    "dielectric": "BP;BX",
+    "features": "MIL-PRF-123; space-level; NME construction"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "CDR01",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "capacitance": "10pF~4700pF",
+    "voltage": "50V~100V",
+    "features": "MIL-PRF-55681; standard capacitance; established reliability /1"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "CDR02",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1805",
+    "capacitance": "220pF~22000pF",
+    "voltage": "50V~100V",
+    "features": "MIL-PRF-55681; standard capacitance; established reliability /1"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "CDR03",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1808",
+    "capacitance": "330pF~68000pF",
+    "voltage": "50V~100V",
+    "features": "MIL-PRF-55681; standard capacitance; established reliability /1"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "CDR04",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1812",
+    "capacitance": "1200pF~180000pF",
+    "voltage": "50V~100V",
+    "features": "MIL-PRF-55681; standard capacitance; established reliability /1"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR06",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "2225",
+    "capacitance": "390000pF~470000pF",
+    "voltage": "50V",
+    "features": "MIL-PRF-55681/3; established reliability"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR31",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "capacitance": "1.0pF~18000pF",
+    "voltage": "50V~100V",
+    "features": "MIL-PRF-55681/7; established reliability"
+   },
+   "note": "전압 50V~100V는 이 행에만 인쇄(CDR32~CDR35는 칸이 비어 있음)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR32",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1206",
+    "capacitance": "1.0pF~39000pF",
+    "features": "MIL-PRF-55681/8; established reliability"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR33",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1210",
+    "capacitance": "1000pF~100000pF",
+    "features": "MIL-PRF-55681/9; established reliability"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR34",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1812",
+    "capacitance": "2200pF~180000pF",
+    "features": "MIL-PRF-55681/10; established reliability"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR35",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1825",
+    "capacitance": "4700pF~470000pF",
+    "features": "MIL-PRF-55681/11; established reliability"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR36",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0603",
+    "capacitance": "51pF~100000pF",
+    "voltage": "6.3V~100V",
+    "features": "MIL-PRF-55681/12; established reliability"
+   },
+   "note": "전압 6.3V~100V는 이 행에만 인쇄(CDR37·DSCC 03028·03029는 칸이 비어 있음)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "CDR37",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402",
+    "capacitance": "100pF~10000pF",
+    "features": "MIL-PRF-55681/13; established reliability"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "DSCC 03028",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0603",
+    "capacitance": "1pF~100000pF",
+    "features": "DSCC drawing 03028; Sn/Pb 'Z' termination"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "DSCC 03029",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402",
+    "capacitance": "1pF~10000pF",
+    "features": "DSCC drawing 03029; Sn/Pb 'Z' termination"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "DSCC 05001",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "capacitance": "1pF~100pF",
+    "voltage": "50V~250V",
+    "features": "High frequency; max DF 0.05%; DSCC 05001"
+   },
+   "note": "전압 50V~250V는 이 행에만 인쇄(DSCC 05002는 칸이 비어 있음)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "DSCC 05002",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0603",
+    "capacitance": "1pF~100pF",
+    "features": "High frequency; max DF 0.05%; DSCC 05002"
+   },
+   "note": "전압 칸이 병합 셀로 비어 있음(위 행 값이 이어지는지 불명확)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "DSCC 05003",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402",
+    "capacitance": "1pF~27pF",
+    "voltage": "50V~100V",
+    "features": "High frequency; max DF 0.05%; DSCC 05003"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "DSCC 05006",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "capacitance": "1pF~220000pF",
+    "voltage": "10V~200V",
+    "features": "Extended capacitance; CDR case size; DSCC 05006"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "DSCC 05007",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "1206",
+    "capacitance": "1pF~470000pF",
+    "voltage": "16V~200V",
+    "features": "Extended capacitance; CDR case size; DSCC 05007"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "VJ HiRel COG (NPO)",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402~2225",
+    "capacitance": "1pF~39000pF",
+    "voltage": "10V~600V",
+    "dielectric": "C0G (NP0)",
+    "features": "Hi-Rel screened to MIL-PRF-55681 Group A and C guidelines; HI-REL COTS"
+   },
+   "note": "크기는 '0402 to 2225'로 인쇄(개별 코드 목록 없음)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "VJ HiRel X7R / X5R",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402~3640",
+    "capacitance": "100pF~6.8µF",
+    "voltage": "6.3V~500V",
+    "dielectric": "X7R;X5R",
+    "features": "Hi-Rel screened to MIL-PRF-55681 Group A and C guidelines; HI-REL COTS"
+   },
+   "note": "크기는 '0402 to 3640'로 인쇄(개별 코드 목록 없음)"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "CWR06",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~100µF",
+    "voltage": "4V~50V",
+    "features": "MIL-PRF-55363/4; conformal chip; gold or Sn/Pb termination"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "CWR16",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.33µF~330µF",
+    "voltage": "4V~35V",
+    "features": "MIL-PRF-55365/13; extended range; conformal chip"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "CWR26",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~100µF",
+    "voltage": "15V~35V",
+    "features": "MIL-PRF-55365/13; low ESR; conformal chip"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "DSCC 02002",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~150µF",
+    "voltage": "10V~40V",
+    "features": "Vishay 195D series; conformal coated; Hi-Rel screened"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "CWR11",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.1µF~100µF",
+    "voltage": "4V~50V",
+    "features": "MIL-PRF-55365/8; molded case chip; Sn/Pb termination"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "DSCC 95158",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "4.7µF~220µF",
+    "voltage": "4V~50V",
+    "features": "Vishay 593D series; low ESR; molded case; Hi-Rel screened"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "T83",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~470µF",
+    "voltage": "4V~63V",
+    "features": "HI-REL COTS; extended capacitance; molded case chip"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "M39003/01",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.056µF~330µF",
+    "voltage": "6V~100V",
+    "features": "MIL-PRF-39003 (CSR13); axial; hermetic metal case; solid Ta"
+   },
+   "note": "CSR13"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "16",
+   "level": "계열",
+   "series": "M39003/03",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.2µF~1000µF",
+    "voltage": "6V~50V",
+    "features": "MIL-PRF-39003 (CSR23); extended range; axial; hermetic metal case"
+   },
+   "note": "CSR23"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "M39003/09",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "5.6µF~330µF",
+    "voltage": "6V~50V",
+    "features": "MIL-PRF-39003 (CSR21); low ESR; axial; hermetic metal case"
+   },
+   "note": "CSR21"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "T95",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.15µF~680µF",
+    "voltage": "4V~50V",
+    "features": "HI-REL COTS; extended capacitance; conformal case chip"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "T97",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~2200µF",
+    "voltage": "4V~75V",
+    "features": "HI-REL COTS; ultra low ESR; dual anode; conformal case chip"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "DLA 14002",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "4.7µF~680µF",
+    "voltage": "4V~50V",
+    "features": "DLA-approved; conformal case chip; Hi-Rel screened"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "DLA 13008",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~1500µF",
+    "voltage": "4V~63V",
+    "features": "DLA-approved; ultra low ESR; dual anode; extended capacitance"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "TM8",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.33µF~47µF",
+    "voltage": "2V~40V",
+    "features": "HI-REL COTS; microchip; low DCL for long battery life"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "DLA 11020",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1µF~47µF",
+    "voltage": "6.3V~40V",
+    "features": "DLA-approved microchip; low DCL; surge current screening options"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "T54",
+   "part_number": null,
+   "type": "폴리머 탄탈",
+   "specs": {
+    "capacitance": "15µF~2800µF",
+    "voltage": "16V~75V",
+    "features": "HI-REL COTS; polymer cathode; ultra low ESR; stack configuration"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "DLA 20021",
+   "part_number": null,
+   "type": "폴리머 탄탈",
+   "specs": {
+    "capacitance": "15µF~2800µF",
+    "voltage": "16V~75V",
+    "features": "DLA-approved; polymer cathode; ultra low ESR; stack configuration"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "17",
+   "level": "계열",
+   "series": "T56",
+   "part_number": null,
+   "type": "폴리머 탄탈",
+   "specs": {
+    "capacitance": "10µF~680µF",
+    "voltage": "2.5V~50V",
+    "features": "HI-REL COTS; polymer cathode; ultra low ESR; high ripple capability"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "DLA 04051",
+   "part_number": null,
+   "type": "폴리머 탄탈",
+   "specs": {
+    "capacitance": "4.7µF~680µF",
+    "voltage": "2.5V~63V",
+    "features": "DLA-approved; polymer cathode; ultra low ESR; high reliability processing"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "M39006/09",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "MIL-PRF-39006 (CLR65); silver case; wet tantalum, hermetic, axial"
+   },
+   "note": "CLR65"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "M39006/21",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "MIL-PRF-39006 (CLR69); silver case; extended range; wet axial"
+   },
+   "note": "CLR69"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "M39006/22",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "MIL-PRF-39006 (CLR79); tantalum case; wet tantalum, hermetic, axial"
+   },
+   "note": "CLR79"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "M39006/25",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "MIL-PRF-39006 (CLR81); extended range; wet tantalum, hermetic, axial"
+   },
+   "note": "CLR81"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "M39006/30",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "MIL-PRF-39006 (CLR90); low ESR; wet tantalum, hermetic, axial"
+   },
+   "note": "CLR90"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "M39006/31",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "MIL-PRF-39006 (CLR91); low ESR, extended range; wet tantalum, hermetic, axial"
+   },
+   "note": "CLR91"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "M39006/33",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "15µF~680µF",
+    "voltage": "50V~100V",
+    "features": "MIL-PRF-39006 (CLR93); extended range; wet tantalum, hermetic, axial"
+   },
+   "note": "CLR93"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "DLA 06013",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "Space-level screened CLR79; DLA approved; wet tantalum, hermetic, axial"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "DLA 06014",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Space-level screened CLR81; extended range; DLA approved; wet axial"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "DLA 06015",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "Space-level screened CLR90; low ESR; DLA approved; wet axial"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "DLA 06016",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Space-level screened CLR91; low ESR, extended; DLA approved; wet axial"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "ST",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~2200µF",
+    "voltage": "25V~125V",
+    "features": "HI-REL COTS; ultra extended capacitance; wet tantalum; SMD options"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "DLA 93026",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~1800µF",
+    "voltage": "25V~125V",
+    "features": "DLA-approved; super extended capacitance; wet tantalum; Hi-Rel screened"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "STA",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "150µF~4700µF",
+    "voltage": "6V~15V",
+    "features": "HI-REL COTS; ultra extended capacitance; wet tantalum; SMD options"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "STE",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "18µF~10000µF",
+    "voltage": "10V~125V",
+    "features": "HI-REL COTS; ultra extended capacitance; wet tantalum; SMD options"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "DLA 10004",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "22µF~10000µF",
+    "voltage": "10V~125V",
+    "features": "DLA-approved; ultra extended capacitance; wet tantalum; Hi-Rel screened"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "STH",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "22µF~10000µF",
+    "voltage": "10V~125V",
+    "features": "HI-REL COTS; improved vibration capability; wet tantalum; SMD options"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "DLA 04021",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "70µF~2400µF",
+    "voltage": "15V~150V",
+    "features": "MIL-DTL-3965 CL55 styles; solder lug; wet tantalum capacitor array"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "T16",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~1800µF",
+    "voltage": "25V~125V",
+    "features": "HI-REL COTS; extended range; wet tantalum; improved reverse voltage"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "T18",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "22µF~1200µF",
+    "voltage": "50V~125V",
+    "features": "HI-REL COTS; extended range; wet tantalum; improved reverse voltage"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "DLA 13017",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~1800µF",
+    "voltage": "25V~125V",
+    "features": "DLA-approved; extended range; wet tantalum; improved reverse voltage"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "DLA 15005",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "22µF~1200µF",
+    "voltage": "50V~125V",
+    "features": "DLA-approved; extended range; wet tantalum; improved reverse voltage"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "DLA 20001",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "15µF~680µF",
+    "voltage": "50V~100V",
+    "features": "Space-level screened; wet tantalum; improved reverse voltage and vibration"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "20",
+   "level": "계열",
+   "series": "T22",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~110µF",
+    "voltage": "50V~125V",
+    "features": "HI-REL COTS; advanced SMD packaging; for avionics and aerospace"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "21",
+   "level": "계열",
+   "series": "DLA 19001",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~68µF",
+    "voltage": "50V~125V",
+    "features": "DLA-approved; advanced SMD packaging; for avionics and aerospace"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "21",
+   "level": "계열",
+   "series": "DLA 20012",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~68µF",
+    "voltage": "50V~125V",
+    "features": "Surface-mount; thermal shock 300 cycles; for avionics and aerospace"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Military_Aerospace_Passive_Components_Selector_Guide_SG2090-2611.pdf",
+   "page": "21",
+   "level": "계열",
+   "series": "NC",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "0.5pF~1000pF",
+    "voltage": "20V~200V",
+    "features": "Thin film MOS/MNOS chip capacitor; wirebondable; tolerance 2.5%"
+   },
+   "note": "박막 칩 커패시터. 케이스 크기 0202~0606, 인증 MIL-H-38534"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "150D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.027µF~330µF",
+    "voltage": "6V~125V",
+    "features": "Tantalex; hermetically sealed; axial lead; solid"
+   },
+   "note": "Case size: A, B, R, S"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "152D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.2µF~1000µF",
+    "voltage": "6V~60V",
+    "features": "Tantalex; hermetic; axial lead; extended range; solid"
+   },
+   "note": "Case size: A, B, R, S"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "550D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "5.6µF~330µF",
+    "voltage": "6V~50V",
+    "features": "Tantalex; hermetic; axial lead; low ESR; solid"
+   },
+   "note": "Case size: R, S"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "CTS1",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~330µF",
+    "voltage": "6.3V~63V",
+    "features": "Tantalex; hermetic; axial lead; CECC 30021-002 approved"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "CTS13",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~330µF",
+    "voltage": "6.3V~63V",
+    "features": "Tantalex; hermetic; axial lead; CECC 30201-005 approved"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "749DX",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~330µF",
+    "voltage": "6.3V~63V",
+    "features": "Tantalex; hermetic; axial lead; CECC 30201-001/-029 approved"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "M39003/01",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.033µF~330µF",
+    "voltage": "6V~100V",
+    "features": "Tantalex; hermetic; axial; MIL-PRF-39003 qualified, CSR13"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "M39003/03",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.2µF~820µF",
+    "voltage": "6V~50V",
+    "features": "Tantalex; hermetic; axial; extended range; MIL-PRF-39003, CSR23"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "M39003/09",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "5.6µF~330µF",
+    "voltage": "6V~50V",
+    "features": "Tantalex; hermetic; axial; low ESR; MIL-PRF-39003, CSR21"
+   },
+   "note": "Case size: C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "173D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~330µF",
+    "voltage": "2V~50V",
+    "features": "Tantalex; molded case; axial lead"
+   },
+   "note": "Case size: u, V, W, X, Y"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "2",
+   "level": "계열",
+   "series": "199D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~680µF",
+    "voltage": "3V~50V",
+    "features": "Tantalex; resin-coated; radial lead"
+   },
+   "note": "Case size: A, B, C, D, E, F"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "299D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~680µF",
+    "voltage": "3V~50V",
+    "features": "Tantalex; resin-coated; radial lead; triple lead"
+   },
+   "note": "Case size: A, B, C, D, E, F"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "489D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~680µF",
+    "voltage": "3V~50V",
+    "features": "Tantalex; resin-coated; radial lead"
+   },
+   "note": "Case size: A, B, C, D, E, F, H, M, N, R"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "499D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~680µF",
+    "voltage": "3V~50V",
+    "features": "Tantalex; resin-coated; radial lead"
+   },
+   "note": "Case size: A, B, C, D, E, F, H, M, N, R"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "ETPW",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~330µF",
+    "voltage": "3V~50V",
+    "features": "Tantalex; resin-coated; radial lead"
+   },
+   "note": "Case size: 1A - 6R"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "ETQW",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~330µF",
+    "voltage": "3V~50V",
+    "features": "Tantalex; resin-coated; radial lead"
+   },
+   "note": "Case size: 1A - 6R"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "790D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "0.10µF~330µF",
+    "voltage": "6.3V~50V",
+    "features": "Tantalex; molded case; radial lead"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "109D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~2200µF",
+    "voltage": "6V~150V",
+    "features": "Wet; Tantalex; silver case; elastomer seal; not for new designs"
+   },
+   "note": "Case size: C, F, K, T"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "138D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~2200µF",
+    "voltage": "6V~150V",
+    "features": "Wet; Tantalex; silver case; hermetic seal"
+   },
+   "note": "Case size: C, F, K, T"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "738D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "3.3µF~1200µF",
+    "voltage": "6.3V~125V",
+    "features": "Wet; Tantalex; silver case; hermetic seal"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "135D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~2200µF",
+    "voltage": "5V~150V",
+    "features": "Wet; tantalum case; hermetic; +200°C operation; SMD options"
+   },
+   "note": "Case size: C, F, K, T"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "136D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; hermetic; low ESR; SMD options"
+   },
+   "note": "Case size: C, F, K, T"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "134D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~1000µF",
+    "voltage": "50V~125V",
+    "features": "Wet; HI-TMP; tantalum case; hermetic; +200°C operation; SMD options"
+   },
+   "note": "Case size: C, F, K, T"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "T34D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~1500µF",
+    "voltage": "50V~125V",
+    "features": "Wet; HI-TMP; tantalum case; hermetic; +200°C operation"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "735D",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "2.7µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; Tantalex; tantalum case; hermetic; CECC 30202-001 approved"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "735DE",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "3.6µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; Tantalex; tantalum case; hermetic; CECC 30202-801 approved"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "CT79",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "3.9µF~2200µF",
+    "voltage": "6.3V~125V",
+    "features": "Wet; Tantalex; tantalum case; hermetic; CECC 30202-005 approved"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "M39006/09",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; silver case; hermetic; MIL-PRF-39006 qualified, CLR65"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "M39006/21",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; silver case; hermetic; extended range; MIL-PRF-39006, CLR69"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "M39006/22",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; hermetic; MIL-PRF-39006 qualified, CLR79"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "M39006/25",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; extended range; MIL-PRF-39006, CLR81"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "M39006/30",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; low ESR; MIL-PRF-39006 qualified, CLR90"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "M39006/31",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; low ESR, extended range; MIL-PRF-39006, CLR91"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "M39006/33",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "15µF~680µF",
+    "voltage": "50V~100V",
+    "features": "Wet; tantalum case; extended range; MIL-PRF-39006, CLR93"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "DLA 06013",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; space level, CLR79 ratings; DLA-approved"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "DLA 06014",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; extended range; space level, CLR81; DLA"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "DLA 06015",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1.7µF~1200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; low ESR; space level, CLR90; DLA-approved"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "DLA 06016",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "6.8µF~2200µF",
+    "voltage": "6V~125V",
+    "features": "Wet; tantalum case; low ESR, extended; space level, CLR91; DLA"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "ST",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~2200µF",
+    "voltage": "25V~125V",
+    "features": "Wet; SuperTan; tantalum case; hermetic; SMD options"
+   },
+   "note": "Case size: L2, T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "DLA 93026",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~2200µF",
+    "voltage": "25V~125V",
+    "features": "Wet; SuperTan; tantalum case; hermetic; DLA-approved"
+   },
+   "note": "Case size: L2, T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "STA",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "150µF~4700µF",
+    "voltage": "6V~15V",
+    "features": "Wet; SuperTan; tantalum case; hermetic"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "STE",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "22µF~10000µF",
+    "voltage": "10V~125V",
+    "features": "Wet; SuperTan; extended range; SMD options"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "DLA 10004",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "22µF~10000µF",
+    "voltage": "10V~125V",
+    "features": "Wet; SuperTan; extended range; DLA-approved"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "5",
+   "level": "계열",
+   "series": "STH",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "47µF~2800µF",
+    "voltage": "75V~125V",
+    "features": "Wet; SuperTan; extended range; improved vibration; SMD options"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "T11",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "47µF~220µF",
+    "voltage": "50V~125V",
+    "features": "Wet; HI-TMP; tantalum case; hermetic; +230°C operation"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "T16",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~1800µF",
+    "voltage": "25V~125V",
+    "features": "Wet; tantalum case; hermetic; extended range; SMD options"
+   },
+   "note": "Case size: A, B, C, D, E"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "DLA 13017",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "10µF~680µF",
+    "voltage": "50V~125V",
+    "features": "Wet; tantalum case; extended range; DLA-approved"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "DLA 20001",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "15µF~680µF",
+    "voltage": "50V~100V",
+    "features": "Wet; tantalum case; space level; DLA-approved"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "T18",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "22µF~1200µF",
+    "voltage": "50V~125V",
+    "features": "Wet; tantalum case; hermetic; ultra high capacitance; SMD options"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "DLA 15005",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "470µF~1000µF",
+    "voltage": "75V~100V",
+    "features": "Wet; tantalum case; ultra high capacitance; DLA-approved"
+   },
+   "note": "Case size: T1, T2, T3, T4"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "HE3",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1100µF~72000µF",
+    "voltage": "25V~125V",
+    "features": "High energy wet; tantalum case; hermetic; largest capacitance"
+   },
+   "note": "Case size: A, B, C"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "HE5",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1100µF~72000µF",
+    "voltage": "25V~125V",
+    "features": "High energy wet; tantalum case; hermetic; largest capacitance"
+   },
+   "note": "Case size: A, B, C"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "6",
+   "level": "계열",
+   "series": "DLA 10011",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1100µF~72000µF",
+    "voltage": "25V~80V",
+    "features": "High energy wet; largest capacitance; DLA-approved"
+   },
+   "note": "Case size: A, B, C"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "7",
+   "level": "계열",
+   "series": "DLA 15010",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1500µF~72000µF",
+    "voltage": "25V~125V",
+    "features": "High energy wet; largest capacitance; DLA-approved"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Vishay",
+   "doc": "Capacitor/Vishay/Vishay_Tantalum_Through-Hole_Selector_Guide_SG2160-2505.pdf",
+   "page": "7",
+   "level": "계열",
+   "series": "EP2",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "capacitance": "1500µF~96000µF",
+    "voltage": "25V~125V",
+    "features": "High energy wet; tantalum case; ultra high capacitance value"
+   },
+   "note": "Case size: A, B, C, D"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "8",
+   "level": "계열",
+   "series": "General Purpose Capacitors",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X7S;X6S;X5R",
+    "capacitance": "NP0: 0.1pF~0.1µF; X7R: 100pF~47µF; X7S: 0.1µF~100µF; X6S: 0.1µF~100µF; X5R: 100pF~220µF",
+    "voltage": "NP0: 10V, 16V, 25V, 50V, 100V; X7R/X7S/X6S/X5R: 4V, 6.3V, 10V, 16V, 25V, 50V, 100V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%; X7R: ±5%, ±10%, ±20%; X7S/X6S/X5R: ±10%, ±20%",
+    "temp": "NP0/X7R/X7S: -55~+125°C; X6S: -55~+105°C; X5R: -55~+85°C",
+    "features": "4V~100V general purpose; 0201~2225; Ni/Sn lead-free termination",
+    "size_inch": "0201;0402;0603;0805;1206;1210;1812;1825;2220;2225",
+    "size_metric": "0603;1005;1608;2012;3216;3225;4532;4563;5750;5763"
+   },
+   "note": "온도는 인쇄 3값(+125/+105/+85°C)을 유전체 5열에 배정(X7S는 +125°C로 Product Guide 3쪽과 같음)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "14",
+   "level": "계열",
+   "series": "01R5 series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X5R",
+    "capacitance": "NP0: 0.2pF~220pF; X7R: 100pF, 1000pF; X5R: 100pF~0.1µF",
+    "voltage": "NP0: 16V, 25V, 50V; X7R: 10V, 25V; X5R: 6.3V, 10V",
+    "tolerance": "±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%, ±20%",
+    "temp": "NP0/X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Ultra-small 01005 (0402 metric); high capacitance per unit size",
+    "size_inch": "01005",
+    "size_metric": "0402"
+   },
+   "note": "X7R 정전용량은 '100pF & 1000pF' 두 값만 인쇄"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "15",
+   "level": "계열",
+   "series": "Middle & High Voltage Capacitors",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 0.5pF~1µF; X7R: 100pF~2.2µF",
+    "voltage": "200V~4000V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%, ±20%; X7R: ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "High voltage in a given case size; surface-coating option (code M)",
+    "size_inch": "0402;0603;0805;1206;1210;1808;1812;1825;2220;2225",
+    "size_metric": "1005;1608;2012;3216;3225;4520;4532;4563;5750;5763"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "High Voltage Capacitors_Surface Coating Type",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 33pF~470pF; X7R: 150pF~0.018µF",
+    "voltage": "NP0: 4000V; X7R: 2000V~4000V",
+    "tolerance": "NP0: ±5%, ±10%, ±20%; X7R: ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "High voltage 2000V~4000V; surface coating (termination code M)",
+    "size_inch": "1206;1210;1808;1812;1825;2211;2220;2225",
+    "size_metric": "3216;3225;4520;4532;4563;5728;5750;5763"
+   },
+   "note": "NP0 크기는 1808·1812, X7R 크기는 1206~2225(2211 포함)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "19",
+   "level": "계열",
+   "series": "RF series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X8G",
+    "capacitance": "0.1pF~1000pF",
+    "voltage": "6.3V, 10V, 25V, 50V, 100V, 200V, 250V, 500V, 1500V",
+    "tolerance": "±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%",
+    "temp": "NP0: -55~+125°C; X8G: -55~+150°C",
+    "features": "Microwave; ultra high Q and low ESR at high frequency",
+    "size_inch": "01005;0201;0402;0603;0805;0505;1111"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "21",
+   "level": "계열",
+   "series": "UF series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0",
+    "capacitance": "0.05pF~10pF",
+    "voltage": "25V, 50V, 100V",
+    "tolerance": "±0.02pF, ±0.03pF, ±0.05pF, ±0.1pF, ±1%, ±2%",
+    "temp": "-55~+125°C",
+    "features": "Microwave narrow tolerance; ultra low capacitance to 0.05pF; Q ≥ 400+20C",
+    "size_inch": "0201;0402",
+    "size_metric": "0603;1005"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "22",
+   "level": "계열",
+   "series": "RT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0",
+    "capacitance": "0.1pF~100pF",
+    "voltage": "25V, 50V",
+    "temp": "-55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Automotive Hi-Q; high Q and low ESR; tolerance to ±0.05pF",
+    "size_inch": "0201;0402;0603",
+    "size_metric": "0603;1005;1608"
+   },
+   "note": "허용오차는 정전용량 범위 표를 참조하라고만 인쇄"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "23",
+   "level": "계열",
+   "series": "HH series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0",
+    "capacitance": "0.1pF~3300pF",
+    "voltage": "10V, 16V, 25V, 50V, 100V, 200V, 250V, 500V, 630V",
+    "tolerance": "±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%",
+    "temp": "-55~+125°C",
+    "features": "High Q and low ESR at high frequency",
+    "size_inch": "0201;0402;0603;0805",
+    "size_metric": "0603;1005;1608;2012"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "25",
+   "level": "계열",
+   "series": "MT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X8G;NP0;X7R;X6S",
+    "capacitance": "X8G: 0.1pF~0.015µF; NP0: 0.1pF~0.047µF; X7R: 100pF~10µF; X6S: 1µF",
+    "voltage": "10V, 16V, 25V, 50V, 100V, 250V, 500V, 630V, 1000V",
+    "tolerance": "X8G/NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%; X7R: ±5%, ±10%, ±20%; X6S: ±10%, ±20%",
+    "temp": "X8G: -55~+150°C; NP0/X7R: -55~+125°C; X6S: -55~+105°C",
+    "aec": "AEC-Q200",
+    "features": "Automotive MLCC qualified to AEC-Q200; Ni/Sn termination",
+    "size_inch": "0201;0402;0603;0805;1206;1210",
+    "size_metric": "0603;1005;1608;2012;3216;3225"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "28",
+   "level": "계열",
+   "series": "ST series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 1.5pF~33nF; X7R: 220pF~22µF",
+    "voltage": "NP0: 630V, 1000V, 1250V; X7R: 10V, 16V, 25V, 50V, 100V, 1000V, 3000V",
+    "tolerance": "NP0: ±1%, ±2%, ±5%, ±10%; X7R: ±5%, ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Soft termination (flexible polymer layer) for bending stress; AEC-Q200",
+    "size_inch": "0402;0603;0805;1206;1210;1812;2220",
+    "size_metric": "1005;1608;2012;3216;3225;4532;5750"
+   },
+   "note": "NP0 크기는 1206·1210·1812, X7R 크기는 0402~2220"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "31",
+   "level": "계열",
+   "series": "VT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R",
+    "capacitance": "10nF~10µF",
+    "voltage": "10V, 16V, 25V, 50V, 100V",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Soft termination; AEC-Q200; 5mm bending guaranteed; VW 80808 compliant",
+    "size_inch": "0603;0805;1206;1210",
+    "size_metric": "1608;2012;3216;3225"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "33",
+   "level": "계열",
+   "series": "MG series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X5R",
+    "capacitance": "NP0: 0.1pF~0.047µF; X7R: 100pF~2.2µF; X5R: 0.068µF~10µF",
+    "voltage": "NP0/X7R: 6.3V, 10V, 16V, 25V, 50V, 100V, 200V, 250V, 500V, 630V, 1000V; X5R: 6.3V, 10V, 16V, 25V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%; X7R/X5R: ±5%, ±10%, ±20%",
+    "temp": "NP0/X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Automotive grade without AEC-Q200 certification",
+    "size_inch": "0201;0402;0603;0805;1206;1210;1812",
+    "size_metric": "0603;1005;1608;2012;3216;3225;4532"
+   },
+   "note": "X7R·X5R 허용오차는 한 칸(J, K, M)에 합쳐 인쇄"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "36",
+   "level": "계열",
+   "series": "HT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X8G",
+    "capacitance": "0.1pF~0.015µF",
+    "voltage": "10V, 16V, 25V, 50V, 100V",
+    "tolerance": "±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%",
+    "temp": "-55~+150°C",
+    "features": "Stable within ±15% up to 150°C; no polarity",
+    "size_inch": "01005;0201;0402;0603;0805;1206;1210",
+    "size_metric": "0402;0603;1005;1608;2012;3216;3225"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "38",
+   "level": "계열",
+   "series": "S2 series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 3pF~2200pF; X7R: 100pF~10nF",
+    "voltage": "UL/TUV: X1 310VAC, Y2 250VAC, 1500VDC; CQC: 250VAC",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%, ±20%; X7R: ±5%, ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "X1/Y2 safety certified; peak impulse 5000V, 6000V; EN/IEC 60384-14",
+    "size_inch": "1808;1812;2220;2211",
+    "size_metric": "4520;4532;5750;5728"
+   },
+   "note": "How to order(5쪽)에 AEC-Q200 대응 단자 코드(Y, X)가 있으나 S2 쪽에는 AEC-Q200 인증 표기 없음"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "41",
+   "level": "계열",
+   "series": "S3 series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 3.0pF~2700pF; X7R: 150pF~0.056µF",
+    "voltage": "UL/TUV: X2 310VAC, 1500VDC; CQC: 250VAC",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%, ±20%; X7R: ±5%, ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "X2 safety certified; peak impulse (X2) 2500V; EN/IEC 60384-14",
+    "size_inch": "1808;1812;2220",
+    "size_metric": "4520;4532;5750"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "44",
+   "level": "계열",
+   "series": "SH series, Ag-poly",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X5R;X7T",
+    "capacitance": "NP0: 0.1pF~0.22µF; X7R: 100pF~47µF; X5R: 0.033µF~10µF; X7T: 2.2µF",
+    "voltage": "6.3V~4000V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%; X7R: ±10%, ±20%; X5R: ±10%, ±20%",
+    "temp": "NP0/X7R: -55~+125°C; X5R: -55~+85°C; X7T: -55~+125°C",
+    "features": "Soft termination (Ag polymer) for SMT bending stress; any item in standard range",
+    "size_inch": "0402;0603;0805;1206;1210;1808;1812;1825;2220;2225",
+    "size_metric": "1005;1608;2012;3216;3225;4520;4532;4563;5750;5763"
+   },
+   "note": "X7T 정전용량 '2.2uF' 한 값만 인쇄. X7T 허용오차는 표에 없음"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "51",
+   "level": "계열",
+   "series": "SG series, Cu-poly",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R",
+    "capacitance": "100pF~10µF",
+    "voltage": "10V~2000V",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Soft termination (Cu polymer) for SMT bending stress",
+    "size_inch": "0603;0805;1206",
+    "size_metric": "1608;2012;3216"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "52",
+   "level": "계열",
+   "series": "TT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R;X5R",
+    "capacitance": "X7R: 1.0µF~10µF; X5R: 0.22µF~47µF",
+    "voltage": "X7R: 10V, 16V, 25V, 50V, 100V; X5R: 6.3V, 10V, 16V, 25V",
+    "tolerance": "±10%, ±20%",
+    "temp": "X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Low profile: standard size with thin thickness; high capacitance",
+    "size_inch": "0402;0603;0805;1206;1210",
+    "size_metric": "1005;1608;2012;3216;3225"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "54-55",
+   "level": "계열",
+   "series": "M series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X7T",
+    "capacitance": "NP0: 1000pF~0.22µF; X7R: 0.01µF~47µF; X7T: 0.10µF~2.2µF",
+    "voltage": "NP0/X7R: 50V, 100V, 200V, 250V, 500V, 630V; X7T: 450V, 1000V",
+    "features": "Mega cap stacked MLCC (1 or 2 chips); higher mechanical endurance",
+    "size_inch": "1210;1812;1825;2220;2225",
+    "size_metric": "3225;4532;4563;5750;5763"
+   },
+   "note": "X7T는 2220만. X7R 표 머리글에 크기가 '2255'로 인쇄(2225의 오기로 보임)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "56",
+   "level": "계열",
+   "series": "V series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R",
+    "capacitance": "10µF~47µF",
+    "voltage": "100V",
+    "features": "Mega cap vertical stacked MLCC (3 chips); higher mechanical endurance",
+    "size_inch": "2220",
+    "size_metric": "5750"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT15X435M4R0CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402",
+    "size_metric": "1005",
+    "capacitance": "4.3µF",
+    "voltage": "4V",
+    "dielectric": "X5R",
+    "tolerance": "±20%",
+    "temp": "-55~+85°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 25MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT15B105M4R0CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0402",
+    "size_metric": "1005",
+    "capacitance": "1µF",
+    "voltage": "4V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 25MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B103M101CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "10nF",
+    "voltage": "100V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B103M500CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "10nF",
+    "voltage": "50V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B223M500CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "22nF",
+    "voltage": "50V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B473M500CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "47nF",
+    "voltage": "50V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B104M250CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "0.1µF",
+    "voltage": "25V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B224M160CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "0.22µF",
+    "voltage": "16V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B474K160CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "0.47µF",
+    "voltage": "16V",
+    "dielectric": "X7R",
+    "tolerance": "±10%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B474M160CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "0.47µF",
+    "voltage": "16V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 2A(DC); DCR 0.03Ωmax; IR 1000MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_MLCC_Catalog_2026-11.pdf",
+   "page": "53",
+   "level": "부품번호",
+   "series": "FT series",
+   "part_number": "FT21B105M160CT",
+   "type": "MLCC",
+   "specs": {
+    "size_inch": "0805",
+    "size_metric": "2012",
+    "capacitance": "1µF",
+    "voltage": "16V",
+    "dielectric": "X7R",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "features": "3-terminal feed-through; rated current 4A(DC); DCR 0.02Ωmax; IR 500MΩmin"
+   },
+   "note": "유전체는 형명의 코드(X=X5R, B=X7R, How to order 5쪽)에서 해석. 크기는 FT15=0402, FT21=0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "General Purpose Caps",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X6S;X7S;X5R",
+    "capacitance": "NP0: 0.1pF~0.1µF; X7R: 100pF~47µF; X6S: 0.1µF~100µF; X7S: 0.1µF~100µF; X5R: 100pF~220µF",
+    "voltage": "NP0: 10V, 16V, 25V, 50V, 100V; X7R/X6S/X7S: 6.3V, 10V, 16V, 25V, 50V, 100V; X5R: 4V, 6.3V, 10V, 16V, 25V, 50V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%; X7R: ±5%, ±10%, ±20%; X6S/X7S/X5R: ±10%, ±20%",
+    "temp": "NP0/X7R/X7S: -55~+125°C; X6S: -55~+105°C; X5R: -55~+85°C",
+    "features": "General purpose 4V~100V",
+    "size_inch": "0201;0402;0603;0805;1206;1210;1812;1825;2220;2225",
+    "size_metric": "0603;1005;1608;2012;3216;3225;4532;4563;5750;5763"
+   },
+   "note": "X6S·X7S·X5R 크기는 0201~1210만, NP0·X7R은 0201~2225"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "01R5 series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X5R",
+    "capacitance": "NP0: 0.2pF~220pF; X7R: 100pF~1000pF; X5R: 100pF~0.1µF",
+    "voltage": "NP0: 16V, 25V, 50V; X7R: 10V; X5R: 4V, 6.3V, 10V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%; X7R/X5R: ±10%, ±20%",
+    "temp": "NP0/X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Ultra-small 01005",
+    "size_inch": "01005",
+    "size_metric": "0402"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "Middle & High Voltage Caps",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 0.5pF~0.1µF; X7R: 100pF~47µF",
+    "voltage": "NP0: 200V, 250V, 500V, 630V, 1kV, 2kV, 3kV, 4kV; X7R: 200V, 250V, 400V, 450V, 500V, 630V, 1kV, 2kV, 3kV, 4kV",
+    "tolerance": "NP0: ±0.25pF, ±0.5pF, ±5%, ±10%; X7R: ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Middle and high voltage 200V~4kV",
+    "size_inch": "0402;0603;0805;1206;1210;1808;1812;1825;2220;2225",
+    "size_metric": "1005;1608;2012;3216;3225;4520;4532;4563;5750;5763"
+   },
+   "note": "X7R 크기는 0603~2225(0402 제외)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "High Voltage Caps (Surface Coating Type)",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 33pF~470pF; X7R: 150pF~0.047µF",
+    "voltage": "NP0: 4kV; X7R: 2kV, 2.5kV, 3kV, 4kV",
+    "tolerance": "NP0: ±5%, ±10%, ±20%; X7R: ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "High voltage surface coating type",
+    "size_inch": "1206;1210;1808;1812;1825;2220;2225",
+    "size_metric": "3216;3225;4520;4532;4563;5750;5763"
+   },
+   "note": "NP0 크기는 '1210, 1808, 1812', X7R 크기는 1206~2225"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "RF series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X8G",
+    "capacitance": "NP0: 0.1pF~1000pF; X8G: 0.1pF~82pF",
+    "voltage": "NP0: 6.3V, 10V, 25V, 50V, 100V, 250V, 500V, 1500V; X8G: 200V, 250V, 500V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%",
+    "temp": "NP0: -55~+125°C; X8G: -55~+150°C",
+    "features": "Microwave caps; high Q and low ESR",
+    "size_inch": "01005;0201;0402;0603;0805;0505;1111"
+   },
+   "note": "X8G 크기는 0402, 0603, 0805"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "UF series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0",
+    "capacitance": "0.05pF~10pF",
+    "voltage": "25V, 50V, 100V",
+    "tolerance": "±0.02pF, ±0.03pF, ±0.05pF, ±0.1pF",
+    "temp": "-55~+125°C",
+    "features": "Microwave caps, narrow tolerance",
+    "size_inch": "0201;0402",
+    "size_metric": "0603;1005"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "RT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0",
+    "capacitance": "0.1pF~100pF",
+    "voltage": "25V, 50V",
+    "tolerance": "±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%",
+    "temp": "-55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Automotive Hi-Q caps",
+    "size_inch": "0201;0402;0603",
+    "size_metric": "0603;1005;1608"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "HH series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0",
+    "capacitance": "0.1pF~3300pF",
+    "voltage": "10V, 16V, 25V, 50V, 100V, 200V, 250V, 500V, 630V",
+    "tolerance": "±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%",
+    "temp": "-55~+125°C",
+    "features": "High Q and low ESR caps",
+    "size_inch": "0201;0402;0603;0805",
+    "size_metric": "0603;1005;1608;2012"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "MT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X8G;NP0;X7R",
+    "capacitance": "X8G: 0.1pF~0.015µF; NP0: 0.1pF~0.047µF; X7R: 100pF~10µF",
+    "voltage": "X8G: 10V, 16V, 25V, 50V, 100V; NP0/X7R: 10V, 16V, 25V, 50V, 100V, 250V, 500V, 630V, 1kV",
+    "tolerance": "X8G/NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%; X7R: ±5%, ±10%, ±20%",
+    "temp": "X8G: -55~+150°C; NP0/X7R: -55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Automotive capacitor",
+    "size_inch": "0201;0402;0603;0805;1206;1210",
+    "size_metric": "0603;1005;1608;2012;3216;3225"
+   },
+   "note": "X8G 크기는 0402~1210"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "ST series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 10pF~33nF; X7R: 220pF~22µF",
+    "voltage": "NP0: 630V, 1kV, 1.25kV; X7R: 10V, 16V, 25V, 50V, 100V, 1kV, 3kV",
+    "tolerance": "NP0: ±1%, ±2%, ±5%, ±10%; X7R: ±5%, ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Automotive soft termination caps",
+    "size_inch": "0402;0603;0805;1206;1210;1812;1825;2220",
+    "size_metric": "1005;1608;2012;3216;3225;4532;4563;5750"
+   },
+   "note": "NP0 크기는 1210"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "VT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R",
+    "capacitance": "10nF~10µF",
+    "voltage": "10V, 16V, 25V, 35V, 50V, 100V",
+    "tolerance": "±5%, ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Automotive soft termination; AEC-Q200 & VW80808",
+    "size_inch": "0603;0805;1206;1210",
+    "size_metric": "1608;2012;3216;3225"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "3",
+   "level": "계열",
+   "series": "MG series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X5R",
+    "capacitance": "NP0: 0.1pF~0.047µF; X7R: 100pF~47µF; X5R: 0.068µF~10µF",
+    "voltage": "NP0/X7R: 10V, 16V, 25V, 50V, 100V, 250V, 500V, 630V, 1kV; X5R: 6.3V, 10V, 16V, 25V",
+    "tolerance": "NP0: ±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%; X7R: ±5%, ±10%, ±20%; X5R: ±10%, ±20%",
+    "temp": "NP0/X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Automotive caps without AEC-Q200 certification",
+    "size_inch": "0201;0402;0603;0805;1206;1210;1812",
+    "size_metric": "0603;1005;1608;2012;3216;3225;4532"
+   },
+   "note": "X5R 크기는 0402~1210"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "HT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X8G",
+    "capacitance": "0.2pF~0.015µF",
+    "voltage": "10V, 16V, 25V, 50V, 100V",
+    "tolerance": "±0.05pF, ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%, ±10%",
+    "temp": "-55~+150°C",
+    "features": "High temperature caps",
+    "size_inch": "0402;0603;0805;1206;1210",
+    "size_metric": "1005;1608;2012;3216;3225"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "S2 series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 3pF~680pF; X7R: 100pF~4700pF",
+    "voltage": "250VAC",
+    "tolerance": "NP0: ±0.5pF, ±1%, ±2%, ±5%; X7R: ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Safety certificated caps X1/Y2",
+    "size_inch": "1808;1812;2220;2211"
+   },
+   "note": "NP0 크기는 1808, 1812, 2211, X7R 크기는 1808, 1812, 2220, 2211"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "S3 series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 3pF~1000pF; X7R: 150pF~0.056µF",
+    "voltage": "250VAC",
+    "tolerance": "NP0: ±0.5pF, ±1%, ±2%, ±5%; X7R: ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Safety certificated caps X2",
+    "size_inch": "1808;1812;2220",
+    "size_metric": "4520;4532;5750"
+   },
+   "note": "NP0 크기는 1808, 1812, X7R 크기는 1808, 1812, 2220"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "SH series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R;X5R",
+    "capacitance": "NP0: 0.1pF~0.1µF; X7R: 100pF~47µF; X5R: 0.033µF~10µF",
+    "voltage": "NP0: 10V, 16V, 25V, 50V, 100V, 200V, 250V, 500V, 630V, 1kV, 3kV; X7R: 10V, 16V, 25V, 50V, 100V, 200V, 250V, 500V, 630V, 1kV, 2kV, 3kV; X5R: 6.3V, 10V, 16V, 25V, 50V",
+    "tolerance": "NP0: ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%; X7R/X5R: ±10%, ±20%",
+    "temp": "NP0/X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Soft termination caps, Ag-poly",
+    "size_inch": "0402;0603;0805;1206;1210;1808;1812;1825;2220;2225",
+    "size_metric": "1005;1608;2012;3216;3225;4520;4532;4563;5750;5763"
+   },
+   "note": "X5R 크기는 0402~1210"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "SG series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R",
+    "capacitance": "100pF~10µF",
+    "voltage": "10V, 16V, 25V, 50V, 100V, 200V, 250V, 500V, 630V, 1kV, 2kV",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Soft termination caps, Cu-poly",
+    "size_inch": "0603;0805;1206",
+    "size_metric": "1608;2012;3216"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "TT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R;X5R",
+    "capacitance": "X7R: 1.0µF~10µF; X5R: 0.22µF~47µF",
+    "voltage": "X7R: 10V, 16V, 25V, 50V, 100V; X5R: 6.3V, 10V, 16V, 25V",
+    "tolerance": "±10%, ±20%",
+    "temp": "X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Low profile caps",
+    "size_inch": "0402;0603;0805;1206;1210",
+    "size_metric": "1005;1608;2012;3216;3225"
+   },
+   "note": "X7R 크기는 0805, 1206, 1210"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "FT series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "X7R;X5R",
+    "capacitance": "X7R: 10nF~1µF; X5R: 4.3µF",
+    "voltage": "X7R: 10V, 16V, 25V, 50V; X5R: 4V",
+    "tolerance": "±20%",
+    "temp": "X7R: -55~+125°C; X5R: -55~+85°C",
+    "features": "Feed through (3-terminal) caps",
+    "size_inch": "0402;0805",
+    "size_metric": "1005;2012"
+   },
+   "note": "X5R 크기는 0402"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "4",
+   "level": "계열",
+   "series": "M series",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 1000pF~0.22µF; X7R: 0.01µF~47µF",
+    "voltage": "50V, 100V, 200V, 250V, 500V, 630V",
+    "tolerance": "NP0: ±0.1pF, ±0.25pF, ±0.5pF, ±1%, ±2%, ±5%; X7R: ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Mega cap type",
+    "size_inch": "1210;1812;1825;2220;2225",
+    "size_metric": "3225;4532;4563;5750;5763"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "10",
+   "level": "계열",
+   "series": "AH Type",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF~4700pF",
+    "voltage": "X1 400VAC, 500VAC, 1500VDC / Y1 250VAC, 400VAC, 500VAC, 1500VDC",
+    "dielectric": "SL;Y5P;Y5U;Y5V",
+    "tolerance": "±5%, ±10%, ±20%",
+    "temp": "-40~+125°C",
+    "features": "Leaded ceramic safety cap, class X1/Y1; UL, ENEC, CQC, VDE"
+   },
+   "note": "Walsin 안전 규격 세라믹(납 단자). AH·AS는 X1/Y1, AC는 X1/Y2 등급"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "10",
+   "level": "계열",
+   "series": "AS Type",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~4700pF",
+    "voltage": "X1 760VAC / Y1 500VAC",
+    "dielectric": "SL;Y5P;Y5U;Y5V",
+    "tolerance": "±5%, ±10%, ±20%",
+    "temp": "-40~+125°C",
+    "features": "Leaded ceramic safety cap, class X1/Y1; approval VDE/ENEC/UL/CUL/CQC only"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "10",
+   "level": "계열",
+   "series": "AC Type",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF~10000pF",
+    "voltage": "X1 400VAC, 440VAC, 500VAC, 1500VDC / Y2 250VAC, 300VAC, 500VAC, 1500VDC",
+    "dielectric": "SL;Y5P;Y5U;Y5V",
+    "tolerance": "±5%, ±10%, ±20%",
+    "temp": "-40~+125°C",
+    "features": "Leaded ceramic safety cap, class X1/Y2; 7AC code for automotive"
+   },
+   "note": null
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "12",
+   "level": "계열",
+   "series": "CLASS I",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "15pF~820pF",
+    "voltage": "50V, 100V, 500V, 1000V, 2000V, 3000V, 6000V (VDC)",
+    "dielectric": "SL",
+    "tolerance": "±5%",
+    "temp": "-25~+125°C",
+    "features": "Ceramic disc, temperature compensation; Q ≥ 1000 (C ≥ 30pF)"
+   },
+   "note": "세라믹 디스크(납 단자). 12쪽 제목은 'CLASS I 50V, 100V, 500V, 1KV, 2KV, 3KV, 6KV TEMPERATURE COMPENSATION TYPE'"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "12",
+   "level": "계열",
+   "series": "CLASS II",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~22000pF",
+    "voltage": "50V, 100V, 500V, 1000V, 2000V, 3000V (VDC)",
+    "dielectric": "Y5P;Y5U;Z5U;Z5V;Y5V",
+    "tolerance": "±10% (Y5P), ±20% (Z5U), +80%/-20% (Z5U, Z5V, Y5V)",
+    "temp": "Y5P -25~+125°C; Y5U -25~+85°C; Z5U/Z5V +10~+85°C",
+    "features": "Ceramic disc Hi-K type; large capacitance in small size"
+   },
+   "note": "세라믹 디스크(납 단자)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "12",
+   "level": "계열",
+   "series": "LOW DISSIPATION LN TYPE",
+   "part_number": null,
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF~1000pF",
+    "voltage": "1000V, 2000V (VDC)",
+    "tolerance": "±10%",
+    "temp": "-25~+125°C",
+    "features": "Ceramic disc, low dissipation; tanδ 0.2% max; cap change ±15%"
+   },
+   "note": "세라믹 디스크(납 단자). 12쪽 제목은 '1KV, 2KV LOW DISSIPATION LN TYPE'"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "RD20",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 1.0pF~0.1µF; X7R: 100pF~4.7µF",
+    "voltage": "NP0: 50V, 100V, 200V, 250V, 500V, 630V, 1000V, 2000V; X7R: 50V, 100V, 200V, 250V, 500V, 630V, 1000V, 2000V, 3000V",
+    "tolerance": "±5%, ±10%, ±20%, +80%/-20%",
+    "temp": "-55~+125°C",
+    "features": "Radial leaded MLCC; epoxy coated; bulk or taping",
+    "size_inch": "0805",
+    "size_metric": "2012"
+   },
+   "note": "정전용량·전압 범위는 RD20/RD21/RD30 공통 표기"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "RD21",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 1.0pF~0.1µF; X7R: 100pF~4.7µF",
+    "voltage": "NP0: 50V, 100V, 200V, 250V, 500V, 630V, 1000V, 2000V; X7R: 50V, 100V, 200V, 250V, 500V, 630V, 1000V, 2000V, 3000V",
+    "tolerance": "±5%, ±10%, ±20%, +80%/-20%",
+    "temp": "-55~+125°C",
+    "features": "Radial leaded MLCC; epoxy coated; bulk or taping",
+    "size_inch": "0805;1206;1210",
+    "size_metric": "2012;3216;3225"
+   },
+   "note": "정전용량·전압 범위는 RD20/RD21/RD30 공통 표기"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "13",
+   "level": "계열",
+   "series": "RD30",
+   "part_number": null,
+   "type": "MLCC",
+   "specs": {
+    "dielectric": "NP0;X7R",
+    "capacitance": "NP0: 1.0pF~0.1µF; X7R: 100pF~4.7µF",
+    "voltage": "NP0: 50V, 100V, 200V, 250V, 500V, 630V, 1000V, 2000V; X7R: 50V, 100V, 200V, 250V, 500V, 630V, 1000V, 2000V, 3000V",
+    "tolerance": "±5%, ±10%, ±20%, +80%/-20%",
+    "temp": "-55~+125°C",
+    "features": "Radial leaded MLCC; epoxy coated; bulk or taping",
+    "size_inch": "1808;1812",
+    "size_metric": "4520;4532"
+   },
+   "note": "정전용량·전압 범위는 RD20/RD21/RD30 공통 표기"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "SLSYW100JP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "10pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "SL",
+    "tolerance": "±5%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "SLSYW220JP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "22pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "SL",
+    "tolerance": "±5%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "SLSYW470JP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "47pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "SL",
+    "tolerance": "±5%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "SLSYW680JP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "68pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "SL",
+    "tolerance": "±5%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YPSYW101KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YPSYW221KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "220pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YPSYW331KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "330pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YPSYW471KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "470pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YUSYW471MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "470pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YUSYW681MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "680pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YUSYW102MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "1000pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YUSYW152MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "1500pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYW",
+   "part_number": "YVSYW222MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "2200pF",
+    "voltage": "Y1 250VAC, 400VAC",
+    "dielectric": "Y5V",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y1; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "SLSYL220KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "22pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "SL",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "SLSYL470KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "47pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "SL",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YPSYL680KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "68pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YPSYL101KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "100pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YPSYL221KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "220pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YPSYL331KP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "330pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5P",
+    "tolerance": "±10%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YUSYL471MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "470pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YUSYL561MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "560pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YUSYL681MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "680pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YUSYL102MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "1000pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5U",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YVSYL152MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "1500pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5V",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "14",
+   "level": "부품번호",
+   "series": "SYL",
+   "part_number": "YVSYL222MP00",
+   "type": "기타",
+   "specs": {
+    "capacitance": "2200pF",
+    "voltage": "X1 440VAC / Y2 300VAC",
+    "dielectric": "Y5V",
+    "tolerance": "±20%",
+    "features": "SMD safety ceramic cap, class X1/Y2; UL, ENEC, CQC, KC"
+   },
+   "note": "유전체는 형명 앞 2글자 코드(SL, YP=Y5P, YU=Y5U, YV=Y5V)로 해석"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "267P",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "size_metric": "3216;3528;6032;7343;7343H;7257",
+    "capacitance": "0.1µF~100µF",
+    "voltage": "4V, 6V, 10V, 15V, 20V, 25V, 35V, 50V",
+    "tolerance": "±5%, ±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Manganese; high reliability"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "271N",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "size_metric": "3216;3528;6032;7343",
+    "capacitance": "0.1µF~68µF",
+    "voltage": "4V, 6.3V, 10V, 16V, 20V, 25V, 35V",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+150°C",
+    "features": "Manganese; high reliability; high temperature"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "267N",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "size_metric": "3216;3528;6032;7343",
+    "capacitance": "0.1µF~220µF",
+    "voltage": "4V, 6.3V, 10V, 16V, 20V, 25V, 35V",
+    "tolerance": "±20%",
+    "temp": "-55~+125°C",
+    "aec": "AEC-Q200",
+    "features": "Manganese; high reliability; AEC-Q200 compliant"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "279",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "size_metric": "3528;6032;7343;7343H;7257",
+    "capacitance": "0.15µF~330µF",
+    "voltage": "6.3V, 10V, 16V, 20V, 25V, 35V, 50V",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Manganese; safety (built-in fuse)"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "267",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "size_metric": "3216;3528;6032;7343;7343H;7257",
+    "capacitance": "0.047µF~680µF",
+    "voltage": "2.5V, 4V, 6.3V, 10V, 16V, 20V, 25V, 35V, 50V",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Manganese; standard series"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "281",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "size_metric": "7343;7343H",
+    "capacitance": "4.7µF~470µF",
+    "voltage": "4V, 6.3V, 10V, 16V, 20V, 25V, 35V, 50V",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Manganese; high capacitance"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "251",
+   "part_number": null,
+   "type": "탄탈(칩/리드)",
+   "specs": {
+    "size_metric": "1608;2012;3216",
+    "capacitance": "0.47µF~330µF",
+    "voltage": "2V, 2.5V, 3V, 4V, 6.3V, 8V, 10V, 16V, 20V, 25V, 35V",
+    "tolerance": "±10%, ±20%",
+    "temp": "-55~+125°C",
+    "features": "Manganese; high capacitance; miniature (face down structure)"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "TCA",
+   "part_number": null,
+   "type": "폴리머 탄탈",
+   "specs": {
+    "size_metric": "3216;3528;6032;7343",
+    "capacitance": "22µF~680µF",
+    "voltage": "2.5V, 4V, 6.3V, 10V",
+    "tolerance": "±20%",
+    "temp": "-55~+105°C",
+    "features": "Polymer; low ESR; standard series"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "27",
+   "level": "계열",
+   "series": "TCB",
+   "part_number": null,
+   "type": "폴리머 탄탈",
+   "specs": {
+    "size_metric": "1608;2012;3216",
+    "capacitance": "4.7µF~220µF",
+    "voltage": "2.5V, 4V, 6.3V, 10V",
+    "tolerance": "±20%",
+    "temp": "-55~+105°C",
+    "features": "Polymer; low ESR; miniature (face down structure)"
+   },
+   "note": "Matsuo Electric 제품(Walsin Product Guide 수록). 크기는 탄탈 케이스 코드(3216 등, 인쇄 그대로)"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPB",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.001µF~10µF",
+    "voltage": "250VDC, 450VDC, 630VDC, 800VDC, 1250VDC",
+    "temp": "-40~+85°C (+105°C)",
+    "features": "Small standard; general use"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록). 전압별 정전용량(µF): 250V 0.47~10, 450V 0.22~4.7, 630V 0.068~2.2, 800V 0.68~2.2, 1250V 0.001~0.47"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPB2",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.47µF~2.2µF",
+    "voltage": "630VDC",
+    "temp": "-40~+105°C",
+    "features": "Small; general use (NEW)"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPT2",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.068µF~2.2µF",
+    "voltage": "630VDC",
+    "temp": "-40~+105°C (+125°C)",
+    "features": "High temperature (to +125°C); small"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPT",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.01µF~0.047µF",
+    "voltage": "630VDC",
+    "temp": "-40~+105°C (+125°C)",
+    "features": "High temperature (to +125°C)"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "MDX",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.01µF~0.33µF",
+    "voltage": "250VDC, 450VDC, 630VDC",
+    "temp": "-40~+85°C (+105°C)",
+    "features": "Standard; general use"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록). 전압별 정전용량(µF): 250V 0.01~0.33, 450V 0.01~0.15, 630V 0.015~0.047"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "MDD",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.0022µF~2.2µF",
+    "voltage": "50VDC, 250VDC, 500VAC",
+    "temp": "-40~+85°C (+105°C)",
+    "features": "Lead pitch 5mm, 7.5mm; also high voltage 500VAC type"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록). 같은 이름 MDD가 두 행으로 인쇄됨. 표준형(피치 5mm, 7.5mm): 50V 0.1~2.2µF, 250V 0.01~0.15µF. 고전압형: 500VAC 0.0022~0.1µF"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPCS",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.47µF~2.2µF",
+    "voltage": "450VDC",
+    "temp": "-40~+85°C (+110°C)",
+    "features": "PFC circuit; boxed small; low noise; halogen-free (NEW)"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPS5",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.47µF~2.2µF",
+    "voltage": "450VDC",
+    "temp": "-40~+85°C (+110°C)",
+    "features": "PFC circuit; small; low noise; halogen-free (NEW)"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPS4",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.47µF~4.7µF",
+    "voltage": "450VDC",
+    "temp": "-40~+85°C (+110°C)",
+    "features": "PFC circuit; small standard; low noise; halogen-free"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPS3",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.47µF~2.2µF",
+    "voltage": "450VDC",
+    "temp": "-40~+85°C (+110°C)",
+    "features": "PFC circuit; low noise; halogen-free"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPA",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.47µF~2.2µF",
+    "voltage": "550VDC",
+    "temp": "-40~+85°C (+110°C)",
+    "features": "PFC circuit; 550V; halogen-free"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "MDL",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "4.7µF~22µF",
+    "voltage": "35VDC, 63VDC",
+    "temp": "-40~+85°C (+105°C)",
+    "features": "Large capacitance; miniature; high frequency, high ripple"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록). 전압별 정전용량(µF): 35V 4.7~22, 63V 10~22"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPＦ",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.01µF~10µF",
+    "voltage": "250VDC, 450VDC, 630VDC",
+    "temp": "-40~+105°C",
+    "features": "High frequency circuit use; high current"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록). 계열명은 문서에 전각 문자 'Ｆ'로 인쇄(FPF). 전압별 정전용량(µF): 250V 0.01~10, 450V 0.01~3.3, 630V 0.01~2.2"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FSX",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.01µF~10µF",
+    "voltage": "310VAC",
+    "temp": "-40~+110°C",
+    "features": "Across-the-line use; EMI suppression class X2; small"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록)."
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "CFD-N",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "0.01µF~4.7µF",
+    "voltage": "125VAC, 250VAC",
+    "temp": "-40~+85°C (+105°C)",
+    "features": "Across-the-line use; for Japan; noise immunity test"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록). 전압별 정전용량(µF): 125VAC 0.033~4.7, 250VAC 0.01~2.2"
+  },
+  {
+   "vendor": "Walsin",
+   "doc": "Capacitor/Walsin/Walsin_Product_Guide_2026.pdf",
+   "page": "29",
+   "level": "계열",
+   "series": "FPCL",
+   "part_number": null,
+   "type": "필름",
+   "specs": {
+    "capacitance": "1µF~65µF",
+    "voltage": "630VDC, 800VDC, 1100VDC, 1300VDC",
+    "temp": "-40~+70°C (+85°C)",
+    "features": "DC-link, smoothing; long life; high voltage, high current"
+   },
+   "note": "Nitsuko Electronics 제품(Walsin Product Guide 수록). 전압별 정전용량(µF): 630V 5~65, 800V 10~20, 1100V 1~25, 1300V 1~15"
+  },
+  {
+   "vendor": "TDK",
+   "doc": "Capacitor/TDK/TDK_PowerQuality_Solutions_Product_Profile_2025-09.pdf",
+   "page": "18",
+   "level": "계열",
+   "series": "PhaseCap Energy Plus (Resin)",
+   "part_number": null,
+   "type": "전력(PFC)",
+   "specs": {
+    "voltage": "230~1000VAC",
+    "dielectric": "Polypropylene film",
+    "temp": "-40~+60°C (class -40/60); -40~+55°C (class -40/D)",
+    "features": "5.0~60.0kvar; biodegradable resin; life up to 240000h; inrush up to 500xIN"
+   },
+   "note": "주문코드 B25675C, 형명 MKK…. 개별 주문코드 표(20~23쪽)는 행으로 풀지 않음"
+  },
+  {
+   "vendor": "TDK",
+   "doc": "Capacitor/TDK/TDK_PowerQuality_Solutions_Product_Profile_2025-09.pdf",
+   "page": "26",
+   "level": "계열",
+   "series": "PhaseCap Energy Plus (Gas)",
+   "part_number": null,
+   "type": "전력(PFC)",
+   "specs": {
+    "voltage": "230~690VAC",
+    "dielectric": "Polypropylene film",
+    "temp": "-40~+60°C (class -40/60)",
+    "features": "5.0~33.1kvar; inert gas dry type; life up to 220000h; inrush up to 500xIN"
+   },
+   "note": "주문코드 B25674C. 개별 주문코드 표(28~31쪽)는 행으로 풀지 않음"
+  },
+  {
+   "vendor": "TDK",
+   "doc": "Capacitor/TDK/TDK_PowerQuality_Solutions_Product_Profile_2025-09.pdf",
+   "page": "35",
+   "level": "계열",
+   "series": "PhiCap Extra Heavy Duty (Gas)",
+   "part_number": null,
+   "type": "전력(PFC)",
+   "specs": {
+    "voltage": "415~525VAC",
+    "dielectric": "Polypropylene film",
+    "temp": "-40~+55°C (class -40/D)",
+    "features": "6.3~33.1kvar; inert gas dry type; life up to 180000h; inrush up to 300xIN"
+   },
+   "note": "주문코드 B32474G. 개별 주문코드 표(37~38쪽)는 행으로 풀지 않음"
+  },
+  {
+   "vendor": "TDK",
+   "doc": "Capacitor/TDK/TDK_PowerQuality_Solutions_Product_Profile_2025-09.pdf",
+   "page": "39",
+   "level": "계열",
+   "series": "DeltaCap",
+   "part_number": null,
+   "type": "전력(PFC)",
+   "specs": {
+    "voltage": "230~525VAC",
+    "dielectric": "Polypropylene film",
+    "temp": "-40~+55°C (class -40/D); -40~+50°C (class -40/C)",
+    "features": "0.5~50.0kvar; MKD stacked winding; life up to 150000h; inrush up to 200xIN"
+   },
+   "note": "주문코드 B32300·B32301(단상), B32303·B32304(3상). 39쪽 일반 설명은 출력 0.5~33.0kvar, 특징·개요(9쪽)는 0.5~50.0kvar로 인쇄. 개별 주문코드 표(41~44쪽)는 행으로 풀지 않음"
+  },
+  {
+   "vendor": "TDK",
+   "doc": "Capacitor/TDK/TDK_PowerQuality_Solutions_Product_Profile_2025-09.pdf",
+   "page": "46",
+   "level": "계열",
+   "series": "PhiCap",
+   "part_number": null,
+   "type": "전력(PFC)",
+   "specs": {
+    "voltage": "230~525VAC",
+    "dielectric": "Polypropylene film",
+    "temp": "-40~+55°C (class -40/D)",
+    "features": "0.5~30.0kvar; MKP stacked winding; life up to 130000h; inrush up to 200xIN"
+   },
+   "note": "주문코드 B32340·B32343·B32344. 46쪽은 0.5~30.0kvar, 개요(9쪽)는 0.5~40.0kvar로 인쇄. 개별 주문코드 표(48~52쪽)는 행으로 풀지 않음"
+  },
+  {
+   "vendor": "TDK",
+   "doc": "Capacitor/TDK/TDK_PowerQuality_Solutions_Product_Profile_2025-09.pdf",
+   "page": "55",
+   "level": "계열",
+   "series": "PoleCap",
+   "part_number": null,
+   "type": "전력(PFC)",
+   "specs": {
+    "voltage": "400~525VAC",
+    "dielectric": "Polypropylene film",
+    "temp": "-40~+55°C (class -40/D)",
+    "features": "0.5~36.0kvar; outdoor IP54/IP65; life up to 100000h; inrush up to 300xIN"
+   },
+   "note": "주문코드 B25671A. 가스 함침(건식)과 수지 함침 중 선택. 개별 주문코드 표(57쪽)는 행으로 풀지 않음"
+  }
+ ],
+ "notes": "E2b가 맡은 6개 문서(TDK 1, Vishay 3, Walsin 2)만 처리. 문서에 없는 값은 null. 가격·재고·납기는 쓰지 않음. 유전체가 여러 개인 Walsin 시리즈 행은 값이 달라지는 항목을 'NP0: …; X7R: …' 형식으로 적음(행이 중복 키가 되지 않게 시리즈당 1행). 'µ'는 U+00B5. 군용 문서(Vishay Military/Aerospace)의 CDR·DSCC·M123·MIL-PRF 항목은 specs에 규격 키가 없어 features에 적음. TDK 문서는 PFC 전력 커패시터라 MLCC형 사양 키(크기·유전체·허용오차)가 대부분 비어 있음."
+}

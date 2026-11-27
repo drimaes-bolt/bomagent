@@ -1,6 +1,6 @@
 ---
 name: dabom-mockup
-description: 다봄 시연 목업(briefing/DaBOM_root_20261124.html 등 단일 HTML)을 읽거나 고칠 때, 목업에 새 화면·기능·미리보기 화면을 넣을 때 쓴다. 파일 구조, 코드 위치, 1MB 넘는 데이터 줄 주의, 화면 추가 절차, 판 관리 규칙을 담았다.
+description: 다봄 시연 목업(briefing/DaBOM_avl_20261127.html 등 단일 HTML)을 읽거나 고칠 때, 목업에 새 화면·기능·미리보기 화면을 넣을 때 쓴다. 파일 구조, 코드 위치, 1MB 넘는 데이터 줄 주의, 화면 추가 절차, 판 관리 규칙을 담았다.
 ---
 
 # 다봄 시연 목업 수정 가이드
@@ -11,10 +11,11 @@ description: 다봄 시연 목업(briefing/DaBOM_root_20261124.html 등 단일 H
 
 | 파일 | 성격 |
 |---|---|
-| `briefing/DaBOM_root_20261124.html` | **현재 기준 판(뿌리 판).** 확장 판을 복사해 진입 화면과 미리보기 화면의 머리를 고쳤다(동작 화면과 데이터는 같다). "시작도 뿌리도 BOM이다"를 첫머리에 두고, 뿌리(BOM = E-BOM + SCM 정보 → M-BOM) → 줄기(처음 만든 여섯 기능) → 가지(부서) 지도 안에 부서 선택을 넣었다. 코드는 `BOM_ROOT`(부서마다 BOM의 어디를 보는지)·`TRUNK`(줄기)·`renderLanding`, 미리보기 화면의 `FUT_BOM`(화면마다 BOM에서 읽는 것·돌려주는 것). 근거 DEC-18, docs/01 1.6 |
-| `briefing/DaBOM_expand_20261123.html` | 이전 기준 판(확장 판). taste-skill 판을 복사해 재고(Inventory.xlsx)·사용 이력·분류 필터·거래처 카탈로그·미리보기 부서(생산기술·회계·품질·기준정보)를 더했다. 근거 docs/14. 고치지 않는다 |
-| `briefing/index.html` | **현재 기준 판의 사본.** 기준 판과 항상 바이트 단위로 같게 유지한다(아래 판 관리). 2026-11-02 생성, 2026-11-23 확장 판으로, 2026-11-24 뿌리 판으로 교체 |
-| `briefing/DaBOM_taste_skill_20261021.html` | 그 이전 기준 판. taste-skill 규칙으로 화면 구성을 다시 정한 판. 고치지 않는다 |
+| `briefing/DaBOM_avl_20261127.html` | **현재 기준 판(AVL 판).** 뿌리 판을 복사해 `DATA.avl`(AVL 제조사와 공급 제품 4,922행)과 기준정보 동작 화면 `mdm/avl`, 연구소 검색의 "AVL 공급 제품" 탭을 더했다. 코드는 `AVL`·`AVLST`·`AVL_FORMS`·`avlMount`·`avlDraw`·`avlFilter`·`PAGES['mdm.avl']`. 근거 DEC-19, MDM-10, MAT-14 |
+| `briefing/DaBOM_root_20261124.html` | 이전 기준 판(뿌리 판). 진입 화면에 "시작도 뿌리도 BOM이다"와 뿌리·줄기·가지 지도(`BOM_ROOT`·`TRUNK`·`renderLanding`), 미리보기 화면의 `FUT_BOM` 띠. 근거 DEC-18. 고치지 않는다 |
+| `briefing/DaBOM_expand_20261123.html` | 그 이전 판(확장 판). taste-skill 판을 복사해 재고(Inventory.xlsx)·사용 이력·분류 필터·거래처 카탈로그·미리보기 부서(생산기술·회계·품질·기준정보)를 더했다. 근거 docs/14. 고치지 않는다 |
+| `briefing/index.html` | **현재 기준 판의 사본.** 기준 판과 항상 바이트 단위로 같게 유지한다(아래 판 관리). 2026-11-02 생성, 2026-11-23 확장 판으로, 2026-11-24 뿌리 판으로, 2026-11-27 AVL 판으로 교체 |
+| `briefing/DaBOM_taste_skill_20261021.html` | 더 이전 기준 판. taste-skill 규칙으로 화면 구성을 다시 정한 판. 고치지 않는다 |
 | `briefing/DaBOM_20261020.html` | 그 이전 판(v0.1.1). 고치지 않는다 |
 | `briefing/DaBOM_plan_board_20261123.html` | 목업이 아니라 기획 현황판. `tools/build_plan_board.py`가 docs/에서 만든다. 목업 진입 화면 아래 안내문에서 링크한다 |
 | 루트 `SS_SKPRT_EBOM.xlsx` | 연구소 화면 Import에서 고르는 시연 입력(KK16 E-BOM). 다른 PC 시연 때 HTML과 한 폴더에 둔다 |
@@ -37,14 +38,14 @@ cp briefing/<기준판>.html briefing/index.html && cmp briefing/<기준판>.htm
 줄 번호는 수정하면 밀린다. 위치는 아래 명령으로 다시 뽑는다. `-o`로 일치 부분만 출력하므로 데이터 줄이 통째로 나오지 않는다.
 
 ```bash
-grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^']+'\]" briefing/DaBOM_root_20261124.html
+grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^']+'\]" briefing/DaBOM_avl_20261127.html
 ```
 
-| 영역 | 위치(뿌리 판, 2026-11-24 기준) | 내용 |
+| 영역 | 위치(AVL 판, 2026-11-27 기준) | 내용 |
 |---|---|---|
-| `<style>` | 10~804줄 | `:root` 색 토큰(회사 8색 + 무채색), 셸·시트·그리드·반응형 |
-| 머리 주석 | 807~828줄 | 판 설명, 다른 PC 시연 방법, 화면 주소 규칙 |
-| `const DATA = {...}` | **836줄 한 줄, 약 112만 자**(뿌리 판. 확장 판은 791줄, taste-skill 판은 738줄) | 내장 데이터(3장). 절대 통째로 읽지 않는다 |
+| `<style>` | 10~830줄 | `:root` 색 토큰(회사 8색 + 무채색), 셸·시트·그리드·반응형 |
+| 머리 주석 | 833~860줄 | 판 설명, 다른 PC 시연 방법, 화면 주소 규칙 |
+| `const DATA = {...}` | **868줄 한 줄, 약 220만 자**(AVL 판. 뿌리 판은 836줄·약 112만 자, 확장 판은 791줄, taste-skill 판은 738줄) | 내장 데이터(3장). 절대 통째로 읽지 않는다 |
 | 공통 스크립트 | `const $`부터 | 유틸, `ACT`(클릭 동작 표), `PAGES`(화면 등록 표), `ICONS`, `Tip`(설명 풍선), `XGrid`(엑셀형 표), xlsx 읽기(`DecompressionStream`), `INV`·`INB`(재고·입고 색인), `PRODUCTS`·`PROD`, `S`(전역 상태), `DEPT`, `FUT_DEPT`, 주소 처리(`routeFromHash`·`setHash`·`go`·`render`), `renderShell`·`renderSide`·`renderPage`·`futurePage`, 상단 검색(`gsFind`), 진입 화면(`BOM_ROOT`·`TRUNK`·`renderLanding`) |
 | `const TIPS` | 공통 뒤 | 설명 풍선 사전. 항목 형식 `{ t 제목, w 존재 이유, h 실무 쓰임, r 근거, ph 단계, id 기능 ID }` |
 | `const FUT` | `TIPS` 뒤 | 미리보기 화면 정의. `{ what, why, later, prep, refs, mock: { cols: [[이름, 폭]...], rows } }` |
@@ -63,17 +64,18 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 | `e51k` | E51K ERP BOM(19열, 309행) | `references/samples/E51K_IVI_BOM(Amaranth-물류공통).xlsx` |
 | `inventory` | 1,394행 = 재고 목록 1,048(`src:'INV'`, Inventory.xlsx) + 재고 목록 밖 사용 이력 346(`src`=KK13·KK14·KK15·E51K). 행 배열 18칸: 품번·품명·규격·계정·제조업체·추정(mi)·단가·수량·할당·사용 모델·MSL·주거래처·라이프사이클·출처(src)·구분(org: 실제·가상·BOM)·속성(a: c 분류, t 세부유형, s 크기, v 값, tl 허용오차, vr 정격전압, dl 유전체, th 두께)·MOQ·사용 이력(hist: k zero·bom, st 재구매 가능·확인 필요, why) | Inventory.xlsx(수량·규격) + 기존 목업 [가상] 단가·할당·거래처 + PartHistory.xlsx |
 | `catalog` | 거래처 카탈로그 [가상] 예시: `guides`(제조사 문서 8, 상태·취급 거래처), `items`(계열 16) | 거래처 라인카드(`suppliers.makers`) + 예시 값 |
+| `avl` | 부품 카테고리별 AVL과 공급 제품. `asOf`, `cats[]`(id·ko·`cols`(사양 열 [키, 머리글, 너비])·`vendors`(이름·국가·R09 순위·행 수)·`docs`(제목·기준일·쪽 수·파일)·`rows`). 행 배열: [제조사 번호, 구분(0 계열·1 부품번호), 계열, 부품번호, 유형, 문서 번호, 쪽, 비고, 원문 대조, ...사양]. 제품에 ERP 코드 없음 | `AVL_DB/_source/final_rows.json` → `tools/avl_db/build_data_avl.py` → `inject_avl.py`. R13 제조사 PDF에서 추출(공개 사양, 가상 아님) |
 | `pendingKK16` | KK16 신규 발번 대상 62품목 | KK16 샘플 |
 | `suppliers` | 거래처 41곳(유형·취급 제조사·리드타임·표기 혼재) | E51K 이름 + [가상] 유형·조건 |
 | `inbound` | 입고 예정 42건 | [가상] |
 | `kk16codes` | KK16 ERP 코드 발번 내역 130행 | KK16 샘플 [가상] |
 
-데이터를 바꿀 때는 줄을 손으로 고치지 않는다. Python으로 데이터 줄(뿌리 판 836줄)의 `const DATA = ` 뒤 JSON을 읽어 고친 뒤 `json.dumps(d, ensure_ascii=False, separators=(',', ':'))`로 다시 써 넣는다. 스크립트는 scratchpad에 두고, 쓰기 전에 원본을 백업한다.
+데이터를 바꿀 때는 줄을 손으로 고치지 않는다. Python으로 데이터 줄(AVL 판 868줄)의 `const DATA = ` 뒤 JSON을 읽어 고친 뒤 `json.dumps(d, ensure_ascii=False, separators=(',', ':'))`로 다시 써 넣는다. 스크립트는 scratchpad에 두고, 쓰기 전에 원본을 백업한다.
 
 ## 4. 읽기·검색 요령
 
-- `Read`는 `offset`·`limit`로 데이터 줄(뿌리 판 836줄)을 범위에 넣지 않는다.
-- 검색은 `Grep`에 함수명·키 수준으로 좁힌 패턴을 쓰거나, Bash에서 `awk 'NR!=836' 파일 | grep -n 패턴`으로 데이터 줄을 뺀다. 결과 줄 번호는 데이터 줄 이후부터 1씩 작게 나오므로 주의한다. 데이터 줄 번호는 `grep -n -m1 '^const DATA = ' 파일 | cut -c1-20`으로 먼저 확인한다.
+- `Read`는 `offset`·`limit`로 데이터 줄(AVL 판 868줄)을 범위에 넣지 않는다.
+- 검색은 `Grep`에 함수명·키 수준으로 좁힌 패턴을 쓰거나, Bash에서 `awk 'NR!=868' 파일 | grep -n 패턴`으로 데이터 줄을 뺀다. 결과 줄 번호는 데이터 줄 이후부터 1씩 작게 나오므로 주의한다. 데이터 줄 번호는 `grep -n -m1 '^const DATA = ' 파일 | cut -c1-20`으로 먼저 확인한다.
 - `Edit`은 앱 코드 부분의 고유 문자열로 한다. 데이터 줄 안의 문자열을 `old_string`으로 쓰지 않는다.
 
 ## 5. 화면을 더하는 절차
@@ -101,7 +103,7 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 | 맞추기 | `reuse0(m)` = 재사용인데 재고 0. `FILTERS`·`LADDER`에 `l-reuse0`, 견적 필요 목록(`rfqItems`)에 재구매 행 |
 | 설명·미리보기 | 확장 판의 `TIPS`·`FUT` 추가분은 `S.rnd = {` 바로 앞의 `Object.assign(TIPS, …)`·`Object.assign(FUT, …)` 블록에 모았다 |
 
-검증: 목업을 고친 뒤 스크립트 부분을 뽑아 `node --check`로 문법을 보고, Edge 헤드리스(`msedge --headless=new --dump-dom`)로 오류 수집용 스크립트를 넣은 사본을 열어 모든 `#부서/화면`을 돌려 본다(2026-11-23 확장 판에서 67개 점검·오류 0. 2026-11-24 뿌리 판에서는 부서별 화면 47개와 진입 화면을 순회해 오류 0, 설명 풍선 키 누락 0, 부서 클릭·키보드 1~3 진입 확인). 헤드리스 Edge의 창 폭은 약 492px보다 좁아지지 않으므로 390px 확인은 사람이 `checker.html`로 한다.
+검증: 목업을 고친 뒤 스크립트 부분을 뽑아 `node --check`로 문법을 보고, Edge 헤드리스(`msedge --headless=new --dump-dom`)로 오류 수집용 스크립트를 넣은 사본을 열어 모든 `#부서/화면`을 돌려 본다(2026-11-23 확장 판에서 67개 점검·오류 0. 2026-11-24 뿌리 판에서는 부서별 화면 47개와 진입 화면을 순회해 오류 0. 2026-11-27 AVL 판은 화면 48개(`mdm/avl` 포함) 순회 오류 0과 사양 검색(저항 10k·0603·허용오차 1%, 커패시터 100n·16V·X7R) 동작을 확인, 설명 풍선 키 누락 0, 부서 클릭·키보드 1~3 진입 확인). 헤드리스 Edge의 창 폭은 약 492px보다 좁아지지 않으므로 390px 확인은 사람이 `checker.html`로 한다.
 
 ## 6. 지킬 것
 

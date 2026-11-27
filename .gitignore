@@ -9,3 +9,14 @@
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# 제조사 카탈로그·셀렉션 가이드 PDF(R13): 제조사 저작물이라 공개 저장소에 올리지 않는다. 수집 목록(manifest)만 추적한다
+references/R13_Vendor_Guides/**/*.pdf
+
+# 파이썬 캐시
+__pycache__/
+*.pyc
+
+# AVL DB 작업 중 생기는 캐시
+AVL_DB/_source/txt_cache/
+AVL_DB/_source/rows_checked.json
