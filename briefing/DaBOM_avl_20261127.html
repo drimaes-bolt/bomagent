@@ -349,7 +349,15 @@ select.inp{padding-right:26px}
 .avl-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:12px;color:var(--ink-3)}
 .avl-bar label{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);font-size:13px}
 .avl-bar select{height:28px;border:1px solid var(--control);border-radius:6px;padding:0 8px;font-size:13px;background:#fff;color:var(--ink)}
-.avl-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--ink-3)}
+.avl-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0;font-size:12px;color:var(--ink-3)}
+.avl-more:empty{display:none}
+.avl-pg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;width:100%}
+.avl-pg .btn.sm{min-width:32px;padding:0 8px}
+.avl-pg .gap{color:var(--ink-3);padding:0 2px}
+.avl-pg .sp{flex:1 1 12px}
+.avl-pg label{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);font-size:13px}
+.avl-pg .inp{width:64px;height:28px;text-align:center}
+@media (max-width:640px){.avl-pg .btn.sm,.avl-pg .inp,.avl-bar select,.avl-bar .btn.sm{height:40px;min-width:40px}.avl-pg .pn{display:none}.avl-pg .sp{flex-basis:100%}}
 .journey{border:1px solid var(--edge);border-radius:8px;overflow:hidden;margin-top:10px}
 .jr{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:10px 14px;border-top:1px solid var(--rule);font-size:13px;line-height:1.5}
 .jr:first-child{border-top:0}
@@ -2622,7 +2630,8 @@ Object.assign(TIPS, {
   'avl.f.maker': { t: '제조사 (AVL)', w: 'Selection Guide를 확보한 AVL 제조사 전부다. 숫자는 지금 조건에 맞는 제품 행 수다.', h: '문서를 확보하지 못한 제조사는 AVL에 올리지 않았다. 시연용 목록이라 실제 승인 여부를 뜻하지 않는다.', r: 'R09 · DEC-19 [제안]' },
   'avl.f.spec': { t: '분류별 필터', w: '크기·패키지처럼 분류마다 다른 사양 메뉴다. 문서에 적힌 표기를 `;`나 `,`로 나눠 모았다.', h: '저항·커패시터의 크기가 0402~2512처럼 범위로 적혔으면 그 사이의 표준 크기를 모두 가진 것으로 읽는다(표에는 원문 표기를 그대로 둔다). 값이 많은 메뉴는 12개까지 보이고 나머지는 "더 보기"로 연다.' },
   'avl.f.lv': { t: '구분', w: '계열 = 시리즈 한 줄(사양은 범위). 부품번호 = 문서가 형명을 한 줄씩 열거한 제품. 사양 조합 = 형명 없이 사양 조합표에서 푼 제품.', h: '문서가 개별 제품을 열거하지 않으면 계열 행만 있다. 범위를 표준 수열로 풀어 제품을 만들지는 않았다.' },
-  'avl.sort': { t: '정렬', w: '열을 골라 전체 결과를 정렬한다. 수 앞의 SI 접두어(k, M, µ, n 등)를 읽어 크기순으로 놓는다.', h: '빈 칸은 항상 맨 뒤로 간다. 화면에는 1,000행씩 보이고 "더 보기"로 늘린다. 엑셀(AVL_DB)에는 전부 있다.' },
+  'avl.sort': { t: '정렬', w: '열을 골라 전체 결과를 정렬한다. 수 앞의 SI 접두어(k, M, µ, n 등)를 읽어 크기순으로 놓는다.', h: '빈 칸은 항상 맨 뒤로 간다. 정렬을 바꾸면 1쪽으로 돌아간다. 표 아래 쪽 이동으로 다음 행을 본다. 엑셀(AVL_DB)에도 전부 있다.' },
+  'avl.pg': { t: '쪽 이동 · 쪽당 행 수', w: '결과가 많아 한 번에 한 쪽만 그린다. 이전·다음, 쪽 번호, 쪽 번호 입력으로 옮기고 쪽당 행 수(25·50·100·200)는 정렬 줄에서 고른다.', h: '필터·낱말·사양 조건·정렬을 바꾸면 1쪽부터 다시 본다. 쪽당 행 수를 바꾸면 보던 첫 행이 있는 쪽으로 간다. 정렬은 전체 결과에 적용된다.' },
   'avl.spec': { t: '사양으로 찾기', w: '넣은 사양을 공급하는 행만 남긴다. 대체품 추천이 하게 될 일의 가장 단순한 모양이다.', h: '문서에 적힌 범위 표기를 읽어 비교한다. 크기는 인치 코드(0603)로 비교하고 1608m처럼 m을 붙이면 메트릭 코드로 비교한다. 칸을 읽지 못한 행은 제외하고 그 개수를 알린다.', r: 'MAT-14 [제안]', ph: '2단계' },
   'avl.grid': { t: '공급 제품 표', w: '행 하나는 문서가 소개한 제품 단위다. 구분이 "계열"이면 시리즈 한 줄, "부품번호"이면 형명 한 줄이다.', h: '값은 문서에 인쇄된 표기를 그대로 옮겼고 문서에 없으면 비웠다. 행을 누르면 출처 문서와 쪽이 나온다.', r: 'R13 manifest.csv' },
   'avl.vend': { t: 'AVL 제조사', w: '그 카테고리에서 쓰는 제조사 목록이다. 국가와 순위는 R09(EP_Vendor_List_by_Category)에서 왔다.', h: '시연용 목록이라 실제 승인 여부를 뜻하지 않는다.', r: 'R09 · R13 [제안]' },
@@ -3554,7 +3563,7 @@ const AVL = (() => {
   A.cats.forEach(c => { if (c.S) { const S = c.S; c.rows = c.rows.map(r => r.map((x, i) => (i < 2 || i === 5 ? x : S[x]))); c.S = null; } });
   return A;
 })();
-const AVL_OFF = 9, AVL_STEP = 1000, AVL_LV = ['계열', '부품번호', '사양 조합'];
+const AVL_OFF = 9, AVL_PS = [25, 50, 100, 200], AVL_LV = ['계열', '부품번호', '사양 조합'];
 const AVL_ITEMS = [];
 AVL.cats.forEach((c, ci) => c.rows.forEach(r => AVL_ITEMS.push({ c, ci, v: c.vendors[r[0]], r })));
 const AVL_ORDER = Object.fromEntries(AVL.cats.map((c, i) => [c.ko, i]));
@@ -3652,7 +3661,7 @@ PDB_FACETS.avl = [
   when: sel => !!sel.cat && sel.cat.length === 1 && sel.cat[0] === c.ko, sort: mode === 'size' ? avlNumSort : undefined,
 })))).concat([{ k: 'lv', label: '구분 (계열·부품번호)', tip: 'avl.f.lv', val: it => AVL_LV[it.r[1]] }]);
 const avlText = it => it._t || (it._t = [it.v.name, it.c.ko, it.r[2], it.r[3], it.r[4], it.r[7], it.r.slice(AVL_OFF).join(' ')].join(' '));
-const AVLB = { st: { q: '', sel: {}, more: {}, open: {}, fopen: false }, form: {}, cat: null, sort: { k: -1, dir: 1 }, lim: AVL_STEP, sig: '', sel: null };
+const AVLB = { st: { q: '', sel: {}, more: {}, open: {}, fopen: false }, form: {}, cat: null, sort: { k: -1, dir: 1 }, page: 0, ps: 50, pages: 1, sig: '', sel: null };
 /** 분류를 하나 골랐을 때 사양 조건(저항값·크기·허용오차 등)을 적용한다. 다른 분류의 행은 건드리지 않는다 */
 function avlExtra(it) {
   const cs = AVLB.st.sel.cat; if (!cs || cs.length !== 1 || cs[0] !== it.c.ko) return true;
@@ -3696,7 +3705,7 @@ function avlGrid(rows) {
   const host = $('#avlb-grid'); if (!host) return;
   const st = AVLB.st, cs = st.sel.cat || [], one = cs.length === 1 ? AVL.cats.find(c => c.ko === cs[0]) : null, oid = one ? one.id : '';
   if (oid !== AVLB.cat) { AVLB.cat = oid; AVLB.sort = { k: -1, dir: 1 }; AVLB.sel = null; avlForm(one); }
-  const sig = JSON.stringify([st.q, st.sel, AVLB.form]); if (sig !== AVLB.sig) { AVLB.sig = sig; AVLB.lim = AVL_STEP; }
+  const sig = JSON.stringify([st.q, st.sel, AVLB.form]); if (sig !== AVLB.sig) { AVLB.sig = sig; AVLB.page = 0; }
   const cols = avlCols(one), k = AVLB.sort.k, dir = AVLB.sort.dir;
   let list = rows;
   if (k >= 0 && cols[k]) {
@@ -3707,10 +3716,12 @@ function avlGrid(rows) {
       if (x.n != null) return -1; if (y.n != null) return 1; return x.s.localeCompare(y.s, 'ko') * dir;
     });
   }
-  const shown = list.slice(0, AVLB.lim), rest = list.length - shown.length, fs = avlFormStats(one);
+  const ps = AVLB.ps, pages = Math.max(1, Math.ceil(list.length / ps));
+  AVLB.page = Math.min(Math.max(AVLB.page, 0), pages - 1); AVLB.pages = pages;
+  const from = AVLB.page * ps, shown = list.slice(from, from + ps), fs = avlFormStats(one);
   const note = fs ? ` · 사양 조건은 문서에 적힌 범위 표기를 기준으로 거른다${fs.skipped ? ` · 그 칸을 읽지 못한 ${fmt(fs.skipped)}행은 제외` : ''}${fs.bad ? ' · 조건 값을 읽지 못했다(예: 10k, 100n, 16)' : ''}` : '';
-  $('#avlb-bar').innerHTML = `<label data-tip="avl.sort">정렬 <select id="avlb-sk" aria-label="정렬 기준 열"><option value="-1">기본 순서</option>${cols.map((c, i) => `<option value="${i}" ${i === k ? 'selected' : ''}>${esc(c.h)}</option>`).join('')}</select></label><button class="btn btn-2 sm" data-act="avlb.dir" ${k < 0 ? 'disabled' : ''}>${dir > 0 ? '오름차순' : '내림차순'}</button><span>${fmt(list.length)}행${rest > 0 ? ` 중 ${fmt(shown.length)}행 표시` : ''}${esc(note)}</span>`;
-  $('#avlb-more').innerHTML = rest > 0 ? `<button class="btn btn-2 sm" data-act="avlb.more">${fmt(Math.min(AVL_STEP, rest))}행 더 보기</button>${rest <= 8000 ? `<button class="btn btn-q sm" data-act="avlb.all">전부 보기(${fmt(rest)}행 더)</button>` : ''}<span>정렬은 전체 ${fmt(list.length)}행에 적용된다${rest > 8000 ? ' · 행이 많아 한 번에 다 그리지 않는다. 분류·제조사·크기로 줄이거나 엑셀(AVL_DB)을 쓴다' : ''}</span>` : '';
+  $('#avlb-bar').innerHTML = `<label data-tip="avl.sort">정렬 <select id="avlb-sk" aria-label="정렬 기준 열"><option value="-1">기본 순서</option>${cols.map((c, i) => `<option value="${i}" ${i === k ? 'selected' : ''}>${esc(c.h)}</option>`).join('')}</select></label><button class="btn btn-2 sm" data-act="avlb.dir" ${k < 0 ? 'disabled' : ''}>${dir > 0 ? '오름차순' : '내림차순'}</button>${list.length > AVL_PS[0] ? `<label data-tip="avl.pg">쪽당 <select id="avlb-ps" aria-label="쪽당 행 수">${AVL_PS.map(n => `<option value="${n}" ${n === ps ? 'selected' : ''}>${n}행</option>`).join('')}</select></label>` : ''}<span>${fmt(list.length)}행${list.length > shown.length ? ` 중 ${fmt(from + 1)}–${fmt(from + shown.length)}행` : ''}${esc(note)}</span>`;
+  $('#avlb-more').innerHTML = avlPager(list.length, true); $('#avlb-more2').innerHTML = avlPager(list.length, false);
   new XGrid(host, {
     label: `거래처 카탈로그 · ${one ? one.ko : '전체'}`, cols: cols.map(c => ({ w: c.w })), pre: [{ cells: cols.map(c => ({ v: c.h, tip: 'avl.grid' })) }], freeze: [0], rows: shown, height: 'calc(100vh - 470px)', minH: 320,
     cell: (it, ci) => {
@@ -3737,12 +3748,33 @@ function avlBrowser(host) {
   if (!AVL_ITEMS.length) { host.innerHTML = '<div class="call mut"><div class="t">AVL 데이터가 없다</div>이 판에는 DATA.avl이 들어 있지 않다.</div>'; return; }
   AVLB.cat = null;
   pdbMount('avlb', host, AVLB.st, { kind: 'avl', list: () => AVL_ITEMS, text: avlText, extra: avlExtra, unit: '제품', ph: '제조사·계열·부품번호·사양 찾기', qtip: 'avl.q',
-    body: '<div id="avlb-form"></div><div id="avlb-bar" class="avl-bar"></div><div id="avlb-grid"></div><div id="avlb-more" class="avl-more"></div><div id="avlb-side"></div>', grid: avlGrid });
-  host.onchange = e => { if (e.target.id === 'avlb-sk') { AVLB.sort.k = +e.target.value; pdbDraw('avlb'); } };
+    body: '<div id="avlb-form"></div><div id="avlb-bar" class="avl-bar"></div><div id="avlb-more" class="avl-more"></div><div id="avlb-grid"></div><div id="avlb-more2" class="avl-more"></div><div id="avlb-side"></div>', grid: avlGrid });
+  host.onchange = e => {
+    const t = e.target;
+    if (t.id === 'avlb-sk') { AVLB.sort.k = +t.value; AVLB.page = 0; pdbDraw('avlb'); }
+    else if (t.id === 'avlb-ps') { const first = AVLB.page * AVLB.ps; AVLB.ps = +t.value || 50; AVLB.page = Math.floor(first / AVLB.ps); pdbDraw('avlb'); }   // 쪽당 행 수를 바꿔도 보던 첫 행이 있는 쪽으로
+    else if (t.id === 'avlb-pj') { const n = Math.round(+t.value); AVLB.page = (isNaN(n) ? AVLB.page + 1 : n) - 1; pdbDraw('avlb'); }
+  };
 }
-ACT['avlb.dir'] = () => { AVLB.sort.dir = -AVLB.sort.dir; pdbDraw('avlb'); };
-ACT['avlb.more'] = () => { AVLB.lim += AVL_STEP; pdbDraw('avlb'); };
-ACT['avlb.all'] = () => { AVLB.lim = Infinity; pdbDraw('avlb'); };
+ACT['avlb.dir'] = () => { AVLB.sort.dir = -AVLB.sort.dir; AVLB.page = 0; pdbDraw('avlb'); };
+/** 쪽 이동 표시줄: 이전 · 1 … 4 5 [6] 7 8 … 끝 · 다음 · (표 위에만) 쪽 번호 입력. 쪽당 행 수 선택(#avlb-ps)은 정렬 줄에 있다. 표는 한 쪽만 그린다. 표 아래에도 같은 이동 단추를 둔다 */
+function avlPager(total, full) {
+  if (total <= AVL_PS[0]) return '';
+  const page = AVLB.page, pages = AVLB.pages, nums = [];
+  [0, page - 2, page - 1, page, page + 1, page + 2, pages - 1].forEach(n => { if (n >= 0 && n < pages && !nums.includes(n)) nums.push(n); });
+  nums.sort((a, b) => a - b);
+  let prev = -1, btns = '';
+  nums.forEach(n => {
+    if (prev >= 0 && n - prev > 1) btns += '<span class="gap pn" aria-hidden="true">…</span>';
+    btns += `<button class="btn ${n === page ? 'btn-1' : 'btn-2'} sm pn" data-act="avlb.pg" data-v="${n}" aria-label="${n + 1}쪽"${n === page ? ' aria-current="page"' : ''}>${fmt(n + 1)}</button>`;
+    prev = n;
+  });
+  return `<nav class="avl-pg" aria-label="${full ? '제품 표 쪽 이동' : '제품 표 아래 쪽 이동'}"${full ? ' data-tip="avl.pg"' : ''}>
+    <button class="btn btn-2 sm" data-act="avlb.pg" data-v="${page - 1}" ${page <= 0 ? 'disabled' : ''}>이전</button>${btns}<button class="btn btn-2 sm" data-act="avlb.pg" data-v="${page + 1}" ${page >= pages - 1 ? 'disabled' : ''}>다음</button>${full ? `
+    <span class="sp"></span>
+    <label>쪽 이동 <input class="inp" id="avlb-pj" type="number" min="1" max="${pages}" value="${page + 1}" aria-label="이동할 쪽 번호"> / ${fmt(pages)}쪽</label>` : `<span class="mini">${fmt(page + 1)} / ${fmt(pages)}쪽</span>`}</nav>`;
+}
+ACT['avlb.pg'] = el => { AVLB.page = +el.dataset.v; pdbDraw('avlb'); };
 ACT['avlb.reset'] = () => { const c = AVL.cats.find(x => x.id === AVLB.cat); if (c) (AVL_FORMS[c.id] || []).forEach(f => { AVLB.form[c.id + ':' + f.k] = ''; }); AVLB.cat = null; pdbDraw('avlb'); const one = AVL.cats.find(x => (AVLB.st.sel.cat || [])[0] === x.ko); if (one) avlForm(one); };
 /** 제조사 문서 목록(거래처 카탈로그 · 제조사 문서 탭). 같은 PDF를 여러 분류 폴더에 둔 것은 한 문서로 센다 */
 function avlDocs() {

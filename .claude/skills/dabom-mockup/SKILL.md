@@ -110,7 +110,7 @@ AVL 판에서 더한 장치(`AVL` 앞부분 위치는 2장 명령으로 찾는�
 | `AVL_FAC` | 분류마다 다른 필터 메뉴 정의 `[사양 열 키, 머리글, 'size'면 숫자 순서]`. 첫 항목이 크기·패키지. 새 분류 열을 더하면 여기도 고친다 |
 | `PDB_FACETS.avl` · `avlExtra` | 분류(11) → 제조사(전부) → `AVL_FAC`의 메뉴. 분류를 정확히 하나 골랐을 때만 그 분류의 메뉴와 사양 폼이 나온다(`when`). `AVL_FORMS`(저항·커패시터·인덕터 사양 폼)는 `avlTest`로 범위 표기·크기·전압·허용오차를 비교하고 읽지 못한 칸은 건너뛴 개수를 알린다 |
 | `AVL_STD` · `avlSizeTok` | `0402~2512`처럼 범위로 적힌 칩 크기를 표준 크기로 풀어 필터·사양 폼에만 쓴다(표에는 원문 표기). 인치 코드가 기본이고 `m`을 붙이면 메트릭 |
-| `avlBrowser(host)` · `avlGrid` | 제품 표 화면 한 벌. 정렬 선택 `#avlb-sk`(SI 접두어·숫자 인식 `avlSortVal`), `AVL_STEP = 1000`행씩 "더 보기", 남은 행이 8,000 이하일 때만 "전부 보기". `mdm.avl`·`mp.catalog`·`rnd.search`가 같이 쓴다. 행 상세 `avlDetail` |
+| `avlBrowser(host)` · `avlGrid` | 제품 표 화면 한 벌. 정렬 선택 `#avlb-sk`(SI 접두어·숫자 인식 `avlSortVal`), 쪽 이동(페이지네이션): `AVLB.page`·`AVLB.ps`(쪽당 행 수, `AVL_PS = [25, 50, 100, 200]`, 기본 50), 표 위 `avlPager(total, true)`(이전·쪽 번호·다음·쪽 번호 입력 `#avlb-pj`), 정렬 줄의 `#avlb-ps`, 표 아래 `avlPager(total, false)`(`#avlb-more2`). 필터·낱말·사양 조건 `sig`가 바뀌거나 정렬을 바꾸면 1쪽으로 돌아간다. 640px 이하에서는 쪽 번호를 숨기고 단추를 40px로 키운다. `mdm.avl`·`mp.catalog`·`rnd.search`가 같이 쓴다. 행 상세 `avlDetail` |
 | `avlDocs` · `avlMakerRows` · `AVL_MK` | 제조사 문서 목록(같은 PDF를 여러 분류에 둔 것은 한 문서)과 라인카드 제조사 이름을 `AVL` 제조사로 잇는 대응표 |
 | `PAGES['mdm.avl']` | 탭 AVL 목록(`AVLP.tab = 'list'`) · 공급 제품(`'items'`). 목록 행을 누르면 그 제조사의 제품으로 간다 |
 
