@@ -13,7 +13,9 @@ SP, ROOT, R09 = sys.argv[1:4]
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from avl_schema import DOMAIN_KO, DOMAINS, SPECS, VENDORS  # noqa: E402
 
-rows = json.load(io.open(os.path.join(SP, 'final_rows.json'), encoding='utf-8'))
+import gzip
+_fp = os.path.join(SP, 'final_rows.json')
+rows = json.load(io.open(_fp, encoding='utf-8')) if os.path.exists(_fp) else json.load(gzip.open(_fp + '.gz', 'rt', encoding='utf-8'))
 man = {r['file']: r for r in csv.DictReader(io.open(os.path.join(ROOT, 'manifest.csv'), encoding='utf-8-sig'))}
 SEC = {'MCU': 2, 'MOSFET': 3, 'Resistor': 4, 'Capacitor': 5, 'Inductor': 6, 'Power_IC': 7, 'Diode': 8, 'Driver_IC': 9, 'Sensor': 12, 'Wireless_IC': 13, 'Connector': 15}
 r09, sec = {}, None
@@ -54,13 +56,24 @@ for code, ko, _ in DOMAINS:
         info = r09.get((SEC[code], VENDORS[v][1]), {})
         vendors.append({'k': v, 'name': VENDORS[v][0], 'short': v.replace('_', ' '), 'country': info.get('country', ''), 'fab': info.get('fab', ''), 'biz': info.get('biz', ''),
                         'rank': info.get('rank', 0), 'docs': [i for i, d in enumerate(docs) if d['v'] == vidx[v]], 'n': sum(1 for r in rs if r['vendor'] == v)})
-    order = {k: i for i, k in enumerate(didx)}
+    LV = {'계열': 0, '부품번호': 1, '사양 조합': 2}
+    S, sidx = [''], {'': 0}
+
+    def si(x):
+        x = '' if x is None else str(x)
+        i = sidx.get(x)
+        if i is None:
+            i = sidx[x] = len(S)
+            S.append(x)
+        return i
+
     out = []
     for r in sorted(rs, key=lambda r: (vidx[r['vendor']], didx[r['doc']], str(r.get('type') or ''), r['series'], str(r.get('part_number') or ''))):
         sp = r.get('specs') or {}
-        out.append([vidx[r['vendor']], 1 if r['level'] == '부품번호' else 0, r['series'], r.get('part_number') or '', r.get('type') or '', didx[r['doc']],
-                    str(r.get('page') or ''), cut(r.get('note'), 160), r.get('verify') or ''] + [('' if sp.get(k) is None else str(sp.get(k))) for k, _, _ in SPECS[code]])
-    cats.append({'id': code, 'ko': ko, 'cols': cols, 'vendors': vendors, 'docs': docs, 'rows': out})
+        # 문자열은 분류별 사전 번호로 적는다(같은 값이 많이 되풀이되어 파일이 작아진다). 0, 1, 5번 칸(제조사·구분·문서)은 숫자 그대로
+        out.append([vidx[r['vendor']], LV[r['level']], si(r['series']), si(r.get('part_number')), si(r.get('type')), didx[r['doc']],
+                    si(r.get('page')), si(cut(r.get('note'), 160)), si(r.get('verify'))] + [si(sp.get(k)) for k, _, _ in SPECS[code]])
+    cats.append({'id': code, 'ko': ko, 'cols': cols, 'vendors': vendors, 'docs': docs, 'S': S, 'rows': out})
 data = {'asOf': '2026-11-27', 'cats': cats}
 s = json.dumps(data, ensure_ascii=False, separators=(',', ':'))
 io.open(os.path.join(SP, 'avl_data.json'), 'w', encoding='utf-8').write(s)

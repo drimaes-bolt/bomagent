@@ -20,7 +20,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from avl_schema import DOMAIN_KO, DOMAINS, HEAD_COLS, SPECS, TAIL_COLS, VENDORS  # noqa: E402
 
 os.makedirs(OUT, exist_ok=True)
-rows = json.load(io.open(os.path.join(SP, 'final_rows.json'), encoding='utf-8'))
+import gzip
+_fp = os.path.join(SP, 'final_rows.json')
+rows = json.load(io.open(_fp, encoding='utf-8')) if os.path.exists(_fp) else json.load(gzip.open(_fp + '.gz', 'rt', encoding='utf-8'))
 docs_note = json.load(io.open(os.path.join(SP, 'final_docs.json'), encoding='utf-8'))
 man = {r['file']: r for r in csv.DictReader(io.open(os.path.join(ROOT, 'manifest.csv'), encoding='utf-8-sig'))}
 
@@ -105,13 +107,13 @@ for code, ko, _ in DOMAINS:
     dd = []
     for n, d in enumerate(sorted([x for x in docs_note if x['domain'] == code], key=lambda x: (x['vendor'], x['doc'])), 1):
         title, date, pages = doc_info(d['doc'])
-        dd.append([n, VENDORS[d['vendor']][0], title, date, pages, d['doc'], d['rows'], d.get('note')])
+        dd.append([n, VENDORS[d['vendor']][0], title, date, pages, d['doc'], d['rows'], d.get('individual'), d.get('series_only'), d.get('note')])
     sheet(ws2, f'출처 문서 · {ko}', '이 표의 제품 행이 나온 PDF. 파일은 references/R13_Vendor_Guides/ 아래에 있다(PDF는 git에 올리지 않는다).',
-          ['No', '제조사', '문서 제목', '문서 기준일', '쪽 수', '파일(R13 기준)', '추출 행 수', '추출 메모(범위·한계)'], [6, 24, 48, 12, 8, 56, 10, 70], dd, 2)
+          ['No', '제조사', '문서 제목', '문서 기준일', '쪽 수', '파일(R13 기준)', '추출 행 수', '개별 제품 행', '계열 행', '추출 메모(범위·한계)'], [6, 24, 48, 12, 8, 56, 10, 11, 9, 70], dd, 2)
     # 읽는 법
     ws3 = wb.create_sheet('읽는 법')
     ex = [
-        ['구분', '계열 = 시리즈·제품군 한 줄(사양은 범위). 부품번호 = 문서가 형명과 점 사양을 직접 적은 행'],
+        ['구분', '계열 = 시리즈·제품군 한 줄(사양은 범위). 부품번호 = 문서가 형명을 한 줄씩 열거한 제품. 사양 조합 = 형명 없이 사양 조합표(크기 × 정전용량 × 전압 같은 표, 이산 저항값 목록 등)에서 푼 제품. 개별 열거가 없는 문서는 계열 행만 있다. 범위로만 적힌 값을 표준 수열로 풀어 제품을 만들지는 않았다'],
         ['사양 값', '문서에 인쇄된 표기를 단위와 함께 그대로 옮겼다. 여러 값은 `;` 또는 `, `로 잇는다. 비어 있으면 문서에 없다는 뜻이다'],
         ['한계', '문서 한 권이 그 제조사의 전 제품을 다루지 않는다. 이 표는 확보한 문서에 나온 제품만 담는다. 제조사별 범위는 [문서 목록] 시트'],
         ['ERP 코드', '이 표의 제품에는 ERP 코드를 붙이지 않았다. 연구소가 설계에 적용할 때 사내 기존 품목을 먼저 찾고 없을 때 규칙대로 처음 채번한다(docs/08)'],

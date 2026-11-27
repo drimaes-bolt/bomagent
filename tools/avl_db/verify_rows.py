@@ -65,7 +65,7 @@ for r in rows_all:
     rel = r.get('doc')
     if rel not in man or man[rel]['domain'] != dm or r.get('vendor') not in VENDORS or man[rel]['vendor'] != r.get('vendor'):
         chk, why = 'bad_doc', 'doc/vendor/domain 불일치'
-    elif not r.get('series') or r.get('level') not in ('계열', '부품번호'):
+    elif not r.get('series') or r.get('level') not in ('계열', '부품번호', '사양 조합'):
         chk, why = 'bad_schema', 'series 또는 level 누락'
     elif not isinstance(r.get('specs'), dict) or set(r['specs']) - allowed.get(dm, set()):
         chk, why = 'bad_schema', 'specs 키 오류: ' + ','.join(sorted(set((r.get('specs') or {}).keys()) - allowed.get(dm, set())))

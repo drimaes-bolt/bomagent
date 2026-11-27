@@ -11,7 +11,7 @@ description: 다봄 시연 목업(briefing/DaBOM_avl_20261127.html 등 단일 HT
 
 | 파일 | 성격 |
 |---|---|
-| `briefing/DaBOM_avl_20261127.html` | **현재 기준 판(AVL 판).** 뿌리 판을 복사해 `DATA.avl`(AVL 제조사와 공급 제품 4,922행)과 기준정보 동작 화면 `mdm/avl`, 연구소 검색의 "AVL 공급 제품" 탭을 더했다. 코드는 `AVL`·`AVLST`·`AVL_FORMS`·`avlMount`·`avlDraw`·`avlFilter`·`PAGES['mdm.avl']`. 근거 DEC-19, MDM-10, MAT-14 |
+| `briefing/DaBOM_avl_20261127.html` | **현재 기준 판(AVL 판).** 뿌리 판을 복사해 `DATA.avl`(AVL 제조사와 개별 제품 52,154행, HTML 약 6MB)과 기준정보 동작 화면 `mdm/avl`을 더했다. 거래처 카탈로그 `mp/catalog`(카탈로그 제품 탭)와 연구소 검색 `rnd/search`(거래처 카탈로그 탭)도 같은 제품 표(`avlBrowser`)를 쓴다. 옛 [가상] `DATA.catalog`는 없앴다. 코드는 3장 아래 "AVL 판에서 더한 장치"에 정리했다. 근거 DEC-19, MDM-10, MAT-14 |
 | `briefing/DaBOM_root_20261124.html` | 이전 기준 판(뿌리 판). 진입 화면에 "시작도 뿌리도 BOM이다"와 뿌리·줄기·가지 지도(`BOM_ROOT`·`TRUNK`·`renderLanding`), 미리보기 화면의 `FUT_BOM` 띠. 근거 DEC-18. 고치지 않는다 |
 | `briefing/DaBOM_expand_20261123.html` | 그 이전 판(확장 판). taste-skill 판을 복사해 재고(Inventory.xlsx)·사용 이력·분류 필터·거래처 카탈로그·미리보기 부서(생산기술·회계·품질·기준정보)를 더했다. 근거 docs/14. 고치지 않는다 |
 | `briefing/index.html` | **현재 기준 판의 사본.** 기준 판과 항상 바이트 단위로 같게 유지한다(아래 판 관리). 2026-11-02 생성, 2026-11-23 확장 판으로, 2026-11-24 뿌리 판으로, 2026-11-27 AVL 판으로 교체 |
@@ -43,9 +43,9 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 
 | 영역 | 위치(AVL 판, 2026-11-27 기준) | 내용 |
 |---|---|---|
-| `<style>` | 10~830줄 | `:root` 색 토큰(회사 8색 + 무채색), 셸·시트·그리드·반응형 |
-| 머리 주석 | 833~860줄 | 판 설명, 다른 PC 시연 방법, 화면 주소 규칙 |
-| `const DATA = {...}` | **868줄 한 줄, 약 220만 자**(AVL 판. 뿌리 판은 836줄·약 112만 자, 확장 판은 791줄, taste-skill 판은 738줄) | 내장 데이터(3장). 절대 통째로 읽지 않는다 |
+| `<style>` | 10~821줄 | `:root` 색 토큰(회사 8색 + 무채색), 셸·시트·그리드·반응형 |
+| 머리 주석 | 824~853줄 | 판 설명, 다른 PC 시연 방법, 화면 주소 규칙 |
+| `const DATA = {...}` | **861줄 한 줄, 약 548만 자**(AVL 판. 뿌리 판은 836줄·약 112만 자, 확장 판은 791줄, taste-skill 판은 738줄) | 내장 데이터(3장). 절대 통째로 읽지 않는다 |
 | 공통 스크립트 | `const $`부터 | 유틸, `ACT`(클릭 동작 표), `PAGES`(화면 등록 표), `ICONS`, `Tip`(설명 풍선), `XGrid`(엑셀형 표), xlsx 읽기(`DecompressionStream`), `INV`·`INB`(재고·입고 색인), `PRODUCTS`·`PROD`, `S`(전역 상태), `DEPT`, `FUT_DEPT`, 주소 처리(`routeFromHash`·`setHash`·`go`·`render`), `renderShell`·`renderSide`·`renderPage`·`futurePage`, 상단 검색(`gsFind`), 진입 화면(`BOM_ROOT`·`TRUNK`·`renderLanding`) |
 | `const TIPS` | 공통 뒤 | 설명 풍선 사전. 항목 형식 `{ t 제목, w 존재 이유, h 실무 쓰임, r 근거, ph 단계, id 기능 ID }` |
 | `const FUT` | `TIPS` 뒤 | 미리보기 화면 정의. `{ what, why, later, prep, refs, mock: { cols: [[이름, 폭]...], rows } }` |
@@ -63,19 +63,18 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 | `products` | KK13·KK14·KK15의 M-BOM 개정들, E-BOM, 개정 이력, ERP 코드 발번 내역 | `references/samples/KK13~15` [가상] |
 | `e51k` | E51K ERP BOM(19열, 309행) | `references/samples/E51K_IVI_BOM(Amaranth-물류공통).xlsx` |
 | `inventory` | 1,394행 = 재고 목록 1,048(`src:'INV'`, Inventory.xlsx) + 재고 목록 밖 사용 이력 346(`src`=KK13·KK14·KK15·E51K). 행 배열 18칸: 품번·품명·규격·계정·제조업체·추정(mi)·단가·수량·할당·사용 모델·MSL·주거래처·라이프사이클·출처(src)·구분(org: 실제·가상·BOM)·속성(a: c 분류, t 세부유형, s 크기, v 값, tl 허용오차, vr 정격전압, dl 유전체, th 두께)·MOQ·사용 이력(hist: k zero·bom, st 재구매 가능·확인 필요, why) | Inventory.xlsx(수량·규격) + 기존 목업 [가상] 단가·할당·거래처 + PartHistory.xlsx |
-| `catalog` | 거래처 카탈로그 [가상] 예시: `guides`(제조사 문서 8, 상태·취급 거래처), `items`(계열 16) | 거래처 라인카드(`suppliers.makers`) + 예시 값 |
-| `avl` | 부품 카테고리별 AVL과 공급 제품. `asOf`, `cats[]`(id·ko·`cols`(사양 열 [키, 머리글, 너비])·`vendors`(이름·국가·R09 순위·행 수)·`docs`(제목·기준일·쪽 수·파일)·`rows`). 행 배열: [제조사 번호, 구분(0 계열·1 부품번호), 계열, 부품번호, 유형, 문서 번호, 쪽, 비고, 원문 대조, ...사양]. 제품에 ERP 코드 없음 | `AVL_DB/_source/final_rows.json` → `tools/avl_db/build_data_avl.py` → `inject_avl.py`. R13 제조사 PDF에서 추출(공개 사양, 가상 아님) |
+| `avl` | 부품 카테고리별 AVL과 공급 제품. `asOf`, `cats[]`(id·ko·`cols`(사양 열 [키, 머리글, 너비])·`vendors`(k·name·short·country·fab·biz·rank·docs·n)·`docs`(t 제목·d 기준일·p 쪽 수·f 파일·v 제조사 번호)·`S`(문자열 사전)·`rows`). 행 배열: [제조사 번호, 구분 번호(0 계열·1 부품번호·2 사양 조합), `S` 번호들(계열, 부품번호, 유형), 문서 번호, `S` 번호들(쪽, 비고, 원문 대조, ...사양)]. 앱이 읽을 때 `AVL` 안에서 `S` 번호를 문자열로 풀어 쓴다(행 앞 9칸 `AVL_OFF = 9`, 이후가 사양). 제품에 ERP 코드 없음. 옛 `catalog` 키는 없앴다 | `AVL_DB/_source/final_rows.json.gz` → `tools/avl_db/build_data_avl.py` → `inject_avl.py`. R13 제조사 PDF에서 추출(공개 사양, 가상 아님) |
 | `pendingKK16` | KK16 신규 발번 대상 62품목 | KK16 샘플 |
 | `suppliers` | 거래처 41곳(유형·취급 제조사·리드타임·표기 혼재) | E51K 이름 + [가상] 유형·조건 |
 | `inbound` | 입고 예정 42건 | [가상] |
 | `kk16codes` | KK16 ERP 코드 발번 내역 130행 | KK16 샘플 [가상] |
 
-데이터를 바꿀 때는 줄을 손으로 고치지 않는다. Python으로 데이터 줄(AVL 판 868줄)의 `const DATA = ` 뒤 JSON을 읽어 고친 뒤 `json.dumps(d, ensure_ascii=False, separators=(',', ':'))`로 다시 써 넣는다. 스크립트는 scratchpad에 두고, 쓰기 전에 원본을 백업한다.
+데이터를 바꿀 때는 줄을 손으로 고치지 않는다. Python으로 데이터 줄(AVL 판 861줄)의 `const DATA = ` 뒤 JSON을 읽어 고친 뒤 `json.dumps(d, ensure_ascii=False, separators=(',', ':'))`로 다시 써 넣는다. 스크립트는 scratchpad에 두고, 쓰기 전에 원본을 백업한다.
 
 ## 4. 읽기·검색 요령
 
-- `Read`는 `offset`·`limit`로 데이터 줄(AVL 판 868줄)을 범위에 넣지 않는다.
-- 검색은 `Grep`에 함수명·키 수준으로 좁힌 패턴을 쓰거나, Bash에서 `awk 'NR!=868' 파일 | grep -n 패턴`으로 데이터 줄을 뺀다. 결과 줄 번호는 데이터 줄 이후부터 1씩 작게 나오므로 주의한다. 데이터 줄 번호는 `grep -n -m1 '^const DATA = ' 파일 | cut -c1-20`으로 먼저 확인한다.
+- `Read`는 `offset`·`limit`로 데이터 줄(AVL 판 861줄)을 범위에 넣지 않는다.
+- 검색은 `Grep`에 함수명·키 수준으로 좁힌 패턴을 쓰거나, Bash에서 `awk 'NR!=861' 파일 | grep -n 패턴`으로 데이터 줄을 뺀다. 결과 줄 번호는 데이터 줄 이후부터 1씩 작게 나오므로 주의한다. 데이터 줄 번호는 `grep -n -m1 '^const DATA = ' 파일 | cut -c1-20`으로 먼저 확인한다.
 - `Edit`은 앱 코드 부분의 고유 문자열로 한다. 데이터 줄 안의 문자열을 `old_string`으로 쓰지 않는다.
 
 ## 5. 화면을 더하는 절차
@@ -97,13 +96,25 @@ grep -n -oE "^(const|let|function|class) [A-Za-z_\$][A-Za-z0-9_\$]*|^PAGES\['[^'
 
 | 장치 | 내용 |
 |---|---|
-| `INV_STOCK` · `INV_HIST` · `CATALOG` | 재고 목록(1,048) · 사용 이력 품목(356) · 카탈로그 예시. `equivStock(it)`는 같은 사양 재고 보유 품목 |
-| 분류 필터 `pdbMount(id, host, st, cfg)` | `PDB_FACETS.part`(대분류 → 크기·값·허용오차·유전체·정격전압 → 제조업체·상태·사용 모델·출처)와 `.cat`. 상태 객체 `st = { q, sel, more, open, fopen }`는 화면을 다시 열어도 남는다. `cfg = { kind, list, text, body, grid, ph, unit }`. 다른 화면에서 넘길 때는 `pdbQuery(st, q, it)` |
-| 화면 | `mp.stock`(재고 목록·사용 이력 전환), `rnd.search`(재고·사용 이력·카탈로그 탭), `mp.catalog`, `acc.rollup`(모델별 자재비) |
+| `INV_STOCK` · `INV_HIST` | 재고 목록(1,048) · 사용 이력 품목(356). `equivStock(it)`는 같은 사양 재고 보유 품목 |
+| 분류 필터 `pdbMount(id, host, st, cfg)` | `PDB_FACETS.part`(대분류 → 크기·값·허용오차·유전체·정격전압 → 제조업체·상태·사용 모델·출처)와 `.avl`(분류 11개 → 제조사 전부 → 분류마다 다른 메뉴). 상태 객체 `st = { q, sel, more, open, fopen }`는 화면을 다시 열어도 남는다. `cfg = { kind, list, text, body, grid, ph, unit, extra }`(`extra`는 사양 폼 같은 추가 조건 함수). 다른 화면에서 넘길 때는 `pdbQuery(st, q, it)` |
+| 화면 | `mp.stock`(재고 목록·사용 이력 전환), `rnd.search`(재고·사용 이력·거래처 카탈로그 탭), `mp.catalog`(라인카드·제조사 문서·카탈로그 제품 탭), `mdm.avl`(AVL 목록·공급 제품 탭), `acc.rollup`(모델별 자재비) |
 | 맞추기 | `reuse0(m)` = 재사용인데 재고 0. `FILTERS`·`LADDER`에 `l-reuse0`, 견적 필요 목록(`rfqItems`)에 재구매 행 |
 | 설명·미리보기 | 확장 판의 `TIPS`·`FUT` 추가분은 `S.rnd = {` 바로 앞의 `Object.assign(TIPS, …)`·`Object.assign(FUT, …)` 블록에 모았다 |
 
-검증: 목업을 고친 뒤 스크립트 부분을 뽑아 `node --check`로 문법을 보고, Edge 헤드리스(`msedge --headless=new --dump-dom`)로 오류 수집용 스크립트를 넣은 사본을 열어 모든 `#부서/화면`을 돌려 본다(2026-11-23 확장 판에서 67개 점검·오류 0. 2026-11-24 뿌리 판에서는 부서별 화면 47개와 진입 화면을 순회해 오류 0. 2026-11-27 AVL 판은 화면 48개(`mdm/avl` 포함) 순회 오류 0과 사양 검색(저항 10k·0603·허용오차 1%, 커패시터 100n·16V·X7R) 동작을 확인, 설명 풍선 키 누락 0, 부서 클릭·키보드 1~3 진입 확인). 헤드리스 Edge의 창 폭은 약 492px보다 좁아지지 않으므로 390px 확인은 사람이 `checker.html`로 한다.
+AVL 판에서 더한 장치(`AVL` 앞부분 위치는 2장 명령으로 찾는다):
+
+| 장치 | 내용 |
+|---|---|
+| `AVL` · `AVL_ITEMS` | `DATA.avl`을 읽을 때 문자열 사전(`S`)을 풀어 행 배열로 만든다. `AVL_ITEMS` = `{ c(분류), ci, v(제조사), r(행) }` 전체 52,154개. `AVL_OFF = 9`는 행에서 사양이 시작하는 칸 |
+| `AVL_FAC` | 분류마다 다른 필터 메뉴 정의 `[사양 열 키, 머리글, 'size'면 숫자 순서]`. 첫 항목이 크기·패키지. 새 분류 열을 더하면 여기도 고친다 |
+| `PDB_FACETS.avl` · `avlExtra` | 분류(11) → 제조사(전부) → `AVL_FAC`의 메뉴. 분류를 정확히 하나 골랐을 때만 그 분류의 메뉴와 사양 폼이 나온다(`when`). `AVL_FORMS`(저항·커패시터·인덕터 사양 폼)는 `avlTest`로 범위 표기·크기·전압·허용오차를 비교하고 읽지 못한 칸은 건너뛴 개수를 알린다 |
+| `AVL_STD` · `avlSizeTok` | `0402~2512`처럼 범위로 적힌 칩 크기를 표준 크기로 풀어 필터·사양 폼에만 쓴다(표에는 원문 표기). 인치 코드가 기본이고 `m`을 붙이면 메트릭 |
+| `avlBrowser(host)` · `avlGrid` | 제품 표 화면 한 벌. 정렬 선택 `#avlb-sk`(SI 접두어·숫자 인식 `avlSortVal`), `AVL_STEP = 1000`행씩 "더 보기", 남은 행이 8,000 이하일 때만 "전부 보기". `mdm.avl`·`mp.catalog`·`rnd.search`가 같이 쓴다. 행 상세 `avlDetail` |
+| `avlDocs` · `avlMakerRows` · `AVL_MK` | 제조사 문서 목록(같은 PDF를 여러 분류에 둔 것은 한 문서)과 라인카드 제조사 이름을 `AVL` 제조사로 잇는 대응표 |
+| `PAGES['mdm.avl']` | 탭 AVL 목록(`AVLP.tab = 'list'`) · 공급 제품(`'items'`). 목록 행을 누르면 그 제조사의 제품으로 간다 |
+
+검증: 목업을 고친 뒤 스크립트 부분을 뽑아 `node --check`로 문법을 보고, Chrome 헤드리스(`"C:/Program Files/Google/Chrome/Application/chrome.exe" --headless --dump-dom --virtual-time-budget=…`. 2026-11-27에 Edge 헤드리스가 출력을 내지 않아 Chrome으로 바꿈)로 오류 수집용 스크립트를 넣은 사본을 열어 모든 `#부서/화면`을 돌려 본다(2026-11-23 확장 판에서 67개 점검·오류 0. 2026-11-24 뿌리 판에서는 부서별 화면 47개와 진입 화면을 순회해 오류 0. 2026-11-27 AVL 판은 화면 48개(`mdm/avl` 포함) 순회 오류 0, 분류 11개·제조사 22개 필터 표시, 분류 선택 시 분류별 메뉴 전환(저항: 크기·유형·허용오차·정격전력, MOSFET: 패키지·극성·Vds 등), 정렬·더 보기, 사양 폼(저항 10k·0603·허용오차 1%, 커패시터 100n·16V·X7R) 동작을 확인, 설명 풍선 키 누락 0). hallmark 점검은 FAIL 0·WARN 1(기존 로딩 스피너). 헤드리스 Edge의 창 폭은 약 492px보다 좁아지지 않으므로 390px 확인은 사람이 `checker.html`로 한다.
 
 ## 6. 지킬 것
 
